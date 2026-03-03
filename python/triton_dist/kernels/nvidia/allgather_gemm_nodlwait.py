@@ -391,7 +391,10 @@ def kernel_consumer_gemm_non_persistent(
     offs_am = pid_m * BLOCK_SIZE_M
     rank_beg = offs_am // m_per_rank
     rank_end = (min(offs_am + BLOCK_SIZE_M, M) - 1) // m_per_rank
-    token = dl.wait(barrier_ptr + rank_beg, rank_end - rank_beg + 1, "gpu", "acquire", waitValue=1)
+    # ------------------------------------------------------------------
+    # 【修改点 1】：彻底注释掉 dl.wait，让计算线程不再看信箱
+    # token = dl.wait(barrier_ptr + rank_beg, rank_end - rank_beg + 1, "gpu", "acquire", waitValue=1)
+    # ------------------------------------------------------------------
 
     # ----------------------------------------------------------
     # Create pointers for the first blocks of A and B.
@@ -406,8 +409,11 @@ def kernel_consumer_gemm_non_persistent(
     a_ptrs = a_ptr + (offs_am[:, None] * stride_am + offs_k[None, :] * stride_ak)
     b_ptrs = b_ptr + (offs_k[:, None] * stride_bk + offs_bn[None, :] * stride_bn)
 
-    a_ptrs = dl.consume_token(a_ptrs, token)
-
+    # ------------------------------------------------------------------
+    # 【修改点 2】：注释掉 consume_token，直接使用上面初始化的 a_ptrs 去算
+    # a_ptrs = dl.consume_token(a_ptrs, token)
+    # ------------------------------------------------------------------
+    
     # -----------------------------------------------------------
     # Iterate to compute a block of the C matrix.
     # We accumulate into a `[BLOCK_SIZE_M, BLOCK_SIZE_N]` block
