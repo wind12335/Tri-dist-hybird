@@ -571,7 +571,7 @@ def gemm_rs_producer_non_persistent(A: torch.Tensor, B: torch.Tensor, C: torch.T
         B.stride(1),
         C.stride(0),
         C.stride(1),
-        barrier,
+        barrier, #barrier_ptr 来源于 signal_bufs，但它精确等于 ReduceScatter2DContext 里的 scatter_signal_bufs[local_rank]
         workspace,
         fuse_scatter,
         local_world_size,

@@ -604,7 +604,7 @@ def reduce_scatter_for_each_node(input: torch.Tensor, ctx: ReduceScatter2DContex
         intra_node_scatter(input_intra_node, scatter_bufs_intra_node, scatter_signal_buf_intra_node, local_rank)
 
         # ring reduce intra node
-        rs_buf_cur_node = rs_per_node_buf[M_per_rank * cur_node_id:(cur_node_id + 1) * M_per_rank]
+        rs_buf_cur_node = rs_per_node_buf[M_per_rank * cur_node_id:(cur_node_id + 1) * M_per_rank] #单机不用管这行
         nvshmem_barrier_all_on_stream(stream)
         reduction_stream.wait_stream(stream)
         with torch.cuda.stream(reduction_stream):
