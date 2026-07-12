@@ -24,18 +24,21 @@
 ################################################################################
 
 import torch
-from termcolor import colored
 from datetime import datetime
 import logging
 import numpy as np
 import random
 import os
-from transformers import AutoModelForCausalLM, AutoConfig
-from accelerate import init_empty_weights
+
+try:
+    from termcolor import colored
+except ImportError:
+
+    def colored(text, *_args, **_kwargs):
+        return text
 
 if torch.version.cuda:
     PLATFORM = 'nvidia'
-    import flashinfer
 elif torch.version.hip:
     PLATFORM = 'amd'
 else:
@@ -88,6 +91,10 @@ def sample_token(logits: torch.Tensor, temperature=0.6, top_p=0.95, top_k=-1):
         if temperature == 0.0:
             token = logits.argmax(dim=-1, keepdim=True)
         else:
+            try:
+                import flashinfer
+            except ImportError as exc:
+                raise ImportError("flashinfer is required for non-greedy sampling on NVIDIA.") from exc
             if temperature != 1.0:
                 logits = logits / temperature
             assert top_k == -1
@@ -106,9 +113,15 @@ def sample_token(logits: torch.Tensor, temperature=0.6, top_p=0.95, top_k=-1):
 
 @torch.no_grad()
 def init_model_cpu(model_name: str, dtype: torch.dtype):
+    from transformers import AutoModelForCausalLM, AutoConfig
+
     with torch.no_grad():
         random_params = os.environ.get("RANDOM_PARAMS", "0").lower() in ("1", "true", "yes")
         if random_params:
+            try:
+                from accelerate import init_empty_weights
+            except ImportError as exc:
+                raise ImportError("accelerate is required when RANDOM_PARAMS is enabled.") from exc
             print("Initializing model with random parameters. This may take a while...")
             config = AutoConfig.from_pretrained(model_name)
             with init_empty_weights():

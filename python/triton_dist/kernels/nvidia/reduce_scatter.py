@@ -31,7 +31,7 @@ import torch
 import triton
 import triton_dist
 import triton.language as tl
-from triton_dist.utils import cudart
+from cuda import cudart
 import nvshmem.bindings.nvshmem as pynvshmem
 from triton_dist.kernels.nvidia.common_ops import _set_signal_cuda, _wait_eq_cuda
 from triton_dist.language.extra import libshmem_device
@@ -143,6 +143,9 @@ class ReduceScatter2DContext:
         nvshmem_free_tensor_sync(self.rs_per_node_bufs[self.local_rank])
         nvshmem_free_tensor_sync(self.p2p_bufs[self.local_rank])
         nvshmem_free_tensor_sync(self.signal_bufs[self.local_rank])
+        # 1.28 修复：手动释放 barrier 中的资源
+        if self.barrier is not None:
+            self.barrier.finalize()
 
 
 def create_reduce_scater_2d_ctx(max_M, N, rank, world_size, local_world_size, dtype,

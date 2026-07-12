@@ -91,7 +91,6 @@ class GemmRS(torch.nn.Module):
         local_world_size: int = -1,
         persistent: bool = True,
         fuse_scatter: bool = False,
-        reduce_st: bool = False,
     ):
         super().__init__()
         self.tp_group = tp_group
@@ -109,8 +108,7 @@ class GemmRS(torch.nn.Module):
         self.rs_stream: torch.cuda.Stream = torch.cuda.Stream(priority=-1)
 
         self.ctx = create_gemm_rs_context(max_M, N, self.rank, self.world_size, self.local_world_size, output_dtype,
-                                          self.rs_stream, reduce_st)
-        self.reduce_st = reduce_st
+                                          self.rs_stream)
         self.fuse_scatter = fuse_scatter
         self.persistent = persistent
 
@@ -124,7 +122,7 @@ class GemmRS(torch.nn.Module):
             return gemm_rs(input, weight, self.ctx, autotune=args.autotune)
         else:
             return gemm_rs.fn(input, weight, self.ctx, gemm_config=get_config_space(self.persistent)[0],
-                              persistent=self.persistent, fuse_scatter=self.fuse_scatter, reduce_st=self.reduce_st)
+                              persistent=self.persistent, fuse_scatter=self.fuse_scatter)
 
 
 DTYPE_MAP = {
@@ -163,7 +161,6 @@ def parse_args():
                         default=torch.cuda.get_device_capability() >= (9, 0))
 
     parser.add_argument("--fuse_scatter", action=argparse.BooleanOptionalAction, default=False)
-    parser.add_argument("--reduce_st", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--has_bias", default=False, action="store_true")
     parser.add_argument("--seed", type=int, default=42)
 
@@ -220,7 +217,7 @@ if __name__ == "__main__":
         return A, B, bias
 
     gemm_rs_op = GemmRS(tp_group, M_max, args.N, args.K, input_dtype, output_dtype, LOCAL_WORLD_SIZE, args.persistent,
-                        args.fuse_scatter, args.reduce_st)
+                        args.fuse_scatter)
 
     if args.check:
         for n in range(args.iters):

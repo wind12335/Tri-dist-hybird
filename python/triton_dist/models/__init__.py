@@ -23,40 +23,46 @@
 #
 ################################################################################
 
-from transformers import AutoTokenizer as HFTokenizer
-
-from .config import ModelConfig
-from .dense import DenseLLM
-from .qwen_moe import Qwen3MoE
-
-
 class AutoLLM:
     model_mapping = {
-        "Qwen/Qwen3-0.6B": DenseLLM,
-        "Qwen/Qwen3-8B": DenseLLM,
-        "Qwen/Qwen3-14B": DenseLLM,
-        "Qwen/Qwen3-32B": DenseLLM,
-        "Qwen/Qwen3-30B-A3B": Qwen3MoE,
-        "Qwen/Qwen3-235B-A22B": Qwen3MoE,
-        "meta-llama/Meta-Llama-3-70B": DenseLLM,
-        "ByteDance-Seed/Seed-OSS-36B-Instruct": DenseLLM,
+        "Qwen/Qwen3-0.6B": "dense",
+        "Qwen/Qwen3-8B": "dense",
+        "Qwen/Qwen3-14B": "dense",
+        "Qwen/Qwen3-32B": "dense",
+        "Qwen/Qwen3-30B-A3B": "qwen_moe",
+        "Qwen/Qwen3-235B-A22B": "qwen_moe",
+        "meta-llama/Meta-Llama-3-70B": "dense",
+        "ByteDance-Seed/Seed-OSS-36B-Instruct": "dense",
     }
 
     @staticmethod
-    def from_pretrained(config: ModelConfig, group=None):
+    def _load_model_class(model_kind: str):
+        if model_kind == "dense":
+            from .dense import DenseLLM
+            return DenseLLM
+        if model_kind == "qwen_moe":
+            from .qwen_moe import Qwen3MoE
+            return Qwen3MoE
+        raise ValueError(f"Unsupported model kind: {model_kind}")
+
+    @staticmethod
+    def from_pretrained(config, group=None):
         model_name = config.model_name
 
-        for standard_name in AutoLLM.model_mapping.keys():
+        for standard_name, model_kind in AutoLLM.model_mapping.items():
             if model_name.endswith(standard_name):
-                return AutoLLM.model_mapping[standard_name](config, group)
+                model_cls = AutoLLM._load_model_class(model_kind)
+                return model_cls(config, group)
 
         if model_name in AutoLLM.model_mapping:
-            return AutoLLM.model_mapping[model_name](config, group)
+            model_cls = AutoLLM._load_model_class(AutoLLM.model_mapping[model_name])
+            return model_cls(config, group)
         else:
+            model_cls = AutoLLM._load_model_class("dense")
             print(f"Model {model_name} not found in model mapping, "
                   f"Available models: {list(AutoLLM.model_mapping.keys())} "
                   f"Falling back to DenseLLM with default configuration.")
-            return DenseLLM(config, group)
+            return model_cls(config, group)
 
 
 class AutoTokenizer:
@@ -66,5 +72,7 @@ class AutoTokenizer:
 
     @staticmethod
     def from_pretrained(model_config):
+        from transformers import AutoTokenizer as HFTokenizer
+
         return HFTokenizer.from_pretrained(model_config.model_name, use_fast=True, legacy=False,
                                            local_files_only=model_config.local_only)

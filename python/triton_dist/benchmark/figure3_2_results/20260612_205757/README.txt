@@ -1,0 +1,9 @@
+run_id=20260612_205757
+family=ag
+nproc_per_node=4
+iters=10
+warmup_iters=5
+dtype=bfloat16
+autotune=False
+profile=False
+dry_run=True

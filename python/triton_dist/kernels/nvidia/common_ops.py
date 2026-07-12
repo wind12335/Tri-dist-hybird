@@ -24,7 +24,7 @@
 ################################################################################
 from typing import Optional
 
-from triton_dist.utils import cuda, cudart
+from cuda import cuda, cudart
 import nvshmem.bindings.nvshmem as pynvshmem
 import nvshmem.core
 import torch

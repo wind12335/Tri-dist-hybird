@@ -26,10 +26,20 @@
 import torch
 from torch import nn
 import torch.distributed
+import inspect
 
 from triton_dist.kernels.allreduce import AllReduceMethod
 from triton_dist.kernels.nvidia.allgather_gemm import AllGatherGEMMTensorParallelContext, get_auto_all_gather_method, ag_gemm
 from triton_dist.kernels.nvidia import create_gemm_rs_context, gemm_rs
+from triton_dist.kernels.nvidia.new_allgather_gemm import create_new_ag_gemm_context, new_ag_gemm
+from triton_dist.kernels.nvidia.new_3rd_v5_frontier_windowed_panel_rsgemm import (
+    create_new_3rd_v5_frontier_windowed_panel_gemm_rs_context,
+    new_3rd_v5_frontier_windowed_panel_gemm_rs,
+)
+from triton_dist.kernels.nvidia.new_windowed_panel_gemm_allreduce import (
+    create_frontier_windowed_panel_gemm_ar_context,
+    frontier_windowed_panel_gemm_allreduce,
+)
 from triton_dist.utils import nvshmem_barrier_all_on_stream
 from triton_dist.kernels.nvidia.allreduce import (create_allreduce_ctx, all_reduce)
 from triton_dist.layers.nvidia import GemmARLayer
@@ -65,9 +75,12 @@ class TP_MLP:
         self.gate_up_proj = None
         self.down_proj = None
         self.ag_ctx = None
+        self.new_ag_ctx = None
         self.rs_ctx = None
+        self.new_rs_ctx = None
         self.ar_ctx = None
         self.gemm_ar_ctx = None
+        self.new_gemm_ar_ctx = None
 
     def _init_parameters(self, mlp: nn.Module, verbose=False):
         """
@@ -114,15 +127,72 @@ class TP_MLP:
         nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
         torch.cuda.synchronize()
 
+    def _init_new_ag_ctx(self,
+                         max_M,
+                         ag_intranode_stream: torch.cuda.Stream | None = None,
+                         ag_internode_stream: torch.cuda.Stream | None = None,
+                         **ag_kwargs):
+        supported = inspect.signature(create_new_ag_gemm_context).parameters
+        ag_kwargs = {k: v for k, v in ag_kwargs.items() if k in supported}
+        self.new_ag_ctx = create_new_ag_gemm_context(
+            max_M=max_M,
+            N=self.ag_N_per_rank * self.world_size,
+            K=self.K,
+            dtype=self.dtype,
+            rank=self.rank,
+            num_ranks=self.world_size,
+            num_local_ranks=self.world_size,
+            ag_intranode_stream=ag_intranode_stream,
+            ag_internode_stream=ag_internode_stream,
+            **ag_kwargs,
+        )
+        nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
+        torch.cuda.synchronize()
+
+    def _init_new_rs_ctx(self, max_M, **rs_kwargs):
+        supported = inspect.signature(create_new_3rd_v5_frontier_windowed_panel_gemm_rs_context).parameters
+        rs_kwargs = {k: v for k, v in rs_kwargs.items() if k in supported}
+        self.new_rs_ctx = create_new_3rd_v5_frontier_windowed_panel_gemm_rs_context(
+            max_M=max_M,
+            N=self.K,
+            rank=self.rank,
+            world_size=self.world_size,
+            local_world_size=self.world_size,
+            output_dtype=self.dtype,
+            **rs_kwargs,
+        )
+        nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
+        torch.cuda.synchronize()
+
     def finalize(self):
         if self.ag_ctx:
             self.ag_ctx.finalize()
+        if self.new_ag_ctx:
+            self.new_ag_ctx.finalize()
         if self.rs_ctx:
             self.rs_ctx.finalize()
+        if self.new_rs_ctx:
+            self.new_rs_ctx.finalize()
         if self.ar_ctx:
             self.ar_ctx.finalize()
         if self.gemm_ar_ctx:
             self.gemm_ar_ctx.finalize()
+        if self.new_gemm_ar_ctx:
+            self.new_gemm_ar_ctx.finalize()
+
+    @staticmethod
+    def _flatten_input(x: torch.Tensor):
+        if len(x.size()) == 3:
+            bsz, seq, d = x.size()
+            return x.view(-1, d), True, (bsz, seq)
+        return x, False, None
+
+    @staticmethod
+    def _restore_output(x: torch.Tensor, is_3d_input: bool, shape):
+        if is_3d_input:
+            bsz, seq = shape
+            return x.view(bsz, seq, -1)
+        return x
 
     @torch.inference_mode()
     def torch_fwd(self, x):
@@ -146,24 +216,47 @@ class TP_MLP:
         This version uses ag_gemm and gemm_rs.
         x: input tensor, shape [batch_size, seq_len, hidden_size] or [batch_size * seq_len, hidden_size]
         """
-        # Reshape input if it's 3D (e.g., [batch, seq_len, hidden_dim])
-        if len(x.size()) == 3:
-            bsz, seq, d = x.size()
-            x = x.view(-1, d)
-            is_3d_input = True
-        else:
-            is_3d_input = False
+        return self.dist_triton_select_ag_rs_fwd(x, ag_impl="old", rs_impl="old", autotune=autotune)
 
-        # ag + gemm
-        out_fused = ag_gemm(x, self.gate_up_proj.T, ctx=self.ag_ctx, autotune=autotune)
+    @torch.inference_mode()
+    def dist_triton_new_ag_gemm(self, x: torch.Tensor, autotune=False):
+        assert self.new_ag_ctx is not None, "New AllGather-GEMM context is not initialized."
+        return new_ag_gemm(x, self.gate_up_proj.T, ctx=self.new_ag_ctx, autotune=autotune)
+
+    @torch.inference_mode()
+    def dist_triton_new_gemm_rs(self, x: torch.Tensor, autotune=False):
+        assert self.new_rs_ctx is not None, "New GEMM-ReduceScatter context is not initialized."
+        return new_3rd_v5_frontier_windowed_panel_gemm_rs(
+            x,
+            self.down_proj.T,
+            self.new_rs_ctx,
+            persistent=False,
+            autotune=autotune,
+        )
+
+    @torch.inference_mode()
+    def dist_triton_select_ag_rs_fwd(self, x: torch.Tensor, ag_impl="old", rs_impl="old", autotune=True):
+        x, is_3d_input, shape = self._flatten_input(x)
+        if ag_impl == "old":
+            assert self.ag_ctx is not None, "AllGather-GEMM context is not initialized."
+            out_fused = ag_gemm(x, self.gate_up_proj.T, ctx=self.ag_ctx, autotune=autotune)
+        elif ag_impl == "new":
+            out_fused = self.dist_triton_new_ag_gemm(x, autotune=autotune)
+        else:
+            raise ValueError(f"Unsupported ag_impl: {ag_impl}")
+
         wg, w1 = torch.chunk(out_fused, 2, dim=-1)
         out = self.act_fn(wg) * w1
-        # gemm + rs
-        out = gemm_rs(out, self.down_proj.T, self.rs_ctx, autotune=autotune)
 
-        if is_3d_input:
-            out = out.view(bsz, seq, -1)
-        return out
+        if rs_impl == "old":
+            assert self.rs_ctx is not None, "GEMM-ReduceScatter context is not initialized."
+            out = gemm_rs(out, self.down_proj.T, self.rs_ctx, autotune=autotune)
+        elif rs_impl == "new":
+            out = self.dist_triton_new_gemm_rs(out, autotune=autotune)
+        else:
+            raise ValueError(f"Unsupported rs_impl: {rs_impl}")
+
+        return self._restore_output(out, is_3d_input, shape)
 
     def _init_AR_ctx(self, max_M, method: AllReduceMethod, dtype=torch.bfloat16):
         self.ar_method = method
@@ -201,27 +294,56 @@ class TP_MLP:
                                        use_ll_kernel=max_M <= 256, copy_to_local=False,
                                        NUM_COMM_SMS=16 if max_M <= 256 else 4)
 
+    def _init_new_gemm_ar_ctx(self, max_M, dtype=torch.bfloat16, **ar_kwargs):
+        N = self.down_proj.shape[0]
+        supported = inspect.signature(create_frontier_windowed_panel_gemm_ar_context).parameters
+        ar_kwargs = {k: v for k, v in ar_kwargs.items() if k in supported}
+        self.new_gemm_ar_ctx = create_frontier_windowed_panel_gemm_ar_context(
+            max_M=max_M,
+            N=N,
+            rank=self.rank,
+            world_size=self.world_size,
+            local_world_size=self.world_size,
+            output_dtype=dtype,
+            **ar_kwargs,
+        )
+        nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
+        torch.cuda.synchronize()
+
     @torch.inference_mode()
     def dist_triton_gemm_ar_fwd(self, x: torch.Tensor):
+        return self.dist_triton_select_gemm_ar_fwd(x, impl="old")
+
+    @torch.inference_mode()
+    def dist_triton_new_gemm_ar_fwd(self, x: torch.Tensor, autotune=False):
+        return self.dist_triton_select_gemm_ar_fwd(x, impl="new", autotune=autotune)
+
+    @torch.inference_mode()
+    def dist_triton_select_gemm_ar_fwd(self, x: torch.Tensor, impl="old", autotune=False):
         """
         Triton Dist forward pass using GEMM-AllReduce.
         This version uses gemm_ar.
         x: input tensor, shape [batch_size * seq_len, hidden_size]
         """
-        if len(x.size()) == 3:
-            bsz, seq, d = x.size()
-            x = x.view(-1, d)
-            is_3d_input = True
-        else:
-            is_3d_input = False
-        assert self.gemm_ar_ctx is not None, "GemmAR context is not initialized."
+        x, is_3d_input, shape = self._flatten_input(x)
         out_fused = torch.nn.functional.linear(x, self.gate_up_proj)
         wg, w1 = torch.chunk(out_fused, 2, dim=-1)
         out = self.act_fn(wg) * w1
-        out = self.gemm_ar_ctx.forward(out, self.down_proj)
-        if is_3d_input:
-            out = out.view(bsz, seq, -1)
-        return out
+        if impl == "old":
+            assert self.gemm_ar_ctx is not None, "GemmAR context is not initialized."
+            out = self.gemm_ar_ctx.forward(out, self.down_proj)
+        elif impl == "new":
+            assert self.new_gemm_ar_ctx is not None, "New GEMM-AllReduce context is not initialized."
+            out = frontier_windowed_panel_gemm_allreduce(
+                out,
+                self.down_proj.T,
+                self.new_gemm_ar_ctx,
+                drain=True,
+                autotune=autotune,
+            )
+        else:
+            raise ValueError(f"Unsupported GEMM-AR impl: {impl}")
+        return self._restore_output(out, is_3d_input, shape)
 
     @torch.inference_mode()
     def torch_ag_gemm(self, x: torch.Tensor):

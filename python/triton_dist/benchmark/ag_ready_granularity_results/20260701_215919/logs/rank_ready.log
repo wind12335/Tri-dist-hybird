@@ -1,0 +1,215 @@
+test shape: M 8192, N 29568, K 8192
+tile-ready config: enabled=False, tile_rows_per_chunk=0, num_tile_chunks=0
+✅ all close!
+shape of x: torch.Size([8192, 7392])
+shape of y: torch.Size([8192, 7392])
+✅ all close!
+shape of x: torch.Size([8192, 7392])
+shape of y: torch.Size([8192, 7392])
+
+W0701 21:59:20.904000 15545 site-packages/torch/distributed/run.py:766] 
+W0701 21:59:20.904000 15545 site-packages/torch/distributed/run.py:766] *****************************************
+W0701 21:59:20.904000 15545 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0701 21:59:20.904000 15545 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+x:
+tensor([[ 3.02e-03, -5.30e-04,  8.42e-03,  ...,  1.84e-04,  1.98e-03,
+         -4.97e-03],
+        [ 3.69e-03, -3.66e-03, -1.56e-03,  ...,  3.48e-03,  2.47e-03,
+          3.25e-03],
+        [ 3.81e-03, -2.37e-03, -1.60e-03,  ..., -5.31e-03, -8.09e-04,
+          6.16e-03],
+        ...,
+        [-1.34e-02, -1.67e-02,  9.28e-03,  ..., -4.27e-03, -1.61e-02,
+          1.43e-02],
+        [-4.39e-03, -5.74e-03, -3.91e-03,  ..., -5.95e-03, -2.88e-02,
+         -5.28e-03],
+        [ 3.65e-03,  1.90e-02, -1.46e-02,  ..., -1.45e-05,  1.28e-02,
+          3.77e-03]], device='cuda:0', dtype=torch.bfloat16)
+y:
+tensor([[ 3.02e-03, -5.30e-04,  8.42e-03,  ...,  1.84e-04,  1.98e-03,
+         -4.97e-03],
+        [ 3.69e-03, -3.66e-03, -1.56e-03,  ...,  3.48e-03,  2.47e-03,
+          3.27e-03],
+        [ 3.81e-03, -2.37e-03, -1.60e-03,  ..., -5.31e-03, -8.09e-04,
+          6.16e-03],
+        ...,
+        [-1.34e-02, -1.67e-02,  9.28e-03,  ..., -4.27e-03, -1.61e-02,
+          1.43e-02],
+        [-4.39e-03, -5.74e-03, -3.91e-03,  ..., -5.95e-03, -2.88e-02,
+         -5.28e-03],
+        [ 3.65e-03,  1.90e-02, -1.46e-02,  ..., -1.45e-05,  1.28e-02,
+          3.77e-03]], device='cuda:0', dtype=torch.bfloat16)
+x-y tensor([[ 0.00e+00,  0.00e+00,  0.00e+00,  ...,  0.00e+00,  0.00e+00,
+          0.00e+00],
+        [ 0.00e+00,  0.00e+00,  0.00e+00,  ...,  0.00e+00,  0.00e+00,
+         -1.53e-05],
+        [ 0.00e+00,  0.00e+00,  0.00e+00,  ...,  0.00e+00,  0.00e+00,
+          0.00e+00],
+        ...,
+        [ 0.00e+00,  0.00e+00,  0.00e+00,  ...,  0.00e+00,  0.00e+00,
+          0.00e+00],
+        [ 0.00e+00,  0.00e+00,  0.00e+00,  ...,  0.00e+00,  0.00e+00,
+          0.00e+00],
+        [ 0.00e+00,  0.00e+00,  0.00e+00,  ...,  0.00e+00,  0.00e+00,
+          0.00e+00]], device='cuda:0', dtype=torch.bfloat16)
+x@diff:
+tensor([ 0.00, -0.00, -0.00,  ...,  0.00, -0.00,  0.00], device='cuda:0',
+       dtype=torch.bfloat16)
+y@diff:
+tensor([ 0.01, -0.01,  0.00,  ...,  0.00,  0.00, -0.01], device='cuda:0',
+       dtype=torch.bfloat16)
+diff count: 2129141 (3.516%), [8192, 7392]
+diff max: 0.04248046875, atol: 0.001, rtol_abs: 0.0
+diff locations:
+tensor([[2048,    0],
+        [2048,    1],
+        [2048,    2],
+        ...,
+        [2559, 4605],
+        [2559, 4606],
+        [2559, 4607]], device='cuda:0')
+--------------------------------------------------------------
+
+[rank2]:[E701 22:29:27.733786931 ProcessGroupNCCL.cpp:632] [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=17, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=1800000) ran for 1800040 milliseconds before timing out.
+[rank2]:[E701 22:29:27.734407376 ProcessGroupNCCL.cpp:2268] [PG ID 1 PG GUID 1 Rank 2]  failure detected by watchdog at work sequence id: 17 PG status: last enqueued work: 17, last completed work: 16
+[rank2]:[E701 22:29:27.734433816 ProcessGroupNCCL.cpp:670] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank2]:[E701 22:29:27.734489632 ProcessGroupNCCL.cpp:2103] [PG ID 1 PG GUID 1 Rank 2] First PG on this rank to signal dumping.
+[rank1]:[E701 22:29:27.747659862 ProcessGroupNCCL.cpp:632] [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=17, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=1800000) ran for 1800054 milliseconds before timing out.
+[rank1]:[E701 22:29:27.748191910 ProcessGroupNCCL.cpp:2268] [PG ID 1 PG GUID 1 Rank 1]  failure detected by watchdog at work sequence id: 17 PG status: last enqueued work: 17, last completed work: 16
+[rank1]:[E701 22:29:27.748213921 ProcessGroupNCCL.cpp:670] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank1]:[E701 22:29:27.748269877 ProcessGroupNCCL.cpp:2103] [PG ID 1 PG GUID 1 Rank 1] First PG on this rank to signal dumping.
+[rank3]:[E701 22:29:27.753495894 ProcessGroupNCCL.cpp:632] [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=17, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=1800000) ran for 1800059 milliseconds before timing out.
+[rank3]:[E701 22:29:27.753912112 ProcessGroupNCCL.cpp:2268] [PG ID 1 PG GUID 1 Rank 3]  failure detected by watchdog at work sequence id: 17 PG status: last enqueued work: 17, last completed work: 16
+[rank3]:[E701 22:29:27.753925988 ProcessGroupNCCL.cpp:670] Stack trace of the failed collective not found, potentially because FlightRecorder is disabled. You can enable it by setting TORCH_NCCL_TRACE_BUFFER_SIZE to a non-zero value.
+[rank3]:[E701 22:29:27.753970542 ProcessGroupNCCL.cpp:2103] [PG ID 1 PG GUID 1 Rank 3] First PG on this rank to signal dumping.
+[rank3]:[E701 22:29:28.464135578 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 3] Received a dump signal due to a collective timeout from this local rank and we will try our best to dump the debug info. Last enqueued NCCL work: -1, last completed NCCL work: -1.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank1]:[E701 22:29:28.464184861 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 1] Received a dump signal due to a collective timeout from this local rank and we will try our best to dump the debug info. Last enqueued NCCL work: -1, last completed NCCL work: -1.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank2]:[E701 22:29:28.464263540 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 2] Received a dump signal due to a collective timeout from this local rank and we will try our best to dump the debug info. Last enqueued NCCL work: -1, last completed NCCL work: -1.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank3]:[E701 22:29:28.464421579 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 3] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank0]:[E701 22:29:28.464500349 ProcessGroupNCCL.cpp:1682] [PG ID 0 PG GUID 0(default_pg) Rank 0] Observed flight recorder dump signal from another rank via TCPStore.
+[rank1]:[E701 22:29:28.464511289 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 1] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank2]:[E701 22:29:28.464574399 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 2] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank0]:[E701 22:29:28.464701129 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 0] Received a dump signal due to a collective timeout from  rank 3 and we will try our best to dump the debug info. Last enqueued NCCL work: -1, last completed NCCL work: -1.This is most likely caused by incorrect usages of collectives, e.g., wrong sizes used across ranks, the order of collectives is not same for all ranks or the scheduled collective, for some reason, didn't run. Additionally, this can be caused by GIL deadlock or other reasons such as network errors or bugs in the communications library (e.g. NCCL), etc. 
+[rank0]:[E701 22:29:28.464993122 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank0]:[E701 22:29:28.765794508 ProcessGroupNCCL.cpp:1806] [PG ID 0 PG GUID 0(default_pg) Rank 0] Could not acquire GIL within 300 ms on exit, possible GIL induced hang
+[rank2]:[W701 22:30:27.734730753 ProcessGroupNCCL.cpp:2111] [PG ID 1 PG GUID 1 Rank 2] timed out after waiting for 60000ms flight recorder dumps to finish.
+[rank1]:[W701 22:30:27.748424420 ProcessGroupNCCL.cpp:2111] [PG ID 1 PG GUID 1 Rank 1] timed out after waiting for 60000ms flight recorder dumps to finish.
+[rank3]:[W701 22:30:27.754099870 ProcessGroupNCCL.cpp:2111] [PG ID 1 PG GUID 1 Rank 3] timed out after waiting for 60000ms flight recorder dumps to finish.
+[rank2]:[E701 22:30:27.794213540 ProcessGroupNCCL.cpp:684] [Rank 2] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank2]:[E701 22:30:27.794235121 ProcessGroupNCCL.cpp:698] [Rank 2] To avoid data inconsistency, we are taking the entire process down.
+[rank2]:[E701 22:30:27.822260995 ProcessGroupNCCL.cpp:1896] [PG ID 1 PG GUID 1 Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=17, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=1800000) ran for 1800040 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:635 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7fd9f99785e8 in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x23d (0x7fd99fe52a1d in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0xc80 (0x7fd99fe547a0 in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x7fd99fe55ead in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7fd98fd96db4 in /root/miniconda3/bin/../lib/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7fd9fb09aaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: <unknown function> + 0x129c3c (0x7fd9fb127c3c in /lib/x86_64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'c10::DistBackendError'
+  what():  [PG ID 1 PG GUID 1 Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=17, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=1800000) ran for 1800040 milliseconds before timing out.
+Exception raised from checkTimeout at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:635 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7fd9f99785e8 in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x23d (0x7fd99fe52a1d in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0xc80 (0x7fd99fe547a0 in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x14d (0x7fd99fe55ead in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7fd98fd96db4 in /root/miniconda3/bin/../lib/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7fd9fb09aaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: <unknown function> + 0x129c3c (0x7fd9fb127c3c in /lib/x86_64-linux-gnu/libc.so.6)
+
+Exception raised from ncclCommWatchdog at /pytorch/torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1902 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7fd9f99785e8 in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x11b4a6e (0x7fd99fe24a6e in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0xe07bed (0x7fd99fa77bed in /root/miniconda3/lib/python3.12/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: <unknown function> + 0xecdb4 (0x7fd98fd96db4 in /root/miniconda3/bin/../lib/libstdc++.so.6)
+frame #4: <unknown function> + 0x9caa4 (0x7fd9fb09aaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #5: <unknown function> + 0x129c3c (0x7fd9fb127c3c in /lib/x86_64-linux-gnu/libc.so.6)
+
+x:
+tensor([[-0.00, -0.01, -0.01,  ..., -0.01,  0.00,  0.01],
+        [ 0.00,  0.00,  0.00,  ..., -0.00,  0.01, -0.00],
+        [-0.01,  0.00,  0.00,  ..., -0.01, -0.01, -0.00],
+        ...,
+        [-0.02,  0.02, -0.02,  ...,  0.01,  0.02,  0.01],
+        [ 0.01,  0.02,  0.03,  ...,  0.02, -0.01, -0.02],
+        [ 0.03, -0.02, -0.01,  ..., -0.00, -0.01, -0.03]], device='cuda:1',
+       dtype=torch.bfloat16)
+y:
+tensor([[-0.00, -0.01, -0.01,  ..., -0.01,  0.00,  0.01],
+        [ 0.00,  0.00,  0.00,  ..., -0.00,  0.01, -0.00],
+        [-0.01,  0.00,  0.00,  ..., -0.01, -0.01, -0.00],
+        ...,
+        [-0.02,  0.02, -0.02,  ...,  0.01,  0.02,  0.01],
+        [ 0.01,  0.02,  0.03,  ...,  0.02, -0.01, -0.02],
+        [ 0.03, -0.02, -0.01,  ..., -0.00, -0.01, -0.03]], device='cuda:1',
+       dtype=torch.bfloat16)
+x-y tensor([[0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        ...,
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.]], device='cuda:1', dtype=torch.bfloat16)
+x@diff:
+tensor([ 0.02, -0.01,  0.00,  ...,  0.01, -0.03, -0.00], device='cuda:1',
+       dtype=torch.bfloat16)
+y@diff:
+tensor([-3.84e-05, -1.04e-02, -1.55e-02,  ...,  3.30e-02,  4.70e-03,
+        -1.71e-02], device='cuda:1', dtype=torch.bfloat16)
+diff count: 2091369 (3.454%), [8192, 7392]
+diff max: 0.12890625, atol: 0.001, rtol_abs: 0.0
+diff locations:
+tensor([[4096,    0],
+        [4096,    1],
+        [4096,    3],
+        ...,
+        [4607, 4092],
+        [4607, 4093],
+        [4607, 4095]], device='cuda:1')
+--------------------------------------------------------------
+
+W0701 22:30:28.352000 15545 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 15610 closing signal SIGTERM
+W0701 22:30:28.354000 15545 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 15611 closing signal SIGTERM
+W0701 22:30:28.355000 15545 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 15613 closing signal SIGTERM
+E0701 22:30:28.923000 15545 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: -6) local_rank: 2 (pid: 15612) of binary: /root/miniconda3/bin/python3.12
+Traceback (most recent call last):
+  File "/root/miniconda3/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank_v2.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-07-01_22:30:28
+  host      : cs-d085f-deb6f-server
+  rank      : 2 (local_rank: 2)
+  exitcode  : -6 (pid: 15612)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 15612
+============================================================

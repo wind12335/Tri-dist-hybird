@@ -1,0 +1,120 @@
+test shape: M 32768, N 28672, K 8192
+tile-ready config: enabled=True, tile_rows_per_chunk=512, num_tile_chunks=16
+
+W0701 21:29:57.350000 10248 site-packages/torch/distributed/run.py:766] 
+W0701 21:29:57.350000 10248 site-packages/torch/distributed/run.py:766] *****************************************
+W0701 21:29:57.350000 10248 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0701 21:29:57.350000 10248 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 317, in <module>
+[rank2]:     metrics = perf_test(args.M, args.N, args.K, TP_GROUP)
+[rank2]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 247, in perf_test
+[rank2]:     C_new = _new_triton_func()
+[rank2]:             ^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 163, in _new_triton_func
+[rank2]:     return new_ag_gemm(
+[rank2]:            ^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank2]:     return self.fn(
+[rank2]:            ^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_allgather_gemm_hurastic.py", line 574, in new_ag_gemm
+[rank2]:     ag_stream = launch_new_allgather_intra_node(
+[rank2]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]: TypeError: launch_new_allgather_intra_node() got an unexpected keyword argument 'use_row_tile_barrier'
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 317, in <module>
+[rank3]:     metrics = perf_test(args.M, args.N, args.K, TP_GROUP)
+[rank3]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 247, in perf_test
+[rank3]:     C_new = _new_triton_func()
+[rank3]:             ^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 163, in _new_triton_func
+[rank3]:     return new_ag_gemm(
+[rank3]:            ^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank3]:     return self.fn(
+[rank3]:            ^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_allgather_gemm_hurastic.py", line 574, in new_ag_gemm
+[rank3]:     ag_stream = launch_new_allgather_intra_node(
+[rank3]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]: TypeError: launch_new_allgather_intra_node() got an unexpected keyword argument 'use_row_tile_barrier'
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 317, in <module>
+[rank0]:     metrics = perf_test(args.M, args.N, args.K, TP_GROUP)
+[rank0]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 247, in perf_test
+[rank0]:     C_new = _new_triton_func()
+[rank0]:             ^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 163, in _new_triton_func
+[rank0]:     return new_ag_gemm(
+[rank0]:            ^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank0]:     return self.fn(
+[rank0]:            ^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_allgather_gemm_hurastic.py", line 574, in new_ag_gemm
+[rank0]:     ag_stream = launch_new_allgather_intra_node(
+[rank0]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: TypeError: launch_new_allgather_intra_node() got an unexpected keyword argument 'use_row_tile_barrier'
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 317, in <module>
+[rank1]:     metrics = perf_test(args.M, args.N, args.K, TP_GROUP)
+[rank1]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 247, in perf_test
+[rank1]:     C_new = _new_triton_func()
+[rank1]:             ^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py", line 163, in _new_triton_func
+[rank1]:     return new_ag_gemm(
+[rank1]:            ^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank1]:     return self.fn(
+[rank1]:            ^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_allgather_gemm_hurastic.py", line 574, in new_ag_gemm
+[rank1]:     ag_stream = launch_new_allgather_intra_node(
+[rank1]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]: TypeError: launch_new_allgather_intra_node() got an unexpected keyword argument 'use_row_tile_barrier'
+[rank0]:[W701 21:30:03.775147713 ProcessGroupNCCL.cpp:1476] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W0701 21:30:05.370000 10248 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 10313 closing signal SIGTERM
+W0701 21:30:05.371000 10248 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 10314 closing signal SIGTERM
+W0701 21:30:05.372000 10248 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 10316 closing signal SIGTERM
+E0701 21:30:05.787000 10248 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 2 (pid: 10315) of binary: /root/miniconda3/bin/python3.12
+Traceback (most recent call last):
+  File "/root/miniconda3/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/root/Triton-distributed/python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-07-01_21:30:05
+  host      : cs-d085f-deb6f-server
+  rank      : 2 (local_rank: 2)
+  exitcode  : 1 (pid: 10315)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

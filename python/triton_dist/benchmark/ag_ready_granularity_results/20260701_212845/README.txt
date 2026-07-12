@@ -1,0 +1,14 @@
+run_id=20260701_212845
+shape_tag=granularity_sweep
+M=32768
+N=28672
+K=8192
+nproc_per_node=4
+dtype=bfloat16
+iters=10
+warmup_iters=5
+autotune=False
+granularity_values=8192,4096,2048,1024,512,256
+include_rank_ready=True
+include_heuristic=True
+expected_pattern=coarse_to_fine tradeoff; look for a lowest-latency region rather than assuming a perfect symmetric U-shape

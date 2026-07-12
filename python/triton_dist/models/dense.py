@@ -26,8 +26,8 @@
 import torch
 import torch.nn.functional as F
 import gc
+from functools import partial
 
-from transformers import AutoConfig
 from triton_dist.models.utils import init_model_cpu
 
 from triton_dist.kernels.allreduce import AllReduceMethod
@@ -82,7 +82,25 @@ class DenseLLMLayer:
         self.post_norm_w = hf_layer.post_attention_layernorm.weight.detach().cuda()
 
     def set_fwd(self, mode: str = 'torch'):
-        if mode == 'triton_dist':
+        if mode == 'triton_dist_ag_rs_old':
+            self.attn.fwd = partial(self.attn.dist_triton_select_ag_rs_fwd, ag_impl="old", rs_impl="old")
+            self.mlp.fwd = partial(self.mlp.dist_triton_select_ag_rs_fwd, ag_impl="old", rs_impl="old")
+        elif mode == 'triton_dist_ag_new_rs_old':
+            self.attn.fwd = partial(self.attn.dist_triton_select_ag_rs_fwd, ag_impl="new", rs_impl="old")
+            self.mlp.fwd = partial(self.mlp.dist_triton_select_ag_rs_fwd, ag_impl="new", rs_impl="old")
+        elif mode == 'triton_dist_ag_old_rs_new':
+            self.attn.fwd = partial(self.attn.dist_triton_select_ag_rs_fwd, ag_impl="old", rs_impl="new")
+            self.mlp.fwd = partial(self.mlp.dist_triton_select_ag_rs_fwd, ag_impl="old", rs_impl="new")
+        elif mode == 'triton_dist_ag_rs_new':
+            self.attn.fwd = partial(self.attn.dist_triton_select_ag_rs_fwd, ag_impl="new", rs_impl="new")
+            self.mlp.fwd = partial(self.mlp.dist_triton_select_ag_rs_fwd, ag_impl="new", rs_impl="new")
+        elif mode == 'triton_dist_gemm_ar_old':
+            self.attn.fwd = partial(self.attn.dist_triton_select_gemm_ar_fwd, impl="old")
+            self.mlp.fwd = partial(self.mlp.dist_triton_select_gemm_ar_fwd, impl="old")
+        elif mode == 'triton_dist_gemm_ar_new':
+            self.attn.fwd = partial(self.attn.dist_triton_select_gemm_ar_fwd, impl="new")
+            self.mlp.fwd = partial(self.mlp.dist_triton_select_gemm_ar_fwd, impl="new")
+        elif mode == 'triton_dist':
             self.attn.fwd = self.attn.dist_triton_fwd
             self.mlp.fwd = self.mlp.dist_triton_fwd
         elif mode == 'torch':
@@ -95,7 +113,7 @@ class DenseLLMLayer:
             self.attn.fwd = self.attn.dist_triton_gemm_ar_fwd
             self.mlp.fwd = self.mlp.dist_triton_gemm_ar_fwd
         else:
-            raise ValueError(f"Unsupported mode: {mode}, choose from ['dist_triton', 'torch']")
+            raise ValueError(f"Unsupported mode: {mode}")
 
     @torch.inference_mode()
     def fwd(self, hidden_states: torch.Tensor, position_ids: torch.Tensor, cos_sin_cache: torch.Tensor,
@@ -122,6 +140,8 @@ class DenseLLM:
     """
 
     def __init__(self, model_config, group) -> None:
+        from transformers import AutoConfig
+
         self.dtype = model_config.dtype
         self.config = AutoConfig.from_pretrained(model_config.model_name, local_files_only=model_config.local_only)
         self.model_name = model_config.model_name
@@ -205,6 +225,70 @@ class DenseLLM:
         for layer in self.layers[1:]:
             layer.attn.gemm_ar_ctx = self.layers[0].attn.gemm_ar_ctx
             layer.mlp.gemm_ar_ctx = self.layers[0].mlp.gemm_ar_ctx
+        self.use_ar = True
+
+    def init_triton_dist_ablation_ctx(self,
+                                      max_M: int = 4096,
+                                      ag_impl: str = "old",
+                                      rs_impl: str = "old",
+                                      **kwargs):
+        if PLATFORM != 'nvidia':
+            raise NotImplementedError("New AG/RS ablation contexts are currently implemented only for NVIDIA.")
+        self.ag_intranode_stream = torch.cuda.Stream(priority=-1)
+        self.ag_internode_stream = torch.cuda.Stream()
+
+        use_old_ctx = ag_impl == "old" or rs_impl == "old"
+        use_new_ag = ag_impl == "new"
+        use_new_rs = rs_impl == "new"
+
+        if use_old_ctx:
+            self.layers[0].attn._init_ctx(max_M=max_M,
+                                          ag_intranode_stream=self.ag_intranode_stream,
+                                          ag_internode_stream=self.ag_internode_stream)
+            self.layers[0].mlp._init_ctx(max_M=max_M,
+                                         ag_intranode_stream=self.ag_intranode_stream,
+                                         ag_internode_stream=self.ag_internode_stream)
+        if use_new_ag:
+            self.layers[0].attn._init_new_ag_ctx(max_M=max_M,
+                                                 ag_intranode_stream=self.ag_intranode_stream,
+                                                 ag_internode_stream=self.ag_internode_stream,
+                                                 **kwargs)
+            self.layers[0].mlp._init_new_ag_ctx(max_M=max_M,
+                                                ag_intranode_stream=self.ag_intranode_stream,
+                                                ag_internode_stream=self.ag_internode_stream,
+                                                **kwargs)
+        if use_new_rs:
+            self.layers[0].attn._init_new_rs_ctx(max_M=max_M, **kwargs)
+            self.layers[0].mlp._init_new_rs_ctx(max_M=max_M, **kwargs)
+
+        for layer in self.layers[1:]:
+            layer.attn.ag_ctx = self.layers[0].attn.ag_ctx
+            layer.attn.new_ag_ctx = self.layers[0].attn.new_ag_ctx
+            layer.attn.rs_ctx = self.layers[0].attn.rs_ctx
+            layer.attn.new_rs_ctx = self.layers[0].attn.new_rs_ctx
+
+            layer.mlp.ag_ctx = self.layers[0].mlp.ag_ctx
+            layer.mlp.new_ag_ctx = self.layers[0].mlp.new_ag_ctx
+            layer.mlp.rs_ctx = self.layers[0].mlp.rs_ctx
+            layer.mlp.new_rs_ctx = self.layers[0].mlp.new_rs_ctx
+
+        self.use_ar = False
+
+    def init_triton_dist_gemm_ar_ablation_ctx(self, max_M: int = 4096, impl: str = "old", **kwargs):
+        if impl == "old":
+            self.layers[0].attn._init_gemm_ar_ctx(max_M=max_M, dtype=self.dtype)
+            self.layers[0].mlp._init_gemm_ar_ctx(max_M=max_M, dtype=self.dtype)
+        elif impl == "new":
+            self.layers[0].attn._init_new_gemm_ar_ctx(max_M=max_M, dtype=self.dtype, **kwargs)
+            self.layers[0].mlp._init_new_gemm_ar_ctx(max_M=max_M, dtype=self.dtype, **kwargs)
+        else:
+            raise ValueError(f"Unsupported GEMM-AR impl: {impl}")
+
+        for layer in self.layers[1:]:
+            layer.attn.gemm_ar_ctx = self.layers[0].attn.gemm_ar_ctx
+            layer.attn.new_gemm_ar_ctx = self.layers[0].attn.new_gemm_ar_ctx
+            layer.mlp.gemm_ar_ctx = self.layers[0].mlp.gemm_ar_ctx
+            layer.mlp.new_gemm_ar_ctx = self.layers[0].mlp.new_gemm_ar_ctx
         self.use_ar = True
 
     def finalize(self):

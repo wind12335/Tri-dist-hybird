@@ -209,8 +209,9 @@ def test_rocshmem_memcpy():
 
             HIP_CHECK(cp_res)
 
-    torch.cuda.synchronize()
     pyrocshmem.rocshmem_barrier_all_on_stream(cur_stream.cuda_stream)
+
+    torch.cuda.synchronize()
 
     try:
         torch.testing.assert_close(comm_buffs[peer], one)

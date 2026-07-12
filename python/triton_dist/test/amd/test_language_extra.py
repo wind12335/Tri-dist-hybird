@@ -115,8 +115,9 @@ def test_shfl_up_sync(device):
 
     golden = []
     for i in range(num_warps):
-        arr = torch.arange(i * WARP_SIZE, (i + 1) * WARP_SIZE, dtype=torch.int32)
-        golden.append(torch.cat([arr[:delta], arr[:-delta]]))
+        golden.append(
+            torch.min((i + 1) * WARP_SIZE * torch.ones(WARP_SIZE, dtype=torch.int32) - 1,
+                      torch.arange(i * WARP_SIZE, (i + 1) * WARP_SIZE, dtype=torch.int32) + delta))
     golden = torch.cat(golden).to(DEVICE)
 
     shfl_up_sync_kernel[(1, )](
@@ -127,7 +128,7 @@ def test_shfl_up_sync(device):
         num_warps=num_warps,
     )
 
-    assert torch.allclose(output, golden), f"shfl_up mismatch:\n  output={output}\n  golden={golden}"
+    assert torch.allclose(output, golden), output
     print("✅ [shfl_up_sync] passed.")
 
 
@@ -152,7 +153,12 @@ def test_shfl_down_sync(device):
     golden = []
     for i in range(num_warps):
         arr = torch.arange(i * WARP_SIZE, (i + 1) * WARP_SIZE, dtype=torch.int32)
-        golden.append(torch.cat([arr[delta:], arr[-delta:]]))
+        left_arr = arr[:WARP_SIZE - delta]
+        right_arr = arr[WARP_SIZE - delta:]
+        golden.append(torch.cat((
+            right_arr,
+            left_arr,
+        )))
     golden = torch.cat(golden).to(DEVICE)
 
     shfl_down_sync_kernel[(1, )](
@@ -163,7 +169,7 @@ def test_shfl_down_sync(device):
         num_warps=num_warps,
     )
 
-    assert torch.allclose(output, golden), f"shfl_down mismatch:\n  output={output}\n  golden={golden}"
+    assert torch.allclose(output, golden), output
     print("✅ [shfl_down_sync] passed.")
 
 
