@@ -59,8 +59,8 @@ def main() -> None:
         "baseline": "#F18F01",
     }
 
-    ax0.bar(x - width / 2, baseline_latency, width=width, color=colors["baseline"], label="Without active window")
-    ax0.bar(x + width / 2, with_window_latency, width=width, color=colors["windowed"], label="With active window")
+    ax0.bar(x - width / 2, baseline_latency, width=width, color=colors["baseline"], label="Larger resident window ($L=8$)")
+    ax0.bar(x + width / 2, with_window_latency, width=width, color=colors["windowed"], label="Active window ($L=4$)")
     ax0.axhline(1.0, color="#444444", linewidth=1.0, linestyle="--")
     ax0.set_ylabel("Normalized latency")
     ax0.set_xticks(x)
@@ -68,9 +68,9 @@ def main() -> None:
     ax0.legend(frameon=False, loc="upper left")
     ax0.set_ylim(0.0, max(np.max(with_window_latency), 1.0) * 1.18)
 
-    ax1.bar(x - width / 2, baseline_symm, width=width, color=colors["baseline"], label="Without active window")
-    ax1.bar(x + width / 2, with_window_symm, width=width, color=colors["windowed"], label="With active window")
-    ax1.set_ylabel("Symmetric memory (GiB)")
+    ax1.bar(x - width / 2, baseline_symm, width=width, color=colors["baseline"], label="Larger resident window ($L=8$)")
+    ax1.bar(x + width / 2, with_window_symm, width=width, color=colors["windowed"], label="Active window ($L=4$)")
+    ax1.set_ylabel("Symmetric staging footprint (GiB)")
     ax1.set_xticks(x)
     ax1.set_xticklabels(labels, rotation=0)
     ax1.legend(frameon=False, loc="upper left")
@@ -111,12 +111,15 @@ def main() -> None:
 
     png_path = output_dir / "active_window_ablation.png"
     svg_path = output_dir / "active_window_ablation.svg"
-    fig.savefig(png_path, dpi=220, bbox_inches="tight")
+    pdf_path = output_dir / "active_window_ablation.pdf"
+    fig.savefig(png_path, dpi=450, bbox_inches="tight")
     fig.savefig(svg_path, bbox_inches="tight")
+    fig.savefig(pdf_path, bbox_inches="tight")
     plt.close(fig)
 
     print(f"[png] {png_path}")
     print(f"[svg] {svg_path}")
+    print(f"[pdf] {pdf_path}")
 
 
 if __name__ == "__main__":

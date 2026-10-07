@@ -1,0 +1,21 @@
+W0917 02:53:08.866000 132551 site-packages/torch/distributed/run.py:766] 
+W0917 02:53:08.866000 132551 site-packages/torch/distributed/run.py:766] *****************************************
+W0917 02:53:08.866000 132551 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0917 02:53:08.866000 132551 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+AR_HANDOFF_SUMMARY {"bulk_ms": 8.567952156066895, "frontier_ms": 8.90112018585205, "frontier_speedup_over_bulk": 0.9625701009728289, "repetition": 1, "shape": {"K": 8192, "M": 8192, "N": 29568}}

@@ -1,0 +1,35 @@
+[search] exhaustive search: 1 candidates for M=8192, N=29568, K=8192, nproc=4
+[custom] test shape: M 8192, N 29568, K 8192
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+Rank 0 [custom] latency (ms): torch_total=6.73, torch_gemm_only=4.52, torch_rs_only=2.28, v2_total=8.52, v2_gemm_only=5.89, v2_rs_only=3.59, v2_internal_overlap=10.05%, v2_speedup_vs_torch=0.79, v2_speedup_vs_old=nan, chunk_rows=512, num_chunks=4, active_chunk_window=4, stage_slots=2, comm_lanes=1, n_bands=1, frontier_chunks=1
+Rank 1 [custom] latency (ms): torch_total=6.65, torch_gemm_only=3.75, torch_rs_only=2.23, v2_total=8.68, v2_gemm_only=5.89, v2_rs_only=3.58, v2_internal_overlap=8.39%, v2_speedup_vs_torch=0.77, v2_speedup_vs_old=nan, chunk_rows=512, num_chunks=4, active_chunk_window=4, stage_slots=2, comm_lanes=1, n_bands=1, frontier_chunks=1
+Rank 2 [custom] latency (ms): torch_total=6.64, torch_gemm_only=3.72, torch_rs_only=2.17, v2_total=8.00, v2_gemm_only=5.91, v2_rs_only=3.59, v2_internal_overlap=15.85%, v2_speedup_vs_torch=0.83, v2_speedup_vs_old=nan, chunk_rows=512, num_chunks=4, active_chunk_window=4, stage_slots=2, comm_lanes=1, n_bands=1, frontier_chunks=1
+Rank 3 [custom] latency (ms): torch_total=6.73, torch_gemm_only=4.53, torch_rs_only=2.19, v2_total=8.34, v2_gemm_only=5.90, v2_rs_only=3.55, v2_internal_overlap=11.75%, v2_speedup_vs_torch=0.81, v2_speedup_vs_old=nan, chunk_rows=512, num_chunks=4, active_chunk_window=4, stage_slots=2, comm_lanes=1, n_bands=1, frontier_chunks=1
+W0828 19:10:13.955000 12929 site-packages/torch/distributed/run.py:766] 
+W0828 19:10:13.955000 12929 site-packages/torch/distributed/run.py:766] *****************************************
+W0828 19:10:13.955000 12929 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0828 19:10:13.955000 12929 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+[search][coarse] candidate 1/1: max_total=8.6800 ms, mean_total=8.3850 ms, speedup_mean=0.8000, speedup_min=0.7700, overlap_mean=11.51%, lead_ratio=2.000 | chunk=512, window=4, stage=2, steady_sms=4, tail_sms=12, lanes=1, bands=1, frontier=1
+[search] Top Candidates
+  #1: max_total=8.6800 ms, mean_total=8.3850 ms, speedup_mean=0.8000, speedup_min=0.7700, overlap_mean=11.51%, lead_ratio=2.000 | chunk=512, window=4, stage=2, steady_sms=4, tail_sms=12, lanes=1, bands=1, frontier=1
+[search] best command:
+torchrun --nproc_per_node 4 /root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py --M 8192 --N 29568 --K 8192 --mode v2 --iters 1 --warmup_iters 0 --dtype bfloat16 --target_chunks_per_rank 2 --min_chunk_rows 512 --tail_chunk_window 1 --chunk_rows 512 --active_chunk_window 4 --stage_slots 2 --steady_sms 4 --tail_sms 12 --comm_lanes 1 --n_bands 1 --frontier_chunks 1 --profile_target v2 --no-autotune --trans_b --local_seed_direct

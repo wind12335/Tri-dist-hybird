@@ -1,0 +1,30 @@
+{
+  "benchmark_sha256": "2801c5879095d327ac9e6e46c6658d514ce64718655d2ee448e9fa53ff099d1f",
+  "created_unix": 1789584787.518244,
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "0,1,2,3",
+    "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6",
+    "NVSHMEM_SYMMETRIC_SIZE": "8589934592"
+  },
+  "experimental_unit": "one independent four-rank torchrun launch",
+  "kernel_sha256": "7cac18b93baf8e52649babdf47ff6974d7ad7e74c7c6244c7830d8f3436b66ac",
+  "repetitions": 5,
+  "schema": "ar-handoff-campaign-v1",
+  "shapes": [
+    {
+      "K": 8192,
+      "M": 8192,
+      "N": 29568
+    },
+    {
+      "K": 12288,
+      "M": 8192,
+      "N": 49152
+    },
+    {
+      "K": 16384,
+      "M": 8192,
+      "N": 53248
+    }
+  ]
+}

@@ -41,6 +41,10 @@ from triton_dist.kernels.nvidia.new_windowed_panel_gemm_allreduce import (
     create_frontier_windowed_panel_gemm_ar_context,
     frontier_windowed_panel_gemm_allreduce,
 )
+from triton_dist.kernels.nvidia.new_windowed_panel_gemm_allreduce_v23 import (
+    create_frontier_windowed_panel_gemm_ar_context_v23,
+    frontier_windowed_panel_gemm_allreduce_v23,
+)
 from triton_dist.utils import nvshmem_barrier_all_on_stream
 from triton_dist.kernels.nvidia.allreduce import (create_allreduce_ctx, all_reduce)
 from triton_dist.layers.nvidia import GemmARLayer
@@ -129,6 +133,7 @@ class TP_Attn:
         self.ar_ctx = None
         self.gemm_ar_ctx = None
         self.new_gemm_ar_ctx = None
+        self.new_gemm_ar_v23_ctx = None
 
     def _init_parameters(self, self_attn: nn.Module, verbose=False):
         self.q_size = self_attn.q_proj.weight.shape[0] // self.world_size
@@ -239,6 +244,8 @@ class TP_Attn:
             self.gemm_ar_ctx.finalize()
         if self.new_gemm_ar_ctx:
             self.new_gemm_ar_ctx.finalize()
+        if self.new_gemm_ar_v23_ctx:
+            self.new_gemm_ar_v23_ctx.finalize()
 
     def _apply_qkv_bias(self, qkv: torch.Tensor, bsz: int, q_len: int):
         if hasattr(self, 'bqkv'):
@@ -499,6 +506,23 @@ class TP_Attn:
         nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
         torch.cuda.synchronize()
 
+    def _init_new_gemm_ar_v23_ctx(self, max_M, dtype=torch.bfloat16, **ar_kwargs):
+        """Initialize the whole-panel recursive-doubling GEMM-AllReduce path."""
+        N = self.wo.shape[0]
+        supported = inspect.signature(create_frontier_windowed_panel_gemm_ar_context_v23).parameters
+        ar_kwargs = {k: v for k, v in ar_kwargs.items() if k in supported}
+        self.new_gemm_ar_v23_ctx = create_frontier_windowed_panel_gemm_ar_context_v23(
+            max_M=max_M,
+            N=N,
+            rank=self.rank,
+            world_size=self.world_size,
+            local_world_size=self.world_size,
+            output_dtype=dtype,
+            **ar_kwargs,
+        )
+        nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
+        torch.cuda.synchronize()
+
     @torch.inference_mode()
     def dist_triton_gemm_ar_fwd(self, x, position_ids, cos_sin_cache, kv_cache, layer_idx: int):
         return self.dist_triton_select_gemm_ar_fwd(
@@ -545,6 +569,15 @@ class TP_Attn:
                 out,
                 self.wo.T,
                 self.new_gemm_ar_ctx,
+                drain=True,
+                autotune=autotune,
+            )
+        elif impl == "v23":
+            assert self.new_gemm_ar_v23_ctx is not None, "V23 GEMM-AllReduce context is not initialized."
+            out = frontier_windowed_panel_gemm_allreduce_v23(
+                out,
+                self.wo.T,
+                self.new_gemm_ar_v23_ctx,
                 drain=True,
                 autotune=autotune,
             )

@@ -1,0 +1,47 @@
+{
+  "batch_id": "20260901_4xa100_m3_r2",
+  "launch_id": "03_full_e2e_prefill_ag_rs_new_check",
+  "state": "failed",
+  "purpose": "Llama3-70B TP-sharded Full E2E prefill correctness and execution-provenance validation",
+  "measurement": "check-only; no performance timing",
+  "model": {
+    "path": "/root/blockdata/llama3-70B",
+    "config_sha256": "c3e3c787cf77a9c68ef1d9c926fb366450fcbc99d723c7af96b534a02bd56652",
+    "safetensors_index_sha256": "2abe0910e23770a30ccf9b1b91804c64831c47f9c98defaa5293aa999433fc2b"
+  },
+  "runner": {
+    "path": "test/nvidia/test_tp_e2e_innov_real.py",
+    "sha256": "3f8f5bbdb62df13e33cce1ff68c3dd6b370206604a76cf8523c607b23455cf9c",
+    "check_only_patch": false
+  },
+  "configuration": {
+    "world_size": 4,
+    "dtype": "bfloat16",
+    "seed": 42,
+    "mode": "ag_rs_new",
+    "run_type": "prefill",
+    "batch_size": 64,
+    "sequence_length": 128,
+    "M": 8192,
+    "atol": 0.02,
+    "rtol": 0.02,
+    "include_lm_head": false
+  },
+  "command": "cd /root/Triton-distributed && source scripts/setenv.sh && export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 && timeout 1800s torchrun --standalone --nproc_per_node=4 --master_port=29603 python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py --model /root/blockdata/llama3-70B --bsz 64 --seq_len 128 --dtype bfloat16 --seed 42 --run_type prefill --mode ag_rs_new --check --result_dir /root/Triton-distributed/python/triton_dist/benchmark/e2e_controlled_reruns/20260901_4xa100_m3_r2/raw_results/full_e2e --repeat_id 0",
+  "log_path": "benchmark/e2e_controlled_reruns/20260901_4xa100_m3_r2/logs/03_full_e2e_prefill_ag_rs_new_check.log",
+  "result_dir": "benchmark/e2e_controlled_reruns/20260901_4xa100_m3_r2/raw_results/full_e2e",
+  "environment_snapshot": {
+    "path": "benchmark/e2e_controlled_reruns/20260901_4xa100_m3_r2/env_snapshot/env_snapshot.json",
+    "sha256": "49a2caea82ff13f531dd126e8f3caef8aa3ecbccbc2a8dcf73c5224cc64315e5"
+  },
+  "repository": {
+    "commit": "b3ba2b753c316c2dd834f95756184f1a61d3fdf8",
+    "tracked_runner_diff_sha256": "8c348f7f4c16fae59946e13435cff709e616c4776768f3b622af3470add1bda1"
+  },
+  "timeout_seconds": 1800,
+  "created_at": "2026-09-01T16:06:26+08:00",
+  "finished_at": "2026-09-01T16:19:09+08:00",
+  "exit_code": 1,
+  "log_sha256": "90884e1bf45d537074450ad7d0c6226827aaee20e080ef829abe4b69234f5c8f",
+  "failure_summary": "The TP-sharded Torch reference check passed, but ag_rs_new final-softmax comparison failed on all four ranks at atol=rtol=0.02. Rank 0 reported a NaN maximum difference, indicating non-finite output in the selected path. No correctness JSON was written because the process raised before the result writer."
+}

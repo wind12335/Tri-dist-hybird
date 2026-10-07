@@ -233,6 +233,7 @@ class FrontierWindowedPanelGEMMARContextV23:
     stage_slots: int
     num_comm_sms: int
     gemm_out: torch.Tensor
+    output_buf: torch.Tensor
     stripe_ready_buf: torch.Tensor
     scatter_bufs: List[torch.Tensor]
     arrival_flag_bufs: List[torch.Tensor]
@@ -244,6 +245,11 @@ class FrontierWindowedPanelGEMMARContextV23:
     prev_round_last_ticket_per_slot: List[int] = dataclasses.field(default_factory=list)
     current_round_tasks: List[TaskKey] = dataclasses.field(default_factory=list)
     current_round_meta: Dict[TaskKey, CompactStripeTaskMetaV23] = dataclasses.field(default_factory=dict)
+    task_schedule_cache: Dict[int, List[TaskKey]] = dataclasses.field(default_factory=dict)
+    panel_schedule_cache: Dict[int, List[tuple[int, int]]] = dataclasses.field(default_factory=dict)
+    task_meta_cache: Dict[int, Dict[TaskKey, CompactStripeTaskMetaV23]] = dataclasses.field(default_factory=dict)
+    # Opt-in experimental producer; legacy callers retain the v23 launch path.
+    producer_order: str = "logical"
 
     @property
     def local_rank(self) -> int:
@@ -280,22 +286,45 @@ class FrontierWindowedPanelGEMMARContextV23:
     def get_gemm_out_buf(self, input_tensor: torch.Tensor) -> torch.Tensor:
         return self.gemm_out[:input_tensor.shape[0]]
 
+    def get_output_buf(self, input_tensor: torch.Tensor) -> torch.Tensor:
+        return self.output_buf[:input_tensor.shape[0]]
+
     def begin_round(self, M: int) -> None:
         max_round_tasks = self.num_chunks * self.n_bands * self.max_stripes_per_chunk
         self.round_base += max_round_tasks + 1
         self.initial_free_ticket_per_slot = self.prev_round_last_ticket_per_slot.copy()
         last_ticket_per_slot = self.prev_round_last_ticket_per_slot.copy()
-        self.current_round_tasks = _build_task_schedule_v23(self, M)
-        self.current_round_meta = {}
+        task_schedule_cache = getattr(self, "task_schedule_cache", None)
+        if task_schedule_cache is None:
+            task_schedule_cache = {}
+            self.task_schedule_cache = task_schedule_cache
+        self.current_round_tasks = task_schedule_cache.get(M)
+        if self.current_round_tasks is None:
+            self.current_round_tasks = _build_task_schedule_v23(self, M)
+            task_schedule_cache[M] = self.current_round_tasks
+
+        task_meta_cache = getattr(self, "task_meta_cache", None)
+        if task_meta_cache is None:
+            task_meta_cache = {}
+            self.task_meta_cache = task_meta_cache
+        self.current_round_meta = task_meta_cache.get(M)
+        if self.current_round_meta is None:
+            self.current_round_meta = {
+                task: CompactStripeTaskMetaV23(
+                    slot_id=task_index % self.stage_slots,
+                    ticket=0,
+                    prev_free_ticket=0,
+                )
+                for task_index, task in enumerate(self.current_round_tasks)
+            }
+            task_meta_cache[M] = self.current_round_meta
+
         for task_index, task in enumerate(self.current_round_tasks):
-            slot_id = task_index % self.stage_slots
+            meta = self.current_round_meta[task]
+            slot_id = meta.slot_id
             ticket = self.round_base + task_index + 1
-            prev_ticket = last_ticket_per_slot[slot_id]
-            self.current_round_meta[task] = CompactStripeTaskMetaV23(
-                slot_id=slot_id,
-                ticket=ticket,
-                prev_free_ticket=prev_ticket,
-            )
+            meta.ticket = ticket
+            meta.prev_free_ticket = last_ticket_per_slot[slot_id]
             last_ticket_per_slot[slot_id] = ticket
         self.prev_round_last_ticket_per_slot = last_ticket_per_slot
         for slot in self.reduce_slots:
@@ -361,6 +390,9 @@ def _num_runtime_stripes_v23(ctx: FrontierWindowedPanelGEMMARContextV23, chunk_i
 
 
 def _build_chunk_schedule_v23(num_runtime_chunks: int, frontier_chunks: int) -> List[int]:
+    # This is intentionally the logical consumer order, NOT a frontier reorder.
+    # AR has no RS-style output-owner segments. Stripe-frontier production below
+    # exposes the first consumer dependency without changing slot/ticket order.
     frontier = list(range(min(num_runtime_chunks, max(0, frontier_chunks))))
     tail = list(range(len(frontier), num_runtime_chunks))
     return frontier + tail
@@ -388,11 +420,62 @@ def _build_panel_schedule_v23(ctx: FrontierWindowedPanelGEMMARContextV23, M: int
     return panels
 
 
+def _get_panel_schedule_v23(ctx: FrontierWindowedPanelGEMMARContextV23, M: int) -> List[tuple[int, int]]:
+    panel_schedule_cache = getattr(ctx, "panel_schedule_cache", None)
+    if panel_schedule_cache is None:
+        panel_schedule_cache = {}
+        ctx.panel_schedule_cache = panel_schedule_cache
+    panels = panel_schedule_cache.get(M)
+    if panels is None:
+        panels = _build_panel_schedule_v23(ctx, M)
+        panel_schedule_cache[M] = panels
+    return panels
+
+
 def _producer_window_panel_count_v23(
     ctx: FrontierWindowedPanelGEMMARContextV23,
     panel_count: int,
 ) -> int:
     return max(1, min(panel_count, ctx.active_chunk_window * ctx.n_bands))
+
+
+def _uses_bulk_panel_handoff_v23(ctx: FrontierWindowedPanelGEMMARContextV23) -> bool:
+    """Whether whole-panel consumers are delayed until all window producers submit."""
+    return ctx.producer_order in ("panel_bulk", "panel_recursive_doubling_bulk_cublas")
+
+
+def _run_whole_panel_pipeline_v23(ctx, panels, produce, consume) -> None:
+    """Identical panel order, two host submission policies for controlled tests.
+
+    All ranks use the same panel frontier; there is no RS output-owner reorder.
+    A local consumer completion bounds producer lookahead. Remote slot reuse
+    remains protected independently by the existing per-destination free ticket.
+    Bulk modes delay handoff until a window's producers have been submitted;
+    frontier modes submit each consumer immediately after its producer.
+    """
+    window = max(1, min(ctx.stage_slots, _producer_window_panel_count_v23(ctx, len(panels))))
+    stream = torch.cuda.current_stream()
+
+    def issue_producer(index):
+        if index >= window:
+            old_chunk, old_band = panels[index - window]
+            old_meta = _task_meta_v23(ctx, old_chunk, old_band, 0)
+            # This event has already been recorded by an earlier consume call.
+            # CUDA wait_event captures that record even if the slot is reused.
+            stream.wait_event(ctx.reduce_slots[old_meta.slot_id].done_event)
+        produce(*panels[index])
+
+    for start in range(0, len(panels), window):
+        end = min(start + window, len(panels))
+        if not _uses_bulk_panel_handoff_v23(ctx):
+            for index in range(start, end):
+                issue_producer(index)
+                consume(*panels[index])
+        else:
+            for index in range(start, end):
+                issue_producer(index)
+            for index in range(start, end):
+                consume(*panels[index])
 
 
 def _task_meta_v23(
@@ -495,7 +578,14 @@ def create_frontier_windowed_panel_gemm_ar_context_v23(
     alloc_scatter_rows: int | None = None,
     alloc_max_band_cols: int | None = None,
     alloc_stage_slots: int | None = None,
+    producer_order: str = "logical",
 ) -> FrontierWindowedPanelGEMMARContextV23:
+    if producer_order not in ("logical", "stripe_frontier", "panel_bulk", "panel_frontier",
+                              "panel_recursive_doubling", "panel_recursive_doubling_cublas",
+                              "panel_recursive_doubling_bulk_cublas"):
+        raise ValueError(f"Unknown AR producer_order: {producer_order}")
+    if "recursive_doubling" in producer_order and world_size & (world_size - 1):
+        raise ValueError("Recursive doubling requires a power-of-two world_size")
     if world_size != local_world_size:
         raise NotImplementedError("frontier_windowed_panel_gemm_allreduce_v23 currently supports single-node only")
 
@@ -504,6 +594,9 @@ def create_frontier_windowed_panel_gemm_ar_context_v23(
         target_chunks=target_chunks,
         min_chunk_rows=min_chunk_rows,
     )
+    if producer_order.startswith("panel_") and stripe_rows != effective_chunk_rows:
+        raise ValueError("Whole-panel AR requires stripe_rows == effective chunk_rows; "
+                         "set both explicitly. stripe_rows is only a compatibility field in this mode.")
     effective_stripe_rows = max(1, min(
         stripe_rows if stripe_rows > 0 else min(256, effective_chunk_rows),
         effective_chunk_rows,
@@ -532,6 +625,7 @@ def create_frontier_windowed_panel_gemm_ar_context_v23(
                                                    local_world_size)
         free_flag_bufs = nvshmem_create_tensors((alloc_stage_slots,), NVSHMEM_SIGNAL_DTYPE, rank, local_world_size)
         gemm_out = torch.empty((max_M, N), dtype=output_dtype, device="cuda")
+        output_buf = torch.empty((max_M, N), dtype=output_dtype, device="cuda")
         stripe_ready_buf = torch.zeros((n_bands * num_chunks * max_stripes_per_chunk,), dtype=torch.int32, device="cuda")
 
         arrival_flag_bufs[rank % local_world_size].zero_()
@@ -562,9 +656,11 @@ def create_frontier_windowed_panel_gemm_ar_context_v23(
             n_bands=n_bands,
             max_band_cols=max_band_cols,
             frontier_chunks=max(0, frontier_chunks),
+            producer_order=producer_order,
             stage_slots=stage_slots,
             num_comm_sms=num_comm_sms,
             gemm_out=gemm_out,
+            output_buf=output_buf,
             stripe_ready_buf=stripe_ready_buf,
             scatter_bufs=scatter_bufs,
             arrival_flag_bufs=arrival_flag_bufs,
@@ -595,6 +691,28 @@ def _signal_panel_stripes_ready_v23(
         _set_signal_cuda(_stripe_ready_view_v23(ctx, chunk_id, band_id, stripe_id), meta.ticket, torch.cuda.current_stream())
 
 
+def _panel_production_steps_v23(
+    ctx: FrontierWindowedPanelGEMMARContextV23,
+    chunk_id: int,
+    M: int,
+) -> List[tuple[int, int, int, int]]:
+    """(global row start, end, first stripe, stripe end) for each launch.
+
+    For each band of the first F chunks, finish and publish stripe 0 before
+    launching the remaining panel rows. This is a two-phase *stripe* frontier,
+    not RS's cross-owner chunk frontier. F=0 or a single-stripe panel is a no-op.
+    Publication after each launch relies on same-stream CUDA ordering.
+    """
+    start, end = _chunk_row_range_v23(ctx, chunk_id, M)
+    if start >= end:
+        return []
+    stripes = _num_runtime_stripes_v23(ctx, chunk_id, M)
+    if ctx.producer_order == "stripe_frontier" and chunk_id < ctx.frontier_chunks and stripes > 1:
+        return [(start, start + ctx.stripe_rows, 0, 1),
+                (start + ctx.stripe_rows, end, 1, stripes)]
+    return [(start, end, 0, stripes)]
+
+
 def _launch_windowed_chunk_panel_producer_v23(
     A: torch.Tensor,
     B: torch.Tensor,
@@ -605,9 +723,26 @@ def _launch_windowed_chunk_panel_producer_v23(
     *,
     signal_tasks: bool = True,
 ) -> None:
+    for row_start, row_end, first_stripe, stripe_end in _panel_production_steps_v23(ctx, chunk_id, A.shape[0]):
+        _launch_panel_rows_v23(A, B, ctx, gemm_config, row_start, row_end, band_id)
+        if signal_tasks:
+            for stripe_id in range(first_stripe, stripe_end):
+                meta = _task_meta_v23(ctx, chunk_id, band_id, stripe_id)
+                _set_signal_cuda(_stripe_ready_view_v23(ctx, chunk_id, band_id, stripe_id),
+                                 meta.ticket, torch.cuda.current_stream())
+
+
+def _launch_panel_rows_v23(
+    A: torch.Tensor,
+    B: torch.Tensor,
+    ctx: FrontierWindowedPanelGEMMARContextV23,
+    gemm_config: triton.Config,
+    chunk_row_start: int,
+    chunk_row_end: int,
+    band_id: int,
+) -> None:
     M, K = A.shape
     _, N = B.shape
-    chunk_row_start, chunk_row_end = _chunk_row_range_v23(ctx, chunk_id, M)
     col_start, col_end = _band_col_range_v23(ctx, band_id, N)
     chunk_rows = chunk_row_end - chunk_row_start
     band_cols = col_end - col_start
@@ -616,6 +751,9 @@ def _launch_windowed_chunk_panel_producer_v23(
 
     gemm_out = ctx.get_gemm_out_buf(A)
     out_chunk = gemm_out[chunk_row_start:chunk_row_end, col_start:col_end]
+    if ctx.producer_order.endswith("_cublas"):
+        torch.mm(A[chunk_row_start:chunk_row_end], B[:, col_start:col_end], out=out_chunk)
+        return
     grid = (
         triton.cdiv(chunk_rows, gemm_config.kwargs["BLOCK_SIZE_M"]) *
         triton.cdiv(band_cols, gemm_config.kwargs["BLOCK_SIZE_N"]),
@@ -639,8 +777,6 @@ def _launch_windowed_chunk_panel_producer_v23(
         band_cols,
         **gemm_config.all_kwargs(),
     )
-    if signal_tasks:
-        _signal_panel_stripes_ready_v23(ctx, chunk_id, band_id, M)
 
 
 def _issue_stripe_panel_copies_from_local_tensor_v23(
@@ -650,6 +786,10 @@ def _issue_stripe_panel_copies_from_local_tensor_v23(
     band_id: int,
     stripe_id: int,
 ) -> None:
+    if "recursive_doubling" in ctx.producer_order:
+        # This mode sends intermediate sums in its consumer, not all peers'
+        # raw contributions here.
+        return
     M, N = local_tensor.shape
     stripe_row_start, stripe_row_end = _stripe_row_range_v23(ctx, chunk_id, stripe_id, M)
     col_start, col_end = _band_col_range_v23(ctx, band_id, N)
@@ -695,6 +835,58 @@ def _issue_stripe_panel_copies_from_local_tensor_v23(
         _set_signal_cuda(remote_arrival, meta.ticket, scatter_stream)
 
 
+def _recursive_doubling_partners_v23(rank: int, world_size: int):
+    if world_size < 1 or world_size & (world_size - 1) or not 0 <= rank < world_size:
+        raise ValueError("Recursive doubling requires a valid rank and power-of-two world_size")
+    return [rank ^ (1 << phase) for phase in range(world_size.bit_length() - 1)]
+
+
+def _enqueue_recursive_doubling_panel_v23(local_tensor, ctx, output, chunk_id, band_id):
+    """XOR partner exchanges; every rank retains the full panel.
+
+    A phase's outgoing read finishes before its input is updated in-place.
+    Partners differ in each phase, so source-indexed arrival cells identify the
+    phase without extra flags. Free is published only after all phases finish.
+    """
+    M, N = local_tensor.shape
+    row_start, row_end = _chunk_row_range_v23(ctx, chunk_id, M)
+    col_start, col_end = _band_col_range_v23(ctx, band_id, N)
+    rows, cols = row_end - row_start, col_end - col_start
+    if rows <= 0 or cols <= 0:
+        return
+    meta = _task_meta_v23(ctx, chunk_id, band_id, 0)
+    slot = ctx.reduce_slots[meta.slot_id]
+    stream = slot.stream
+    out = output[row_start:row_end, col_start:col_end]
+    ctas = _num_reduce_ctas_v23(rows, cols, ctx.num_comm_sms)
+    with torch.cuda.stream(stream):
+        _wait_eq_cuda(_stripe_ready_view_v23(ctx, chunk_id, band_id, 0), meta.ticket, stream)
+        out.copy_(local_tensor[row_start:row_end, col_start:col_end])
+        for peer in _recursive_doubling_partners_v23(ctx.local_rank, ctx.local_world_size):
+            send_stream = _comm_stream_for_copy_v23(ctx, peer, meta.slot_id)
+            send_stream.wait_stream(stream)
+            _wait_eq_cuda(_free_flag_view_for_dest_v23(ctx, peer, meta.slot_id), meta.prev_free_ticket, send_stream)
+            remote = ctx.scatter_bufs[peer]
+            remote_offset = _slot_rows_offset_v23(ctx, meta.slot_id, ctx.local_rank)
+            itemsize = out.element_size()
+            (err,) = cudart.cudaMemcpy2DAsync(
+                remote.data_ptr() + remote_offset * remote.stride(0) * itemsize,
+                remote.stride(0) * itemsize, out.data_ptr(), out.stride(0) * itemsize,
+                cols * itemsize, rows, cudart.cudaMemcpyKind.cudaMemcpyDefault, send_stream.cuda_stream)
+            CUDA_CHECK(err)
+            arrival = ctx.arrival_flag_bufs[peer][ctx.local_rank * ctx.stage_slots + meta.slot_id:
+                                                ctx.local_rank * ctx.stage_slots + meta.slot_id + 1]
+            _set_signal_cuda(arrival, meta.ticket, send_stream)
+            stream.wait_stream(send_stream)
+            _wait_eq_cuda(_arrival_flag_view_v23(ctx, peer, meta.slot_id), meta.ticket, stream)
+            incoming = _slot_rank_view_v23(ctx, meta.slot_id, peer, cols, rows)
+            kernel_accumulate_strided_inplace_v23[(ctas,)](
+                incoming, out, rows, cols, incoming.stride(0), incoming.stride(1),
+                out.stride(0), out.stride(1), BLOCK_SIZE_M=128, BLOCK_SIZE_N=128, num_warps=8)
+        _set_signal_cuda(_free_flag_view_local_v23(ctx, meta.slot_id), meta.ticket, stream)
+        slot.done_event.record(stream)
+
+
 def _enqueue_windowed_stripe_allreduce_from_local_tensor_v23(
     local_tensor: torch.Tensor,
     ctx: FrontierWindowedPanelGEMMARContextV23,
@@ -703,6 +895,9 @@ def _enqueue_windowed_stripe_allreduce_from_local_tensor_v23(
     band_id: int,
     stripe_id: int,
 ) -> None:
+    if "recursive_doubling" in ctx.producer_order:
+        _enqueue_recursive_doubling_panel_v23(local_tensor, ctx, output, chunk_id, band_id)
+        return
     M, N = local_tensor.shape
     row_start, row_end = _stripe_row_range_v23(ctx, chunk_id, stripe_id, M)
     col_start, col_end = _band_col_range_v23(ctx, band_id, N)
@@ -720,6 +915,26 @@ def _enqueue_windowed_stripe_allreduce_from_local_tensor_v23(
 
     with torch.cuda.stream(stream):
         _wait_eq_cuda(_stripe_ready_view_v23(ctx, chunk_id, band_id, stripe_id), meta.ticket, stream)
+        if ctx.producer_order in ("panel_bulk", "panel_frontier"):
+            # AR needs every rank's contribution. Wait for the full arrival
+            # frontier, then read each contribution once, accumulate in FP32,
+            # and store once. The local scatter slice is deliberately skipped.
+            for src_local_rank in range(ctx.local_world_size):
+                if src_local_rank != ctx.local_rank:
+                    _wait_eq_cuda(_arrival_flag_view_v23(ctx, src_local_rank, meta.slot_id), meta.ticket, stream)
+            scatter = _slot_view_v23(ctx, meta.slot_id, band_cols)
+            kernel_reduce_window_slot_from_scatter_with_local_v23[(ctas,)](
+                scatter, local_src, out_chunk, ctx.stripe_rows, band_cols,
+                ctx.local_rank, rows,
+                scatter.stride(0), scatter.stride(1),
+                local_src.stride(0), local_src.stride(1),
+                out_chunk.stride(0), out_chunk.stride(1),
+                NUM_SPLITS=ctx.local_world_size,
+                BLOCK_SIZE_M=128, BLOCK_SIZE_N=128, num_warps=8,
+            )
+            _set_signal_cuda(_free_flag_view_local_v23(ctx, meta.slot_id), meta.ticket, stream)
+            slot.done_event.record(stream)
+            return
         out_chunk.copy_(local_src)
         for src_local_rank in range(ctx.local_world_size):
             if src_local_rank == ctx.local_rank:
@@ -759,8 +974,10 @@ def frontier_windowed_panel_gemm_allreduce_v23_key_fn(
         ctx.active_chunk_window,
         ctx.n_bands,
         ctx.frontier_chunks,
+        ctx.producer_order,
         ctx.stage_slots,
         len(ctx.comm_streams),
+        ctx.num_comm_sms,
     )
 
 
@@ -816,6 +1033,8 @@ def frontier_windowed_panel_gemm_allreduce_op_v23(
     *,
     drain: bool = True,
 ) -> torch.Tensor:
+    if ctx.producer_order.startswith("panel_") and not drain:
+        raise NotImplementedError("Whole-panel AR currently requires drain=True to protect cross-round source reuse")
     if ctx.nnodes != 1:
         raise NotImplementedError("frontier_windowed_panel_gemm_allreduce_v23 currently supports single-node only")
     if not has_fullmesh_nvlink():
@@ -832,10 +1051,25 @@ def frontier_windowed_panel_gemm_allreduce_op_v23(
             f"but got chunk_rows={ctx.chunk_rows}, BLOCK_SIZE_M={tuned_config.kwargs['BLOCK_SIZE_M']}"
         )
 
-    output = torch.empty((M, N), dtype=ctx.output_dtype, device=A.device)
+    output = ctx.get_output_buf(A)
     local_partial = ctx.get_gemm_out_buf(A)
     ctx.begin_round(M)
-    panel_schedule = _build_panel_schedule_v23(ctx, M)
+    panel_schedule = _get_panel_schedule_v23(ctx, M)
+    if ctx.producer_order.startswith("panel_"):
+        if ctx.stripe_rows != ctx.chunk_rows:
+            raise ValueError("Whole-panel mode requires stripe_rows == chunk_rows")
+
+        def produce(chunk_id, band_id):
+            _launch_windowed_chunk_panel_producer_v23(A, B, ctx, tuned_config, chunk_id, band_id)
+
+        def consume(chunk_id, band_id):
+            _issue_stripe_panel_copies_from_local_tensor_v23(local_partial, ctx, chunk_id, band_id, 0)
+            _enqueue_windowed_stripe_allreduce_from_local_tensor_v23(local_partial, ctx, output, chunk_id, band_id, 0)
+
+        _run_whole_panel_pipeline_v23(ctx, panel_schedule, produce, consume)
+        if drain:
+            ctx.wait_all(torch.cuda.current_stream())
+        return output
     producer_window_panels = _producer_window_panel_count_v23(ctx, len(panel_schedule))
     launched_panels: set[tuple[int, int]] = set()
 
@@ -886,10 +1120,27 @@ def frontier_windowed_panel_allreduce_v23(
     *,
     drain: bool = True,
 ) -> torch.Tensor:
+    if ctx.producer_order.startswith("panel_") and not drain:
+        raise NotImplementedError("Whole-panel AR currently requires drain=True")
     M, N = input_tensor.shape
-    output = torch.empty_like(input_tensor)
+    output = ctx.get_output_buf(input_tensor)
     ctx.begin_round(M)
-    panel_schedule = _build_panel_schedule_v23(ctx, M)
+    panel_schedule = _get_panel_schedule_v23(ctx, M)
+    if ctx.producer_order.startswith("panel_"):
+        if ctx.stripe_rows != ctx.chunk_rows:
+            raise ValueError("Whole-panel mode requires stripe_rows == chunk_rows")
+
+        def produce(chunk_id, band_id):
+            _signal_panel_stripes_ready_v23(ctx, chunk_id, band_id, M)
+
+        def consume(chunk_id, band_id):
+            _issue_stripe_panel_copies_from_local_tensor_v23(input_tensor, ctx, chunk_id, band_id, 0)
+            _enqueue_windowed_stripe_allreduce_from_local_tensor_v23(input_tensor, ctx, output, chunk_id, band_id, 0)
+
+        _run_whole_panel_pipeline_v23(ctx, panel_schedule, produce, consume)
+        if drain:
+            ctx.wait_all(torch.cuda.current_stream())
+        return output
     ready_window_panels = _producer_window_panel_count_v23(ctx, len(panel_schedule))
     signaled_panels: set[tuple[int, int]] = set()
 

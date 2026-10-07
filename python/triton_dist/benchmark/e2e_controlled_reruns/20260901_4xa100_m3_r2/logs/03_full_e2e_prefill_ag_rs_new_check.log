@@ -1,0 +1,120 @@
+W0901 16:16:39.171000 7059 site-packages/torch/distributed/run.py:766] 
+W0901 16:16:39.171000 7059 site-packages/torch/distributed/run.py:766] *****************************************
+W0901 16:16:39.171000 7059 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0901 16:16:39.171000 7059 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+Using flash_attn, which is much slower than flash_attn_interface for sm90
+Model /root/blockdata/llama3-70B not found in model mapping, Available models: ['Qwen/Qwen3-0.6B', 'Qwen/Qwen3-8B', 'Qwen/Qwen3-14B', 'Qwen/Qwen3-32B', 'Qwen/Qwen3-30B-A3B', 'Qwen/Qwen3-235B-A22B', 'meta-llama/Meta-Llama-3-70B', 'ByteDance-Seed/Seed-OSS-36B-Instruct'] Falling back to DenseLLM with default configuration.
+Using flash_attn, which is much slower than flash_attn_interface for sm90
+Using flash_attn, which is much slower than flash_attn_interface for sm90
+Model /root/blockdata/llama3-70B not found in model mapping, Available models: ['Qwen/Qwen3-0.6B', 'Qwen/Qwen3-8B', 'Qwen/Qwen3-14B', 'Qwen/Qwen3-32B', 'Qwen/Qwen3-30B-A3B', 'Qwen/Qwen3-235B-A22B', 'meta-llama/Meta-Llama-3-70B', 'ByteDance-Seed/Seed-OSS-36B-Instruct'] Falling back to DenseLLM with default configuration.
+Model /root/blockdata/llama3-70B not found in model mapping, Available models: ['Qwen/Qwen3-0.6B', 'Qwen/Qwen3-8B', 'Qwen/Qwen3-14B', 'Qwen/Qwen3-32B', 'Qwen/Qwen3-30B-A3B', 'Qwen/Qwen3-235B-A22B', 'meta-llama/Meta-Llama-3-70B', 'ByteDance-Seed/Seed-OSS-36B-Instruct'] Falling back to DenseLLM with default configuration.
+Using flash_attn, which is much slower than flash_attn_interface for sm90
+Model /root/blockdata/llama3-70B not found in model mapping, Available models: ['Qwen/Qwen3-0.6B', 'Qwen/Qwen3-8B', 'Qwen/Qwen3-14B', 'Qwen/Qwen3-32B', 'Qwen/Qwen3-30B-A3B', 'Qwen/Qwen3-235B-A22B', 'meta-llama/Meta-Llama-3-70B', 'ByteDance-Seed/Seed-OSS-36B-Instruct'] Falling back to DenseLLM with default configuration.
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|                                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 339.69it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 331.46it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 337.31it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 334.11it/s]
+
+--- Running Correctness Checks ---
+[RANK 0] Correctness check passed for torch.
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+[RANK 0] Max difference for ag_rs_new: nan (atol=0.02, rtol=0.02)
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 491, in <module>
+[rank1]:     correctness = run_correctness_check(model, golden, input_ids, position_ids, kv_cache, args, atol, rtol)
+[rank1]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 360, in run_correctness_check
+[rank1]:     triton_metrics = check_allclose(logits_triton.softmax(dim=-1, dtype=torch.float32),
+[rank1]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 170, in check_allclose
+[rank1]:     raise AssertionError(f"[RANK {RANK}] Output mismatch for {mode_name}.")
+[rank1]: AssertionError: [RANK 1] Output mismatch for ag_rs_new.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 491, in <module>
+[rank3]:     correctness = run_correctness_check(model, golden, input_ids, position_ids, kv_cache, args, atol, rtol)
+[rank3]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 360, in run_correctness_check
+[rank3]:     triton_metrics = check_allclose(logits_triton.softmax(dim=-1, dtype=torch.float32),
+[rank3]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 170, in check_allclose
+[rank3]:     raise AssertionError(f"[RANK {RANK}] Output mismatch for {mode_name}.")
+[rank3]: AssertionError: [RANK 3] Output mismatch for ag_rs_new.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 491, in <module>
+[rank2]:     correctness = run_correctness_check(model, golden, input_ids, position_ids, kv_cache, args, atol, rtol)
+[rank2]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 360, in run_correctness_check
+[rank2]:     triton_metrics = check_allclose(logits_triton.softmax(dim=-1, dtype=torch.float32),
+[rank2]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 170, in check_allclose
+[rank2]:     raise AssertionError(f"[RANK {RANK}] Output mismatch for {mode_name}.")
+[rank2]: AssertionError: [RANK 2] Output mismatch for ag_rs_new.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 491, in <module>
+[rank0]:     correctness = run_correctness_check(model, golden, input_ids, position_ids, kv_cache, args, atol, rtol)
+[rank0]:                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 360, in run_correctness_check
+[rank0]:     triton_metrics = check_allclose(logits_triton.softmax(dim=-1, dtype=torch.float32),
+[rank0]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py", line 170, in check_allclose
+[rank0]:     raise AssertionError(f"[RANK {RANK}] Output mismatch for {mode_name}.")
+[rank0]: AssertionError: [RANK 0] Output mismatch for ag_rs_new.
+W0901 16:19:08.559000 7059 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 7126 closing signal SIGTERM
+W0901 16:19:08.561000 7059 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 7128 closing signal SIGTERM
+W0901 16:19:08.562000 7059 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 7129 closing signal SIGTERM
+E0901 16:19:09.178000 7059 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 1 (pid: 7127) of binary: /root/miniconda3/bin/python3.12
+Traceback (most recent call last):
+  File "/root/miniconda3/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-09-01_16:19:08
+  host      : cs-d085f-deb6f-server
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 7127)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

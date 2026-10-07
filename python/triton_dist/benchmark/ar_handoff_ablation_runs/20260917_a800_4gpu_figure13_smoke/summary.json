@@ -1,0 +1,112 @@
+{
+  "all_rank_samples_ms": {
+    "bulk": [
+      [
+        7.920127868652344,
+        7.918144226074219,
+        7.898784160614014,
+        7.920000076293945
+      ],
+      [
+        9.671135902404785,
+        9.702176094055176,
+        9.71564769744873,
+        9.720735549926758
+      ]
+    ],
+    "frontier": [
+      [
+        9.44108772277832,
+        9.459744453430176,
+        9.459487915039062,
+        9.459136009216309
+      ],
+      [
+        8.891136169433594,
+        8.928832054138184,
+        8.918272018432617,
+        8.925984382629395
+      ]
+    ]
+  },
+  "correctness": {
+    "bulk": {
+      "max_abs": 0.001953125,
+      "max_rel": 244.140625,
+      "ok": true
+    },
+    "frontier": {
+      "max_abs": 0.001953125,
+      "max_rel": 244.140625,
+      "ok": true
+    }
+  },
+  "dtype": "bfloat16",
+  "environment": {
+    "cuda": "12.6",
+    "cuda_visible_devices": "0,1,2,3",
+    "gpu": "NVIDIA A800-SXM4-80GB",
+    "hostname": "cs-d085f-deb6f-server",
+    "nvshmem_symmetric_size": "8589934592",
+    "platform": "Linux-5.15.0-94-generic-x86_64-with-glibc2.39",
+    "python": "3.12.9 | packaged by Anaconda, Inc. | (main, Feb  6 2025, 18:56:27) [GCC 11.2.0]",
+    "torch": "2.7.0+cu126"
+  },
+  "execution_order": [
+    [
+      "frontier",
+      "bulk"
+    ],
+    [
+      "bulk",
+      "frontier"
+    ]
+  ],
+  "first_mode": "frontier",
+  "fixed_parameters": {
+    "active_chunk_window": 4,
+    "autotune": false,
+    "chunk_rows": 1024,
+    "comm_lanes": 2,
+    "measured_pairs": 2,
+    "n_bands": 1,
+    "num_comm_sms": 64,
+    "stage_slots": 4,
+    "stripe_rows": 1024,
+    "warmup_pairs": 1
+  },
+  "frontier_speedup_over_bulk": 0.959338174508423,
+  "median_rank_max_ms": {
+    "bulk": 8.82043170928955,
+    "frontier": 9.19428825378418
+  },
+  "modes": {
+    "bulk": "panel_recursive_doubling_bulk_cublas",
+    "frontier": "panel_recursive_doubling_cublas"
+  },
+  "rank_max_samples_ms": {
+    "bulk": [
+      7.920127868652344,
+      9.720735549926758
+    ],
+    "frontier": [
+      9.459744453430176,
+      8.928832054138184
+    ]
+  },
+  "repetition": 0,
+  "schema": "ar-handoff-ablation-v1",
+  "shape": {
+    "K": 8192,
+    "M": 8192,
+    "N": 29568
+  },
+  "symmetric_staging": {
+    "arrival_flag_bytes_per_pe": 128,
+    "free_flag_bytes_per_pe": 32,
+    "scatter_bytes_per_pe": 968884224,
+    "scatter_rows": 16384
+  },
+  "timestamp_unix": 1789584676.7811794,
+  "tp": 4
+}

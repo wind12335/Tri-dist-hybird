@@ -1,0 +1,156 @@
+{
+  "experiment": "v23 panel_recursive_doubling vs panel_recursive_doubling_cublas (see mode definitions; not necessarily order-only)",
+  "args": {
+    "M": 8192,
+    "N": 49152,
+    "K": 12288,
+    "dtype": "bfloat16",
+    "chunk_rows": 1024,
+    "stripe_rows": 1024,
+    "n_bands": 1,
+    "frontier_chunks": 2,
+    "active_chunk_window": 4,
+    "stage_slots": 4,
+    "comm_lanes": 2,
+    "num_comm_sms": 64,
+    "modes": [
+      "panel_recursive_doubling",
+      "panel_recursive_doubling_cublas"
+    ],
+    "first_mode_stripe_rows": null,
+    "check_rounds": 4,
+    "warmup_iters": 5,
+    "iters": 20,
+    "seed": 20260916,
+    "output_json": "python/triton_dist/benchmark/ar_panel_frontier_runs/rd_triton_vs_cublas_large_20260916_r1.json"
+  },
+  "world_size": 4,
+  "device": "NVIDIA A800-SXM4-80GB",
+  "torch_version": "2.7.0+cu126",
+  "cuda_version": "12.6",
+  "gemm_config": "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 4, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+  "kernel_sha256": "37a198122c6075c2fc8ff0ce8b0c47ba530cd8aff8d65a67580947a267f32d9b",
+  "symmetric_scatter_bytes": 1610612736,
+  "allocation_by_mode": {
+    "panel_recursive_doubling": {
+      "stripe_rows": 1024,
+      "stage_slots": 4,
+      "scatter_bytes": 1610612736
+    },
+    "panel_recursive_doubling_cublas": {
+      "stripe_rows": 1024,
+      "stage_slots": 4,
+      "scatter_bytes": 1610612736
+    }
+  },
+  "checks": [
+    {
+      "round": 0,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.0769052505493164,
+      "relative_l2": 0.0030411421321332455
+    },
+    {
+      "round": 0,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.0769052505493164,
+      "relative_l2": 0.0030411421321332455
+    },
+    {
+      "round": 1,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.07574939727783203,
+      "relative_l2": 0.003041474148631096
+    },
+    {
+      "round": 1,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.07574939727783203,
+      "relative_l2": 0.003041474148631096
+    },
+    {
+      "round": 2,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.07561016082763672,
+      "relative_l2": 0.0030413384083658457
+    },
+    {
+      "round": 2,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.07561016082763672,
+      "relative_l2": 0.0030413384083658457
+    },
+    {
+      "round": 3,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.07722854614257812,
+      "relative_l2": 0.0030411393381655216
+    },
+    {
+      "round": 3,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.07722854614257812,
+      "relative_l2": 0.0030411393381655216
+    }
+  ],
+  "rank_max_samples_ms": {
+    "panel_recursive_doubling": [
+      16.321792602539062,
+      16.188032150268555,
+      16.155872344970703,
+      16.02739143371582,
+      16.05718421936035,
+      16.162784576416016,
+      16.110815048217773,
+      16.265024185180664,
+      16.220928192138672,
+      16.29408073425293,
+      16.300416946411133,
+      16.12272071838379,
+      16.23535919189453,
+      16.12940788269043,
+      16.145952224731445,
+      16.20889663696289,
+      16.178720474243164,
+      16.135648727416992,
+      16.03932762145996,
+      16.243871688842773
+    ],
+    "panel_recursive_doubling_cublas": [
+      14.715392112731934,
+      15.877440452575684,
+      16.155296325683594,
+      15.430720329284668,
+      14.662367820739746,
+      14.578047752380371,
+      14.823904037475586,
+      15.890848159790039,
+      15.151103973388672,
+      14.470239639282227,
+      15.434911727905273,
+      14.696160316467285,
+      14.554911613464355,
+      15.712767601013184,
+      15.540639877319336,
+      16.062015533447266,
+      15.29964828491211,
+      16.24505615234375,
+      14.735008239746094,
+      14.991583824157715
+    ]
+  },
+  "median_ms": {
+    "panel_recursive_doubling": 16.17075252532959,
+    "panel_recursive_doubling_cublas": 15.22537612915039
+  },
+  "ratio_of_medians": 1.06209215379377,
+  "median_paired_speedup": 1.0640336670545696
+}

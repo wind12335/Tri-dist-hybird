@@ -1,0 +1,82 @@
+W0830 20:03:49.633000 23562 site-packages/torch/distributed/run.py:766] 
+W0830 20:03:49.633000 23562 site-packages/torch/distributed/run.py:766] *****************************************
+W0830 20:03:49.633000 23562 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0830 20:03:49.633000 23562 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+test shape: M 16384, N 57344, K 8192
+correctness tolerance: atol=0.002, rtol=0.002
+tile-ready config: enabled=True, tile_rows_per_chunk=1024, num_tile_chunks=2
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+shape of x: torch.Size([16384, 7168])
+shape of y: torch.Size([16384, 7168])
+x:
+tensor([[ 2.92e-02,  1.64e-02,  2.70e-02,  ...,  1.60e-02, -4.81e-02,
+          1.51e-02],
+        [-1.86e-02, -2.21e-04, -3.86e-03,  ..., -3.37e-02, -9.09e-03,
+          6.90e-04],
+        [ 8.00e-03, -1.37e-02,  7.93e-03,  ..., -1.56e-02, -7.63e-03,
+         -3.20e-02],
+        ...,
+        [-3.55e-01,  2.23e-01, -1.32e-01,  ...,  2.36e-02,  1.22e-01,
+          2.81e-01],
+        [-1.02e-01,  1.99e-01,  7.81e-02,  ...,  4.03e-02,  1.18e-01,
+         -1.64e-01],
+        [-3.34e-02,  1.04e-01,  1.64e-01,  ..., -1.66e-02, -1.41e-01,
+          1.48e-01]], device='cuda:5', dtype=torch.bfloat16)
+y:
+tensor([[ 2.92e-02,  1.64e-02,  2.70e-02,  ...,  1.60e-02, -4.81e-02,
+          1.51e-02],
+        [-1.86e-02, -2.21e-04, -3.86e-03,  ..., -3.37e-02, -9.09e-03,
+          6.90e-04],
+        [ 8.00e-03, -1.37e-02,  7.93e-03,  ..., -1.56e-02, -7.63e-03,
+         -3.20e-02],
+        ...,
+        [-3.55e-01,  2.23e-01, -1.32e-01,  ...,  2.36e-02,  1.22e-01,
+          2.81e-01],
+        [-1.02e-01,  1.99e-01,  7.81e-02,  ...,  4.03e-02,  1.18e-01,
+         -1.64e-01],
+        [-3.34e-02,  1.04e-01,  1.64e-01,  ..., -1.66e-02, -1.41e-01,
+          1.48e-01]], device='cuda:5', dtype=torch.bfloat16)
+x-y tensor([[0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        ...,
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.],
+        [0., 0., 0.,  ..., 0., 0., 0.]], device='cuda:5', dtype=torch.bfloat16)
+x@diff:
+tensor([0.50], device='cuda:5', dtype=torch.bfloat16)
+y@diff:
+tensor([0.51], device='cuda:5', dtype=torch.bfloat16)
+diff count: 1 (0.000%), [16384, 7168]
+diff max: 0.00390625, atol: 0.002, rtol_abs: 0.0
+diff locations:
+tensor([[11152,  4848]], device='cuda:5')
+--------------------------------------------------------------
+
+torchrun_exit_code=130

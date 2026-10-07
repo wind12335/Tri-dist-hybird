@@ -1,0 +1,42 @@
+{
+  "batch_id": "20260901_4xa100_m3_r2",
+  "launch_id": "02_tp_mlp_ag_rs_new_check",
+  "state": "failed",
+  "purpose": "Llama3-70B TP MLP correctness and execution-provenance validation",
+  "measurement": "check-only; no performance timing",
+  "model": {
+    "path": "/root/blockdata/llama3-70B",
+    "config_sha256": "c3e3c787cf77a9c68ef1d9c926fb366450fcbc99d723c7af96b534a02bd56652",
+    "safetensors_index_sha256": "2abe0910e23770a30ccf9b1b91804c64831c47f9c98defaa5293aa999433fc2b"
+  },
+  "runner": {
+    "path": "test/nvidia/test_tp_mlp_innov.py",
+    "sha256": "7108d61f2d5bf88a1556cd18c8ed4e0c8c45b8da2581642835f5b986d4ce71c7",
+    "check_only_patch": true
+  },
+  "configuration": {
+    "world_size": 4,
+    "dtype": "bfloat16",
+    "seed": 42,
+    "mode": "ag_rs_new",
+    "M": 8192,
+    "atol": 0.02,
+    "rtol": 0.02
+  },
+  "command": "cd /root/Triton-distributed && source scripts/setenv.sh && export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 && timeout 1800s torchrun --standalone --nproc_per_node=4 --master_port=29602 python/triton_dist/test/nvidia/test_tp_mlp_innov.py --model /root/blockdata/llama3-70B --M 8192 --dtype bfloat16 --seed 42 --mode ag_rs_new --check",
+  "log_path": "benchmark/e2e_controlled_reruns/20260901_4xa100_m3_r2/logs/02_tp_mlp_ag_rs_new_check.log",
+  "environment_snapshot": {
+    "path": "benchmark/e2e_controlled_reruns/20260901_4xa100_m3_r2/env_snapshot/env_snapshot.json",
+    "sha256": "49a2caea82ff13f531dd126e8f3caef8aa3ecbccbc2a8dcf73c5224cc64315e5"
+  },
+  "repository": {
+    "commit": "b3ba2b753c316c2dd834f95756184f1a61d3fdf8",
+    "tracked_runner_diff_sha256": "8c348f7f4c16fae59946e13435cff709e616c4776768f3b622af3470add1bda1"
+  },
+  "timeout_seconds": 1800,
+  "created_at": "2026-09-01T16:06:26+08:00",
+  "finished_at": "2026-09-01T16:15:55+08:00",
+  "exit_code": 1,
+  "log_sha256": "08dde75e77c550ade08a7045302b578132480bd3ad5b06a0cb57f56d96d0f3c0",
+  "failure_summary": "BF16 correctness comparison against the HF MLP reference failed on rank 0 at atol=rtol=0.02; one element of the 2048x8192 local output exceeded tolerance and the observed maximum absolute difference was 0.25. Cleanup warnings followed the failed distributed launch and are not recorded as the primary failure."
+}

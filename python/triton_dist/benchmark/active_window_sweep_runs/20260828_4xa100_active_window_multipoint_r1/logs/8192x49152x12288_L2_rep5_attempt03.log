@@ -1,0 +1,31 @@
+[custom] test shape: M 8192, N 49152, K 12288, window_policy=with_active_window
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+Rank 0 [custom] latency (ms): torch_total=12.26, torch_gemm_only=9.41, torch_rs_only=3.17, with_window_total=13.23, with_window_gemm_only=12.06, with_window_rs_only=5.17, with_window_internal_overlap=23.18%, with_window_symm_gib=0.188
+Rank 1 [custom] latency (ms): torch_total=12.25, torch_gemm_only=9.53, torch_rs_only=3.17, with_window_total=13.18, with_window_gemm_only=12.11, with_window_rs_only=5.17, with_window_internal_overlap=23.70%, with_window_symm_gib=0.188
+Rank 2 [custom] latency (ms): torch_total=12.24, torch_gemm_only=9.53, torch_rs_only=3.18, with_window_total=13.20, with_window_gemm_only=12.12, with_window_rs_only=5.18, with_window_internal_overlap=23.65%, with_window_symm_gib=0.188
+Rank 3 [custom] latency (ms): torch_total=12.28, torch_gemm_only=9.69, torch_rs_only=3.18, with_window_total=13.21, with_window_gemm_only=12.23, with_window_rs_only=5.18, with_window_internal_overlap=24.10%, with_window_symm_gib=0.188
+csv file is dumped into /root/Triton-distributed/python/triton_dist/benchmark/active_window_sweep_runs/20260828_4xa100_active_window_multipoint_r1/raw_child_csv/8192x49152x12288_L2_rep5_attempt03.csv
+
+W0828 22:02:25.576000 10509 site-packages/torch/distributed/run.py:766] 
+W0828 22:02:25.576000 10509 site-packages/torch/distributed/run.py:766] *****************************************
+W0828 22:02:25.576000 10509 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0828 22:02:25.576000 10509 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")

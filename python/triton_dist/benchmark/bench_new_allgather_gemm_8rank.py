@@ -64,6 +64,18 @@ def parse_args():
     parser.add_argument("--dump_csv", action="store_true", default=False)
     parser.add_argument("--debug", default=False, action="store_true")
     parser.add_argument("--dtype", default="float16", choices=["float16", "bfloat16"])
+    parser.add_argument(
+        "--atol",
+        type=float,
+        default=None,
+        help="Correctness-check absolute tolerance; defaults to a dtype-specific value.",
+    )
+    parser.add_argument(
+        "--rtol",
+        type=float,
+        default=None,
+        help="Correctness-check relative tolerance; defaults to a dtype-specific value.",
+    )
     parser.add_argument("--trans_b", default=True, action=argparse.BooleanOptionalAction)
     parser.add_argument("--cooperative_copy", default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument("--copy_sms", type=int, default=0, help="<=0 means auto(about 1/4 SMs for copy)")
@@ -123,14 +135,26 @@ def make_data(M, N, K, dtype: torch.dtype, trans_b, tp_group: torch.distributed.
     return A, B
 
 
+def resolve_check_tolerances(data_type: torch.dtype) -> tuple[float, float]:
+    # At the observed output magnitude near 0.5, one BF16 ULP is 0.00390625.
+    default = 4e-3 if data_type == torch.bfloat16 else 1e-3
+    atol = default if args.atol is None else args.atol
+    rtol = default if args.rtol is None else args.rtol
+    if atol < 0 or rtol < 0:
+        raise ValueError(f"--atol and --rtol must be non-negative, got {atol}, {rtol}")
+    return atol, rtol
+
+
 def perf_test(M: int, N: int, K: int, pg: torch.distributed.ProcessGroup):
     rank = pg.rank()
     world_size = pg.size()
     base_ctx = None
     new_ctx = None
+    check_atol, check_rtol = resolve_check_tolerances(dtype)
 
     if rank == 0:
         print(f"test shape: M {M}, N {N}, K {K}")
+        print(f"correctness tolerance: atol={check_atol:g}, rtol={check_rtol:g}")
 
     assert M % world_size == 0
     assert N % world_size == 0
@@ -146,6 +170,8 @@ def perf_test(M: int, N: int, K: int, pg: torch.distributed.ProcessGroup):
         "last_completion_ts_ms": float("nan"),
         "consumer_wait_ms": float("nan"),
         "consumer_ts_is_proxy": 1,
+        "check_atol": check_atol,
+        "check_rtol": check_rtol,
     }
 
     def _torch_func():
@@ -250,8 +276,8 @@ def perf_test(M: int, N: int, K: int, pg: torch.distributed.ProcessGroup):
         for i in range(world_size):
             torch.distributed.barrier(pg)
             if rank == i:
-                assert_allclose(C_golden, C_base, atol=1e-3, rtol=1e-3)
-                assert_allclose(C_golden, C_new, atol=1e-3, rtol=1e-3)
+                assert_allclose(C_golden, C_base, atol=check_atol, rtol=check_rtol)
+                assert_allclose(C_golden, C_new, atol=check_atol, rtol=check_rtol)
 
         _record_ag_timing_evidence()
 
@@ -329,6 +355,8 @@ if __name__ == "__main__":
                         "M",
                         "N",
                         "K",
+                        "check_atol",
+                        "check_rtol",
                         "dist-triton ag gemm latency (ms)",
                         "new dist-triton ag gemm latency (ms)",
                         "torch ag gemm latency (ms)",
@@ -349,7 +377,14 @@ if __name__ == "__main__":
             )
             print(
                 ",".join(
-                    ["custom", str(args.M), str(args.N), str(args.K)]
+                    [
+                        "custom",
+                        str(args.M),
+                        str(args.N),
+                        str(args.K),
+                        f"{metrics['check_atol']:.9g}",
+                        f"{metrics['check_rtol']:.9g}",
+                    ]
                     + [
                         f"{metrics['base_triton_duration_ms']:.6f}",
                         f"{metrics['new_triton_duration_ms']:.6f}",

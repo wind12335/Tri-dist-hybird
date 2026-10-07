@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="720" viewBox="0 0 1180 720">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1D3557"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#C73E1D"/>
+    </marker>
+    <style>
+      text { font-family: Helvetica, Arial, sans-serif; fill: #1D2530; }
+      .title { font-size: 24px; font-weight: 700; }
+      .section { font-size: 18px; font-weight: 700; }
+      .label { font-size: 14px; }
+      .small { font-size: 12px; }
+      .formula { font-size: 13px; font-family: "Courier New", monospace; }
+      .chunk { fill: #ECEFF4; stroke: #8B95A1; stroke-width: 1.4; rx: 8; }
+      .active { fill: #D8ECF8; stroke: #2E86AB; stroke-width: 2; rx: 8; }
+      .bad { fill: #FFF1F0; stroke: #C73E1D; stroke-width: 2; rx: 14; }
+      .good { fill: #F4FAFE; stroke: #2E86AB; stroke-width: 2; rx: 14; }
+      .workspace { fill: #FFFFFF; stroke: #1D3557; stroke-width: 2; rx: 12; }
+      .slot { fill: #FEF4E9; stroke: #F18F01; stroke-width: 1.5; rx: 6; }
+      .slotBlue { fill: #E7F3FA; stroke: #2E86AB; stroke-width: 1.5; rx: 6; }
+      .stripe { fill: #F8EEF5; stroke: #A23B72; stroke-width: 1.5; rx: 6; }
+      .flagReady { fill: #DDF3EE; stroke: #2A9D8F; stroke-width: 1.4; rx: 10; }
+      .flagFree { fill: #FCE8E6; stroke: #C73E1D; stroke-width: 1.4; rx: 10; }
+      .note { fill: #F7F9FB; stroke: #B8C2CC; stroke-width: 1.2; rx: 8; }
+      .arrow { stroke: #1D3557; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .arrowRed { stroke: #C73E1D; stroke-width: 1.8; fill: none; marker-end: url(#arrowRed); }
+      .dash { stroke: #6B7280; stroke-width: 1.6; fill: none; stroke-dasharray: 6 4; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1180" height="720" fill="#FFFFFF"/>
+  <text x="590" y="40" text-anchor="middle" class="title">Active Window Bounds Staging Residency</text>
+
+  <!-- Logical chunk stream -->
+  <text x="70" y="86" class="section">Logical chunk stream</text>
+  <rect x="70" y="110" width="90" height="44" class="chunk"/>
+  <text x="115" y="137" text-anchor="middle" class="label">c0</text>
+  <rect x="174" y="110" width="90" height="44" class="chunk"/>
+  <text x="219" y="137" text-anchor="middle" class="label">c1</text>
+  <rect x="278" y="110" width="90" height="44" class="active"/>
+  <text x="323" y="137" text-anchor="middle" class="label">ck</text>
+  <rect x="382" y="110" width="90" height="44" class="active"/>
+  <text x="427" y="137" text-anchor="middle" class="label">ck+1</text>
+  <rect x="486" y="110" width="90" height="44" class="chunk"/>
+  <text x="531" y="137" text-anchor="middle" class="label">ck+2</text>
+  <rect x="590" y="110" width="90" height="44" class="chunk"/>
+  <text x="635" y="137" text-anchor="middle" class="label">ck+3</text>
+  <rect x="694" y="110" width="90" height="44" class="chunk"/>
+  <text x="739" y="137" text-anchor="middle" class="label">...</text>
+
+  <path d="M272 164 L478 164" stroke="#2E86AB" stroke-width="3"/>
+  <path d="M278 164 L278 174 M472 164 L472 174" stroke="#2E86AB" stroke-width="3"/>
+  <text x="375" y="188" text-anchor="middle" class="label" fill="#2E86AB">active window W = 2</text>
+
+  <rect x="840" y="102" width="260" height="74" class="note"/>
+  <text x="970" y="126" text-anchor="middle" class="small">The total task stream is unchanged.</text>
+  <text x="970" y="146" text-anchor="middle" class="small">Only resident staging is bounded.</text>
+  <text x="970" y="166" text-anchor="middle" class="small">Slots are reused after free flags.</text>
+
+  <path d="M375 196 L375 232" class="arrow"/>
+
+  <!-- Comparison blocks -->
+  <rect x="60" y="238" width="500" height="332" class="bad"/>
+  <text x="310" y="270" text-anchor="middle" class="section">(a) Without active window: full resident staging</text>
+  <text x="310" y="294" text-anchor="middle" class="small">Every chunk keeps a distinct staging region until consumed.</text>
+
+  <rect x="92" y="324" width="436" height="168" class="workspace"/>
+  <text x="310" y="350" text-anchor="middle" class="label" font-weight="700">Destination staging workspace Q_d</text>
+  <text x="310" y="372" text-anchor="middle" class="formula">resident panels scale with C x B x p</text>
+
+  <g>
+    <rect x="112" y="398" width="58" height="34" class="slot"/>
+    <text x="141" y="420" text-anchor="middle" class="small">c0,B0</text>
+    <rect x="180" y="398" width="58" height="34" class="slot"/>
+    <text x="209" y="420" text-anchor="middle" class="small">c1,B0</text>
+    <rect x="248" y="398" width="58" height="34" class="slot"/>
+    <text x="277" y="420" text-anchor="middle" class="small">ck,B0</text>
+    <rect x="316" y="398" width="58" height="34" class="slot"/>
+    <text x="345" y="420" text-anchor="middle" class="small">ck+1</text>
+    <rect x="384" y="398" width="58" height="34" class="slot"/>
+    <text x="413" y="420" text-anchor="middle" class="small">ck+2</text>
+    <rect x="452" y="398" width="58" height="34" class="slot"/>
+    <text x="481" y="420" text-anchor="middle" class="small">...</text>
+  </g>
+  <g>
+    <rect x="112" y="444" width="58" height="34" class="slot"/>
+    <text x="141" y="466" text-anchor="middle" class="small">c0,B1</text>
+    <rect x="180" y="444" width="58" height="34" class="slot"/>
+    <text x="209" y="466" text-anchor="middle" class="small">c1,B1</text>
+    <rect x="248" y="444" width="58" height="34" class="slot"/>
+    <text x="277" y="466" text-anchor="middle" class="small">ck,B1</text>
+    <rect x="316" y="444" width="58" height="34" class="slot"/>
+    <text x="345" y="466" text-anchor="middle" class="small">ck+1</text>
+    <rect x="384" y="444" width="58" height="34" class="slot"/>
+    <text x="413" y="466" text-anchor="middle" class="small">ck+2</text>
+    <rect x="452" y="444" width="58" height="34" class="slot"/>
+    <text x="481" y="466" text-anchor="middle" class="small">...</text>
+  </g>
+
+  <rect x="118" y="516" width="384" height="34" class="note"/>
+  <text x="310" y="538" text-anchor="middle" class="label">Problem: staging memory grows with number of chunks C.</text>
+
+  <rect x="620" y="238" width="500" height="332" class="good"/>
+  <text x="870" y="270" text-anchor="middle" class="section">(b) With active window: bounded reusable slots</text>
+  <text x="870" y="294" text-anchor="middle" class="small">Only W chunks are active; later chunks overwrite slots after free.</text>
+
+  <rect x="652" y="324" width="436" height="168" class="workspace"/>
+  <text x="870" y="350" text-anchor="middle" class="label" font-weight="700">Destination staging workspace Q_d</text>
+  <text x="870" y="372" text-anchor="middle" class="formula">RS: q = c mod W, panel_slot = bW + q</text>
+
+  <rect x="684" y="398" width="170" height="34" class="slotBlue"/>
+  <text x="704" y="420" class="small" font-weight="700">q0,B0</text>
+  <text x="780" y="420" text-anchor="middle" class="small">ck now, ck+2 later</text>
+  <rect x="882" y="398" width="170" height="34" class="slotBlue"/>
+  <text x="902" y="420" class="small" font-weight="700">q1,B0</text>
+  <text x="978" y="420" text-anchor="middle" class="small">ck+1 now, ck+3 later</text>
+  <rect x="684" y="444" width="170" height="34" class="slotBlue"/>
+  <text x="704" y="466" class="small" font-weight="700">q0,B1</text>
+  <text x="780" y="466" text-anchor="middle" class="small">src0 | ... | srcp-1</text>
+  <rect x="882" y="444" width="170" height="34" class="slotBlue"/>
+  <text x="902" y="466" class="small" font-weight="700">q1,B1</text>
+  <text x="978" y="466" text-anchor="middle" class="small">src0 | ... | srcp-1</text>
+
+  <rect x="648" y="516" width="134" height="34" class="flagReady"/>
+  <text x="715" y="538" text-anchor="middle" class="small">ready flag</text>
+  <path d="M782 533 L836 533" class="arrow"/>
+  <text x="809" y="525" text-anchor="middle" class="small">consume</text>
+  <rect x="836" y="516" width="134" height="34" class="flagFree"/>
+  <text x="903" y="538" text-anchor="middle" class="small">free flag</text>
+  <path d="M970 533 C1056 533, 1060 405, 1052 405" class="arrowRed"/>
+  <text x="1048" y="520" text-anchor="middle" class="small" fill="#C73E1D">reuse</text>
+
+  <!-- AR compact stripe inset -->
+  <rect x="164" y="602" width="852" height="82" class="note"/>
+  <text x="590" y="628" text-anchor="middle" class="section">For AR, the same bounded idea is applied at stripe granularity</text>
+  <text x="314" y="658" text-anchor="middle" class="formula">panel Ck.B0 -> stripes S0, S1, S2, S3</text>
+  <path d="M450 654 L550 654" class="arrow"/>
+  <text x="714" y="658" text-anchor="middle" class="formula">compact slots: r = task_id mod R</text>
+  <text x="590" y="676" text-anchor="middle" class="small">AR resident units: R x p x stripe_rows, instead of W x B x p x chunk_rows.</text>
+</svg>

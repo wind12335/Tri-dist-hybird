@@ -24,16 +24,19 @@
 ################################################################################
 
 import argparse
-import gc
+import json
 import os
+from pathlib import Path
 
 import torch
 from functools import partial
 
 from triton_dist.models.kv_cache import KV_Cache
 from triton_dist.models.utils import seed_everything
-from triton_dist.profiler_utils import group_profile, perf_func
-from triton_dist.utils import finalize_distributed, initialize_distributed, dist_print, nvshmem_barrier_all_on_stream
+from triton_dist.profiler_utils import group_profile
+from triton_dist.utils import finalize_distributed, initialize_distributed, dist_print
+
+from tp_ag_rs_innov_common import run_pair
 
 # torchrun --nproc_per_node=2 python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py \
 #       --model Qwen/Qwen2-72B \
@@ -84,6 +87,14 @@ GEMM_AR_MODES = {
 def validate_runtime_args(args):
     if args.bsz <= 0:
         raise ValueError(f"--bsz must be positive, got {args.bsz}.")
+    if args.seq_len <= 0:
+        raise ValueError(f"--seq_len must be positive, got {args.seq_len}.")
+    if args.warmup < 0 or args.graph_warmup < 0:
+        raise ValueError("--warmup and --graph_warmup must be non-negative.")
+    if args.iters <= 0:
+        raise ValueError(f"--iters must be positive, got {args.iters}.")
+    if args.num_layers < 0 or args.stability_repeats < 0:
+        raise ValueError("--num_layers and --stability_repeats must be non-negative.")
 
     if args.mode in AG_RS_MODES:
         if args.bsz < WORLD_SIZE:
@@ -111,7 +122,24 @@ def parse_args():
                         default="ag_rs_new",
                         type=str,
                         choices=list(AG_RS_MODES.keys()) + list(GEMM_AR_MODES.keys()))
-    parser.add_argument("--autotune", default=True, action=argparse.BooleanOptionalAction)
+    parser.add_argument("--autotune", default=False, action=argparse.BooleanOptionalAction,
+                        help="Disabled by default to match the stable operator-level AG/RS benchmarks.")
+    parser.add_argument("--cuda_graph", default=False, action=argparse.BooleanOptionalAction,
+                        help="Use CUDA Graph replay; synchronized eager timing is the safe default.")
+    parser.add_argument("--graph_warmup", type=int, default=3,
+                        help="Warmup invocations before CUDA Graph capture (replaces the old fixed 30 forwards).")
+    parser.add_argument("--synchronize_each_iter", default=True, action=argparse.BooleanOptionalAction,
+                        help="Drain and align all ranks around every measured model invocation.")
+    parser.add_argument("--include_lm_head", default=False, action=argparse.BooleanOptionalAction,
+                        help="Include the final vocabulary projection in performance timing.")
+    parser.add_argument("--num_layers", type=int, default=0,
+                        help="Number of leading Transformer layers to run; 0 uses the full model.")
+    parser.add_argument("--stability_repeats", type=int, default=0,
+                        help="Run repeated correctness checks with changing token IDs before timing.")
+    parser.add_argument("--result_dir", type=str, default=None,
+                        help="Directory for structured JSON results. Disabled when omitted.")
+    parser.add_argument("--repeat_id", type=int, default=0,
+                        help="Independent repeat identifier written to structured results.")
 
     parser.add_argument("--ag_copy_sms", type=int, default=0)
     parser.add_argument("--ag_enable_tile_ready", default=True, action=argparse.BooleanOptionalAction)
@@ -142,54 +170,60 @@ def parse_args():
     parser.add_argument("--ar_stage_slots", type=int, default=4)
     parser.add_argument("--ar_num_comm_sms", type=int, default=16)
     parser.add_argument("--ar_comm_lanes", type=int, default=2)
+
+    link_override_names = (
+        "ag_copy_sms",
+        "ag_tile_rows_per_chunk",
+        "ag_min_m_per_rank_for_tile_ready",
+        "ag_target_chunks_per_rank",
+        "ag_min_tile_rows_per_chunk",
+        "rs_chunk_rows",
+        "rs_target_chunks_per_rank",
+        "rs_min_chunk_rows",
+        "rs_active_chunk_window",
+        "rs_comm_lanes",
+        "rs_n_bands",
+        "rs_frontier_chunks",
+        "rs_steady_sms",
+        "rs_tail_sms",
+        "rs_stage_slots",
+        "rs_tail_chunk_window",
+    )
+    for link in ("attn", "mlp"):
+        for name in link_override_names:
+            parser.add_argument(f"--{link}_{name}", type=int, default=None,
+                                help=f"Override --{name} for the {link} link only.")
     return parser.parse_args()
 
 
 def check_allclose(out: torch.Tensor, golden: torch.Tensor, atol=1e-3, rtol=1e-3, mode_name=""):
     assert out.shape == golden.shape, f"Shape mismatch for {mode_name}: {out.shape} vs {golden.shape}"
-    if torch.allclose(out, golden, atol=atol, rtol=rtol):
+    out_float = out.float()
+    golden_float = golden.float()
+    abs_diff = (out_float - golden_float).abs()
+    max_abs_diff = abs_diff.max().item()
+    max_rel_diff = (abs_diff / golden_float.abs().clamp_min(1e-12)).max().item()
+    passed = bool(torch.allclose(out, golden, atol=atol, rtol=rtol))
+    if passed:
         dist_print(f"[RANK {RANK}] Correctness check passed for {mode_name}.", need_sync=True, allowed_ranks=[0])
     else:
-        max_diff = torch.max(torch.abs(out - golden))
-        dist_print(f"[RANK {RANK}] Max difference for {mode_name}: {max_diff.item()} (atol={atol}, rtol={rtol})")
+        dist_print(f"[RANK {RANK}] Max difference for {mode_name}: {max_abs_diff} (atol={atol}, rtol={rtol})")
         raise AssertionError(f"[RANK {RANK}] Output mismatch for {mode_name}.")
-
-
-def make_cuda_graph(mempool, func):
-    s = torch.cuda.Stream()
-    s.wait_stream(torch.cuda.current_stream())
-    with torch.cuda.stream(s):
-        for _ in range(30):
-            func()
-    torch.cuda.current_stream().wait_stream(s)
-    graph = torch.cuda.CUDAGraph()
-    with torch.cuda.graph(graph, pool=mempool):
-        func()
-    return graph
+    return {
+        "mode": mode_name,
+        "passed": passed,
+        "atol": atol,
+        "rtol": rtol,
+        "max_abs_diff": max_abs_diff,
+        "max_rel_diff": max_rel_diff,
+        "shape": list(out.shape),
+    }
 
 
 def get_triton_mode(args):
     if args.mode in AG_RS_MODES:
         return AG_RS_MODES[args.mode][2]
     return GEMM_AR_MODES[args.mode][1]
-
-
-def build_perf_runners(model, args, torch_func, triton_func):
-    mempool = torch.cuda.graph_pool_handle()
-    try:
-        model.set_fwd(mode='torch')
-        torch_graph = make_cuda_graph(mempool, torch_func)
-        model.set_fwd(mode=get_triton_mode(args))
-        triton_graph = make_cuda_graph(mempool, triton_func)
-        return torch_graph.replay, triton_graph.replay, (torch_graph, triton_graph, mempool), True
-    except RuntimeError as e:
-        dist_print(f"CUDA Graph capture unavailable, falling back to eager timing: {e}",
-                   need_sync=True,
-                   allowed_ranks=[0])
-        torch.cuda.synchronize()
-        gc.collect()
-        torch.cuda.empty_cache()
-        return torch_func, triton_func, (None, None, None), False
 
 
 def build_ag_kwargs(args):
@@ -218,6 +252,35 @@ def build_rs_kwargs(args):
         "tail_chunk_window": args.rs_tail_chunk_window,
         "local_seed_direct": args.rs_local_seed_direct,
     }
+
+
+def build_link_ag_rs_kwargs(args, link: str):
+    kwargs = {**build_ag_kwargs(args), **build_rs_kwargs(args)}
+    for name in (
+        "ag_copy_sms",
+        "ag_tile_rows_per_chunk",
+        "ag_min_m_per_rank_for_tile_ready",
+        "ag_target_chunks_per_rank",
+        "ag_min_tile_rows_per_chunk",
+        "rs_chunk_rows",
+        "rs_target_chunks_per_rank",
+        "rs_min_chunk_rows",
+        "rs_active_chunk_window",
+        "rs_comm_lanes",
+        "rs_n_bands",
+        "rs_frontier_chunks",
+        "rs_steady_sms",
+        "rs_tail_sms",
+        "rs_stage_slots",
+        "rs_tail_chunk_window",
+    ):
+        override = getattr(args, f"{link}_{name}")
+        if override is None:
+            continue
+        if override < 0 or (override == 0 and name not in {"ag_copy_sms", "ag_tile_rows_per_chunk", "rs_chunk_rows"}):
+            raise ValueError(f"--{link}_{name} has invalid value {override}.")
+        kwargs[name.removeprefix("ag_").removeprefix("rs_")] = override
+    return kwargs
 
 
 def build_ar_kwargs(args):
@@ -265,13 +328,46 @@ def make_input_ids(batch_size: int, seq_len: int, vocab_size: int):
     return torch.randint(0, vocab_size, (batch_size, seq_len), dtype=torch.long, device="cuda")
 
 
+def get_vocab_size(model):
+    if hasattr(model, "vocab_size"):
+        return model.vocab_size
+    if hasattr(model, "config") and hasattr(model.config, "vocab_size"):
+        return model.config.vocab_size
+    return model.embed_tokens.shape[0]
+
+
+def make_eval_inputs(model, args):
+    if args.run_type == "prefill":
+        seq_len = args.seq_len
+        input_ids = make_input_ids(args.bsz, seq_len, get_vocab_size(model))
+        position_ids = torch.arange(0, seq_len, dtype=torch.long, device="cuda").unsqueeze(0).expand(args.bsz, -1)
+    else:
+        input_ids = make_input_ids(args.bsz, 1, get_vocab_size(model))
+        position_ids = torch.full((args.bsz, 1), args.seq_len, dtype=torch.long, device="cuda")
+    return input_ids, position_ids
+
+
+def reset_kv_cache(kv_cache, args):
+    if args.run_type == "prefill":
+        kv_cache.kv_offset.zero_()
+        return
+
+    torch.manual_seed(args.seed + 1001)
+    torch.cuda.manual_seed(args.seed + 1001)
+    kv_cache.kv_offset.fill_(args.seq_len)
+    kv_cache.rand_fill_kv_cache(args.seq_len)
+
+
 def init_model_for_mode(model, args, max_M: int):
     if args.mode in AG_RS_MODES:
         ag_impl, rs_impl, triton_mode = AG_RS_MODES[args.mode]
-        kwargs = {}
-        kwargs.update(build_ag_kwargs(args))
-        kwargs.update(build_rs_kwargs(args))
-        model.init_triton_dist_ablation_ctx(max_M=max_M, ag_impl=ag_impl, rs_impl=rs_impl, **kwargs)
+        model.init_triton_dist_ablation_ctx(
+            max_M=max_M,
+            ag_impl=ag_impl,
+            rs_impl=rs_impl,
+            attn_kwargs=build_link_ag_rs_kwargs(args, "attn"),
+            mlp_kwargs=build_link_ag_rs_kwargs(args, "mlp"),
+        )
         model.set_fwd(mode=triton_mode)
     else:
         impl, triton_mode = GEMM_AR_MODES[args.mode]
@@ -279,81 +375,156 @@ def init_model_for_mode(model, args, max_M: int):
         model.set_fwd(mode=triton_mode)
 
 
-def run_hf_baseline(model_name, input_ids, position_ids, dtype):
-    from triton_dist.models.utils import init_model_cpu
-
-    dist_print("Running HuggingFace baseline to get golden result...")
-    hf_model = init_model_cpu(model_name=model_name, dtype=dtype).cuda()
-    with torch.inference_mode():
-        golden = hf_model.forward(input_ids=input_ids, position_ids=position_ids).logits.float()
-    golden = golden[:, -1:, :].contiguous()
-    del hf_model
-    gc.collect()
-    torch.cuda.empty_cache()
-    dist_print("Finished HuggingFace baseline and freed memory.")
-    return golden
+def selected_input(input_ids, args):
+    if args.mode not in AG_RS_MODES:
+        return input_ids
+    return input_ids.split(args.bsz // WORLD_SIZE, dim=0)[RANK].contiguous()
 
 
-def run_correctness_check(model, golden, input_ids, position_ids, kv_cache, args, atol, rtol):
+def run_correctness_check(model, golden, input_ids, position_ids, kv_cache, args, atol, rtol, num_layers):
     dist_print("\n--- Running Correctness Checks ---")
-    model.set_fwd(mode='torch')
-    logits_torch = model.inference(input_ids=input_ids, position_ids=position_ids, kv_cache=kv_cache)
-    check_allclose(logits_torch.softmax(dim=-1, dtype=torch.float32),
-                   golden.softmax(dim=-1, dtype=torch.float32),
-                   atol=atol,
-                   rtol=rtol,
-                   mode_name="torch")
+    reset_kv_cache(kv_cache, args)
+    model.set_fwd(mode="torch")
+    logits_torch = model.inference(
+        input_ids=input_ids,
+        position_ids=position_ids,
+        kv_cache=kv_cache,
+        num_layers=num_layers,
+    )
+    torch_metrics = check_allclose(logits_torch.softmax(dim=-1, dtype=torch.float32),
+                                   golden.softmax(dim=-1, dtype=torch.float32),
+                                   atol=atol,
+                                   rtol=rtol,
+                                   mode_name="torch")
 
     max_M = args.bsz * args.seq_len if args.run_type == "prefill" else args.bsz
     init_model_for_mode(model, args, max_M=max_M)
-    dist_input = input_ids
+    dist_input = selected_input(input_ids, args)
     golden_check = golden
     if args.mode in AG_RS_MODES:
-        dist_input = input_ids.split(args.bsz // WORLD_SIZE, dim=0)[RANK].contiguous()
         golden_check = golden.split(args.bsz // WORLD_SIZE, dim=0)[RANK].contiguous()
 
-    logits_triton = model.inference(input_ids=dist_input, position_ids=position_ids, kv_cache=kv_cache)
-    check_allclose(logits_triton.softmax(dim=-1, dtype=torch.float32),
-                   golden_check.softmax(dim=-1, dtype=torch.float32),
-                   atol=atol,
-                   rtol=rtol,
-                   mode_name=args.mode)
+    reset_kv_cache(kv_cache, args)
+    logits_triton = model.inference(
+        input_ids=dist_input,
+        position_ids=position_ids,
+        kv_cache=kv_cache,
+        num_layers=num_layers,
+    )
+    triton_metrics = check_allclose(logits_triton.softmax(dim=-1, dtype=torch.float32),
+                                    golden_check.softmax(dim=-1, dtype=torch.float32),
+                                    atol=atol,
+                                    rtol=rtol,
+                                    mode_name=args.mode)
+    return {"torch": torch_metrics, "selected": triton_metrics}
 
 
-def run_performance_test(model, run_type, kv_cache, args, tp_group):
+def run_stability_check(model, input_ids, position_ids, kv_cache, args, tp_group, atol, rtol, num_layers):
+    if args.stability_repeats <= 0:
+        return []
+
+    records = []
+    vocab_size = get_vocab_size(model)
+    for repeat in range(args.stability_repeats):
+        repeat_ids = torch.remainder(input_ids + repeat + 1, vocab_size)
+        reset_kv_cache(kv_cache, args)
+        model.set_fwd(mode="torch")
+        expected = model.inference(
+            repeat_ids,
+            position_ids,
+            kv_cache,
+            False,
+            num_layers=num_layers,
+        ).softmax(dim=-1, dtype=torch.float32)
+
+        repeat_dist_ids = selected_input(repeat_ids, args)
+        if args.mode in AG_RS_MODES:
+            expected = expected.split(args.bsz // WORLD_SIZE, dim=0)[RANK].contiguous()
+        reset_kv_cache(kv_cache, args)
+        model.set_fwd(mode=get_triton_mode(args))
+        actual = model.inference(
+            repeat_dist_ids,
+            position_ids,
+            kv_cache,
+            False,
+            num_layers=num_layers,
+        ).softmax(dim=-1, dtype=torch.float32)
+
+        metrics = check_allclose(actual, expected, atol=atol, rtol=rtol, mode_name=f"stability-{repeat}")
+        max_abs = torch.tensor(metrics["max_abs_diff"], dtype=torch.float64, device="cuda")
+        torch.distributed.all_reduce(max_abs, op=torch.distributed.ReduceOp.MAX, group=tp_group)
+        record = {"repeat": repeat, "rank_max_abs_diff": float(max_abs.item())}
+        records.append(record)
+        dist_print(
+            f"[stability] repeat={repeat + 1}/{args.stability_repeats}, "
+            f"layers={num_layers}, rank_max_abs_diff={record['rank_max_abs_diff']:.8g}",
+            need_sync=True,
+            allowed_ranks=[0],
+        )
+    return records
+
+
+def run_performance_test(model, run_type, kv_cache, args, tp_group, atol, rtol, num_layers):
     dist_print(f"\n--- Running Performance Test: {run_type.capitalize()} (Mode: {args.mode}) ---")
-    vocab_size = getattr(model, "vocab_size", 1000)
+    vocab_size = get_vocab_size(model)
 
-    if run_type == 'prefill':
-        seq_len, max_M = args.seq_len, args.bsz * args.seq_len
-        input_ids = make_input_ids(args.bsz, seq_len, vocab_size)
-        position_ids = torch.arange(0, seq_len, dtype=torch.int64, device="cuda").unsqueeze(0).expand(args.bsz, -1)
-        kv_cache.kv_offset.fill_(0)
+    if run_type == "prefill":
+        max_M = args.bsz * args.seq_len
     else:
-        seq_len, max_M = 1, args.bsz
-        input_ids = make_input_ids(args.bsz, seq_len, vocab_size)
-        position_ids = torch.arange(args.seq_len, args.seq_len + 1, dtype=torch.int64,
-                                    device="cuda").unsqueeze(0).expand(args.bsz, -1)
-        kv_cache.kv_offset.fill_(args.seq_len)
+        max_M = args.bsz
+    input_ids, position_ids = make_eval_inputs(model, args)
+    reset_kv_cache(kv_cache, args)
 
     init_model_for_mode(model, args, max_M=max_M)
+    stability = run_stability_check(
+        model,
+        input_ids,
+        position_ids,
+        kv_cache,
+        args,
+        tp_group,
+        atol,
+        rtol,
+        num_layers,
+    )
 
-    torch_func = partial(model.inference, input_ids, position_ids, kv_cache, True)
-    triton_func_input = input_ids.split(args.bsz // WORLD_SIZE, dim=0)[RANK].contiguous() if args.mode in AG_RS_MODES else input_ids
-    triton_func = partial(model.inference, triton_func_input, position_ids, kv_cache, True)
-
-    torch_runner, triton_runner, graph_state, used_cuda_graph = build_perf_runners(model, args, torch_func, triton_func)
-    torch_graph, triton_graph, mempool = graph_state
+    torch_func = partial(
+        model.inference,
+        input_ids,
+        position_ids,
+        kv_cache,
+        not args.include_lm_head,
+        num_layers=num_layers,
+    )
+    triton_func = partial(
+        model.inference,
+        selected_input(input_ids, args),
+        position_ids,
+        kv_cache,
+        not args.include_lm_head,
+        num_layers=num_layers,
+    )
 
     with group_profile(f"e2e_innov_real_{run_type}", args.profile, group=tp_group):
-        model.set_fwd(mode='torch')
-        _, torch_perf = perf_func(torch_runner, iters=args.iters, warmup_iters=args.warmup)
-        nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
+        performance, graph_state = run_pair(
+            torch_func,
+            triton_func,
+            group=tp_group,
+            warmup=args.warmup,
+            iters=args.iters,
+            use_cuda_graph=args.cuda_graph,
+            graph_warmup=args.graph_warmup,
+            synchronize_each_iter=args.synchronize_each_iter,
+            before_torch_mode=partial(model.set_fwd, mode="torch"),
+            before_selected_mode=partial(model.set_fwd, mode=get_triton_mode(args)),
+            before_torch_each=partial(reset_kv_cache, kv_cache, args),
+            before_selected_each=partial(reset_kv_cache, kv_cache, args),
+        )
 
-        model.set_fwd(mode=get_triton_mode(args))
-        _, dist_triton_perf = perf_func(triton_runner, iters=args.iters, warmup_iters=args.warmup)
-        nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
-
+    if args.cuda_graph and not performance["cuda_graph_used"]:
+        dist_print("CUDA Graph capture was unavailable; used eager timing.", need_sync=True, allowed_ranks=[0])
+    torch_perf = performance["torch_local_ms"]
+    dist_triton_perf = performance["selected_local_ms"]
     dist_print(f"torch {run_type} #{RANK}", torch_perf, need_sync=True, allowed_ranks=list(range(WORLD_SIZE)))
     dist_print(f"dist-triton-{args.mode} {run_type} #{RANK}",
                dist_triton_perf,
@@ -361,10 +532,69 @@ def run_performance_test(model, run_type, kv_cache, args, tp_group):
                need_sync=True,
                allowed_ranks=list(range(WORLD_SIZE)))
 
-    if used_cuda_graph:
-        del torch_graph, triton_graph
-    if mempool is not None:
-        del mempool
+    rank_result = {
+        "rank": RANK,
+        "torch_ms": float(torch_perf),
+        "dist_triton_ms": float(dist_triton_perf),
+        "speedup": float(torch_perf / dist_triton_perf),
+        "include_lm_head": bool(args.include_lm_head),
+        "num_layers": num_layers,
+        "stability": stability,
+        "performance": performance,
+        "ag_rs": {
+            "attention": build_link_ag_rs_kwargs(args, "attn") if args.mode in AG_RS_MODES else None,
+            "mlp": build_link_ag_rs_kwargs(args, "mlp") if args.mode in AG_RS_MODES else None,
+        },
+    }
+    del graph_state
+    return rank_result
+
+
+def gather_and_write_results(args, tp_group, local_result):
+    if args.result_dir is None:
+        return
+
+    output_dir = Path(args.result_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    gathered = [None for _ in range(WORLD_SIZE)]
+    torch.distributed.all_gather_object(gathered, local_result, group=tp_group)
+
+    metadata = {
+        "script": "test_tp_e2e_innov_real.py",
+        "model": args.model,
+        "platform": torch.cuda.get_device_name(torch.cuda.current_device()),
+        "world_size": WORLD_SIZE,
+        "rank": RANK,
+        "local_rank": int(os.environ.get("LOCAL_RANK", 0)),
+        "dtype": args.dtype,
+        "run_type": args.run_type,
+        "mode": args.mode,
+        "repeat_id": args.repeat_id,
+        "torch_version": torch.__version__,
+        "cuda_version": torch.version.cuda,
+        "args": vars(args),
+    }
+    prefix = f"{args.mode}_{args.run_type}_repeat_{args.repeat_id}"
+    rank_path = output_dir / f"{prefix}_rank_{RANK}.json"
+    rank_path.write_text(json.dumps({**metadata, "result": local_result}, indent=2), encoding="utf-8")
+
+    if RANK == 0:
+        summary = {**metadata, "ranks": gathered}
+        timing_results = [x for x in gathered if isinstance(x, dict) and "torch_ms" in x]
+        if timing_results:
+            torch_values = [x["torch_ms"] for x in timing_results]
+            triton_values = [x["dist_triton_ms"] for x in timing_results]
+            summary["rank_max"] = {
+                "torch_ms": max(torch_values),
+                "dist_triton_ms": max(triton_values),
+                "speedup": max(torch_values) / max(triton_values),
+            }
+            summary["rank_mean"] = {
+                "torch_ms": sum(torch_values) / len(torch_values),
+                "dist_triton_ms": sum(triton_values) / len(triton_values),
+                "speedup": sum(x["speedup"] for x in timing_results) / len(timing_results),
+            }
+        (output_dir / f"{prefix}.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
 
 if __name__ == "__main__":
@@ -382,17 +612,53 @@ if __name__ == "__main__":
 
     model = None
     try:
+        model = build_model(args, dtype, tp_group)
+        num_layers = model.num_layers if args.num_layers == 0 else args.num_layers
+        if not 1 <= num_layers <= model.num_layers:
+            raise ValueError(f"--num_layers must be in [1, {model.num_layers}] or 0, got {args.num_layers}.")
         if args.check:
-            input_ids = torch.randint(10, 1000, (args.bsz, args.seq_len), dtype=torch.long, device="cuda")
-            position_ids = torch.arange(0, args.seq_len, dtype=torch.long, device="cuda").unsqueeze(0).repeat(args.bsz, 1)
-            golden = run_hf_baseline(args.model, input_ids, position_ids, dtype)
-            model = build_model(args, dtype, tp_group)
+            input_ids, position_ids = make_eval_inputs(model, args)
+            reference_cache = make_kv_cache(model, args, dtype)
+            reset_kv_cache(reference_cache, args)
+            model.set_fwd(mode="torch")
+            golden = model.inference(
+                input_ids=input_ids,
+                position_ids=position_ids,
+                kv_cache=reference_cache,
+                num_layers=num_layers,
+            ).detach()
             kv_cache = make_kv_cache(model, args, dtype)
-            run_correctness_check(model, golden, input_ids, position_ids, kv_cache, args, atol, rtol)
+            correctness = run_correctness_check(
+                model,
+                golden,
+                input_ids,
+                position_ids,
+                kv_cache,
+                args,
+                atol,
+                rtol,
+                num_layers,
+            )
+            stability = run_stability_check(
+                model,
+                input_ids,
+                position_ids,
+                kv_cache,
+                args,
+                tp_group,
+                atol,
+                rtol,
+                num_layers,
+            )
+            gather_and_write_results(
+                args,
+                tp_group,
+                {"correctness": correctness, "stability": stability, "num_layers": num_layers},
+            )
         else:
-            model = build_model(args, dtype, tp_group)
             kv_cache = make_kv_cache(model, args, dtype)
-            run_performance_test(model, args.run_type, kv_cache, args, tp_group)
+            result = run_performance_test(model, args.run_type, kv_cache, args, tp_group, atol, rtol, num_layers)
+            gather_and_write_results(args, tp_group, result)
     finally:
         if model is not None:
             model.finalize()

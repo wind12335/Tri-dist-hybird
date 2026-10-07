@@ -1,0 +1,69 @@
+{
+  "scope": "transformer_body_excluding_lm_head",
+  "model": "/root/eb-public/huggingface-models/meta-llama/Meta-Llama-3-70B",
+  "run_type": "prefill",
+  "bsz": 64,
+  "seq_len": 128,
+  "max_M": 8192,
+  "dtype": "bfloat16",
+  "world_size": 4,
+  "rank": 2,
+  "num_layers": 80,
+  "include_lm_head": false,
+  "ar": {
+    "attention": {
+      "chunk_rows": 2048,
+      "stripe_rows": 2048,
+      "target_chunks": 4,
+      "min_chunk_rows": 512,
+      "active_chunk_window": 4,
+      "n_bands": 1,
+      "frontier_chunks": 0,
+      "stage_slots": 4,
+      "num_comm_sms": 32,
+      "comm_lanes": 2,
+      "producer_order": "panel_recursive_doubling_cublas"
+    },
+    "mlp": {
+      "chunk_rows": 1024,
+      "stripe_rows": 1024,
+      "target_chunks": 4,
+      "min_chunk_rows": 512,
+      "active_chunk_window": 4,
+      "n_bands": 1,
+      "frontier_chunks": 0,
+      "stage_slots": 4,
+      "num_comm_sms": 64,
+      "comm_lanes": 2,
+      "producer_order": "panel_recursive_doubling_cublas"
+    }
+  },
+  "correctness": null,
+  "stability": [
+    {
+      "repeat": 0.0,
+      "checksum_min": -0.010446103289723396,
+      "checksum_max": -0.010446103289723396
+    },
+    {
+      "repeat": 1.0,
+      "checksum_min": -0.01296602189540863,
+      "checksum_max": -0.01296602189540863
+    },
+    {
+      "repeat": 2.0,
+      "checksum_min": -0.012528674677014351,
+      "checksum_max": -0.012528674677014351
+    },
+    {
+      "repeat": 3.0,
+      "checksum_min": -0.013513363897800446,
+      "checksum_max": -0.013513363897800446
+    },
+    {
+      "repeat": 4.0,
+      "checksum_min": -0.012368451803922653,
+      "checksum_max": -0.012368451803922653
+    }
+  ]
+}

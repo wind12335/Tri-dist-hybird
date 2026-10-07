@@ -1,0 +1,311 @@
+W0830 20:12:49.174000 32778 site-packages/torch/distributed/run.py:766] 
+W0830 20:12:49.174000 32778 site-packages/torch/distributed/run.py:766] *****************************************
+W0830 20:12:49.174000 32778 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0830 20:12:49.174000 32778 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+[custom] test shape: M 16384, N 8192, K 28672
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 604, in <module>
+[rank3]:     metrics = perf_test(model_name, args.M, config, TP_GROUP)
+[rank3]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 513, in perf_test
+[rank3]:     _run_old_stage()
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 289, in _run_old_stage
+[rank3]:     ctx = create_new_3rd_gemm_rs_context(
+[rank3]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdgemm_reducescatterv3.py", line 446, in create_new_3rd_gemm_rs_context
+[rank3]:     rs_ctx = create_new_3rd_reducescatter_2d_ctx(
+[rank3]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdreducescatter.py", line 370, in create_new_3rd_reducescatter_2d_ctx
+[rank3]:     base_ctx = create_reduce_scater_2d_ctx(max_M, N, rank, world_size, local_world_size, dtype)
+[rank3]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/reduce_scatter.py", line 162, in create_reduce_scater_2d_ctx
+[rank3]:     scatter_bufs = nvshmem_create_tensors((max_M, N), dtype, rank, local_world_size)
+[rank3]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 230, in nvshmem_create_tensors
+[rank3]:     return [_get_peer_tensor(tensor, peer) for peer in range(rank_on_same_node_start, rank_on_same_node_end)]
+[rank3]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 221, in _get_peer_tensor
+[rank3]:     return nvshmem.core.get_peer_tensor(t, peer)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/interop/torch.py", line 126, in get_peer_tensor
+[rank3]:     return torch.utils.dlpack.from_dlpack(peer_buf).view(tensor.dtype).view(tensor.shape)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]: RuntimeError: shape '[16384, 8192]' is invalid for input of size 67108864
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 604, in <module>
+[rank7]:     metrics = perf_test(model_name, args.M, config, TP_GROUP)
+[rank7]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 513, in perf_test
+[rank7]:     _run_old_stage()
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 289, in _run_old_stage
+[rank7]:     ctx = create_new_3rd_gemm_rs_context(
+[rank7]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdgemm_reducescatterv3.py", line 446, in create_new_3rd_gemm_rs_context
+[rank7]:     rs_ctx = create_new_3rd_reducescatter_2d_ctx(
+[rank7]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdreducescatter.py", line 370, in create_new_3rd_reducescatter_2d_ctx
+[rank7]:     base_ctx = create_reduce_scater_2d_ctx(max_M, N, rank, world_size, local_world_size, dtype)
+[rank7]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/reduce_scatter.py", line 162, in create_reduce_scater_2d_ctx
+[rank7]:     scatter_bufs = nvshmem_create_tensors((max_M, N), dtype, rank, local_world_size)
+[rank7]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 230, in nvshmem_create_tensors
+[rank7]:     return [_get_peer_tensor(tensor, peer) for peer in range(rank_on_same_node_start, rank_on_same_node_end)]
+[rank7]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 221, in _get_peer_tensor
+[rank7]:     return nvshmem.core.get_peer_tensor(t, peer)
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/interop/torch.py", line 126, in get_peer_tensor
+[rank7]:     return torch.utils.dlpack.from_dlpack(peer_buf).view(tensor.dtype).view(tensor.shape)
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]: RuntimeError: shape '[16384, 8192]' is invalid for input of size 67108864
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 604, in <module>
+[rank6]:     metrics = perf_test(model_name, args.M, config, TP_GROUP)
+[rank6]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 513, in perf_test
+[rank6]:     _run_old_stage()
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 289, in _run_old_stage
+[rank6]:     ctx = create_new_3rd_gemm_rs_context(
+[rank6]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdgemm_reducescatterv3.py", line 446, in create_new_3rd_gemm_rs_context
+[rank6]:     rs_ctx = create_new_3rd_reducescatter_2d_ctx(
+[rank6]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdreducescatter.py", line 370, in create_new_3rd_reducescatter_2d_ctx
+[rank6]:     base_ctx = create_reduce_scater_2d_ctx(max_M, N, rank, world_size, local_world_size, dtype)
+[rank6]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/reduce_scatter.py", line 162, in create_reduce_scater_2d_ctx
+[rank6]:     scatter_bufs = nvshmem_create_tensors((max_M, N), dtype, rank, local_world_size)
+[rank6]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 230, in nvshmem_create_tensors
+[rank6]:     return [_get_peer_tensor(tensor, peer) for peer in range(rank_on_same_node_start, rank_on_same_node_end)]
+[rank6]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 221, in _get_peer_tensor
+[rank6]:     return nvshmem.core.get_peer_tensor(t, peer)
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/interop/torch.py", line 126, in get_peer_tensor
+[rank6]:     return torch.utils.dlpack.from_dlpack(peer_buf).view(tensor.dtype).view(tensor.shape)
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]: RuntimeError: shape '[16384, 8192]' is invalid for input of size 67108864
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 604, in <module>
+[rank2]:     metrics = perf_test(model_name, args.M, config, TP_GROUP)
+[rank2]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 513, in perf_test
+[rank2]:     _run_old_stage()
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 289, in _run_old_stage
+[rank2]:     ctx = create_new_3rd_gemm_rs_context(
+[rank2]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdgemm_reducescatterv3.py", line 446, in create_new_3rd_gemm_rs_context
+[rank2]:     rs_ctx = create_new_3rd_reducescatter_2d_ctx(
+[rank2]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdreducescatter.py", line 370, in create_new_3rd_reducescatter_2d_ctx
+[rank2]:     base_ctx = create_reduce_scater_2d_ctx(max_M, N, rank, world_size, local_world_size, dtype)
+[rank2]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/reduce_scatter.py", line 162, in create_reduce_scater_2d_ctx
+[rank2]:     scatter_bufs = nvshmem_create_tensors((max_M, N), dtype, rank, local_world_size)
+[rank2]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 230, in nvshmem_create_tensors
+[rank2]:     return [_get_peer_tensor(tensor, peer) for peer in range(rank_on_same_node_start, rank_on_same_node_end)]
+[rank2]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 221, in _get_peer_tensor
+[rank2]:     return nvshmem.core.get_peer_tensor(t, peer)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/interop/torch.py", line 126, in get_peer_tensor
+[rank2]:     return torch.utils.dlpack.from_dlpack(peer_buf).view(tensor.dtype).view(tensor.shape)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]: RuntimeError: shape '[16384, 8192]' is invalid for input of size 67108864
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 604, in <module>
+[rank0]:     metrics = perf_test(model_name, args.M, config, TP_GROUP)
+[rank0]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 513, in perf_test
+[rank0]:     _run_old_stage()
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 289, in _run_old_stage
+[rank0]:     ctx = create_new_3rd_gemm_rs_context(
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdgemm_reducescatterv3.py", line 446, in create_new_3rd_gemm_rs_context
+[rank0]:     rs_ctx = create_new_3rd_reducescatter_2d_ctx(
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdreducescatter.py", line 370, in create_new_3rd_reducescatter_2d_ctx
+[rank0]:     base_ctx = create_reduce_scater_2d_ctx(max_M, N, rank, world_size, local_world_size, dtype)
+[rank0]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/reduce_scatter.py", line 162, in create_reduce_scater_2d_ctx
+[rank0]:     scatter_bufs = nvshmem_create_tensors((max_M, N), dtype, rank, local_world_size)
+[rank0]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 230, in nvshmem_create_tensors
+[rank0]:     return [_get_peer_tensor(tensor, peer) for peer in range(rank_on_same_node_start, rank_on_same_node_end)]
+[rank0]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 221, in _get_peer_tensor
+[rank0]:     return nvshmem.core.get_peer_tensor(t, peer)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/interop/torch.py", line 126, in get_peer_tensor
+[rank0]:     return torch.utils.dlpack.from_dlpack(peer_buf).view(tensor.dtype).view(tensor.shape)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: RuntimeError: shape '[16384, 8192]' is invalid for input of size 67108864
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 604, in <module>
+[rank4]:     metrics = perf_test(model_name, args.M, config, TP_GROUP)
+[rank4]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 513, in perf_test
+[rank4]:     _run_old_stage()
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 289, in _run_old_stage
+[rank4]:     ctx = create_new_3rd_gemm_rs_context(
+[rank4]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdgemm_reducescatterv3.py", line 446, in create_new_3rd_gemm_rs_context
+[rank4]:     rs_ctx = create_new_3rd_reducescatter_2d_ctx(
+[rank4]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdreducescatter.py", line 370, in create_new_3rd_reducescatter_2d_ctx
+[rank4]:     base_ctx = create_reduce_scater_2d_ctx(max_M, N, rank, world_size, local_world_size, dtype)
+[rank4]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/reduce_scatter.py", line 162, in create_reduce_scater_2d_ctx
+[rank4]:     scatter_bufs = nvshmem_create_tensors((max_M, N), dtype, rank, local_world_size)
+[rank4]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 230, in nvshmem_create_tensors
+[rank4]:     return [_get_peer_tensor(tensor, peer) for peer in range(rank_on_same_node_start, rank_on_same_node_end)]
+[rank4]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 221, in _get_peer_tensor
+[rank4]:     return nvshmem.core.get_peer_tensor(t, peer)
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/interop/torch.py", line 126, in get_peer_tensor
+[rank4]:     return torch.utils.dlpack.from_dlpack(peer_buf).view(tensor.dtype).view(tensor.shape)
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]: RuntimeError: shape '[16384, 8192]' is invalid for input of size 67108864
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 604, in <module>
+[rank1]:     metrics = perf_test(model_name, args.M, config, TP_GROUP)
+[rank1]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 513, in perf_test
+[rank1]:     _run_old_stage()
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 289, in _run_old_stage
+[rank1]:     ctx = create_new_3rd_gemm_rs_context(
+[rank1]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdgemm_reducescatterv3.py", line 446, in create_new_3rd_gemm_rs_context
+[rank1]:     rs_ctx = create_new_3rd_reducescatter_2d_ctx(
+[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdreducescatter.py", line 370, in create_new_3rd_reducescatter_2d_ctx
+[rank1]:     base_ctx = create_reduce_scater_2d_ctx(max_M, N, rank, world_size, local_world_size, dtype)
+[rank1]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/reduce_scatter.py", line 162, in create_reduce_scater_2d_ctx
+[rank1]:     scatter_bufs = nvshmem_create_tensors((max_M, N), dtype, rank, local_world_size)
+[rank1]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 230, in nvshmem_create_tensors
+[rank1]:     return [_get_peer_tensor(tensor, peer) for peer in range(rank_on_same_node_start, rank_on_same_node_end)]
+[rank1]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 221, in _get_peer_tensor
+[rank1]:     return nvshmem.core.get_peer_tensor(t, peer)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/interop/torch.py", line 126, in get_peer_tensor
+[rank1]:     return torch.utils.dlpack.from_dlpack(peer_buf).view(tensor.dtype).view(tensor.shape)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]: RuntimeError: shape '[16384, 8192]' is invalid for input of size 67108864
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 604, in <module>
+[rank5]:     metrics = perf_test(model_name, args.M, config, TP_GROUP)
+[rank5]:               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 513, in perf_test
+[rank5]:     _run_old_stage()
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py", line 289, in _run_old_stage
+[rank5]:     ctx = create_new_3rd_gemm_rs_context(
+[rank5]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdgemm_reducescatterv3.py", line 446, in create_new_3rd_gemm_rs_context
+[rank5]:     rs_ctx = create_new_3rd_reducescatter_2d_ctx(
+[rank5]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rdreducescatter.py", line 370, in create_new_3rd_reducescatter_2d_ctx
+[rank5]:     base_ctx = create_reduce_scater_2d_ctx(max_M, N, rank, world_size, local_world_size, dtype)
+[rank5]:                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/reduce_scatter.py", line 162, in create_reduce_scater_2d_ctx
+[rank5]:     scatter_bufs = nvshmem_create_tensors((max_M, N), dtype, rank, local_world_size)
+[rank5]:                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 230, in nvshmem_create_tensors
+[rank5]:     return [_get_peer_tensor(tensor, peer) for peer in range(rank_on_same_node_start, rank_on_same_node_end)]
+[rank5]:             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/utils.py", line 221, in _get_peer_tensor
+[rank5]:     return nvshmem.core.get_peer_tensor(t, peer)
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/interop/torch.py", line 126, in get_peer_tensor
+[rank5]:     return torch.utils.dlpack.from_dlpack(peer_buf).view(tensor.dtype).view(tensor.shape)
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]: RuntimeError: shape '[16384, 8192]' is invalid for input of size 67108864
+[rank0]:[W830 20:12:59.506741534 ProcessGroupNCCL.cpp:1476] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W0830 20:13:01.901000 32778 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 32845 closing signal SIGTERM
+W0830 20:13:01.902000 32778 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 32846 closing signal SIGTERM
+W0830 20:13:01.903000 32778 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 32847 closing signal SIGTERM
+W0830 20:13:01.903000 32778 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 32848 closing signal SIGTERM
+W0830 20:13:01.903000 32778 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 32849 closing signal SIGTERM
+W0830 20:13:01.904000 32778 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 32850 closing signal SIGTERM
+W0830 20:13:01.904000 32778 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 32851 closing signal SIGTERM
+E0830 20:13:02.898000 32778 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 32844) of binary: /root/miniconda3/bin/python3.12
+Traceback (most recent call last):
+  File "/root/miniconda3/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-08-30_20:13:01
+  host      : cs-d085f-deb6f-server
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 32844)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+torchrun_exit_code=1

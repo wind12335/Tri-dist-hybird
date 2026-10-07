@@ -94,6 +94,13 @@ def parse_args():
     parser.add_argument("--active_chunk_window", type=int, default=2)
     parser.add_argument("--n_bands", type=int, default=1)
     parser.add_argument("--frontier_chunks", type=int, default=1)
+    parser.add_argument("--producer_order", choices=["logical", "stripe_frontier", "panel_bulk", "panel_frontier",
+                                                    "panel_recursive_doubling", "panel_recursive_doubling_cublas",
+                                                    "panel_recursive_doubling_bulk_cublas"],
+                        default="logical", help="panel_* uses whole panels and fused FP32 reduction; set "
+                        "stripe_rows=chunk_rows. panel_frontier submits handoff immediately; "
+                        "panel_bulk is the window-batched submission control. The recursive-doubling bulk mode "
+                        "is the matched control for panel_recursive_doubling_cublas. frontier_chunks only affects stripes.")
     parser.add_argument("--stage_slots", type=int, default=4)
     parser.add_argument("--num_comm_sms", type=int, default=16)
     parser.add_argument("--comm_lanes", type=int, default=4)
@@ -109,7 +116,16 @@ def parse_args():
     parser.add_argument("--search_stage_slots_list", type=str, default="")
     parser.add_argument("--search_comm_lanes_list", type=str, default="")
     parser.add_argument("--search_num_comm_sms_list", type=str, default="")
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.producer_order.endswith("_cublas") and args.autotune:
+        parser.error("The cuBLAS producer does not use Triton GEMM configurations; use --no-autotune")
+    if args.producer_order.startswith("panel_"):
+        if args.streaming_depth != 1:
+            parser.error("panel_* currently requires --streaming_depth 1")
+        if not args.search and (args.chunk_rows <= 0 or args.stripe_rows != args.chunk_rows):
+            parser.error("panel_* requires explicit positive --chunk_rows and equal --stripe_rows")
+        args.frontier_chunks = 0
+    return args
 
 
 def get_test_configs(args):
@@ -129,6 +145,7 @@ def build_kernel_params(args, overrides=None):
         "active_chunk_window": args.active_chunk_window,
         "n_bands": args.n_bands,
         "frontier_chunks": args.frontier_chunks,
+        "producer_order": args.producer_order,
         "stage_slots": args.stage_slots,
         "num_comm_sms": args.num_comm_sms,
         "comm_lanes": args.comm_lanes,
@@ -136,6 +153,8 @@ def build_kernel_params(args, overrides=None):
     }
     if overrides:
         params.update(overrides)
+    if params["producer_order"].startswith("panel_"):
+        params["frontier_chunks"] = 0  # Stripe-specific parameter, not a panel-order control.
     return params
 
 
@@ -188,6 +207,7 @@ def kernel_params_key(params):
         params["active_chunk_window"],
         params["n_bands"],
         params["frontier_chunks"],
+        params["producer_order"],
         params["stage_slots"],
         params["comm_lanes"],
         params["num_comm_sms"],
@@ -255,6 +275,8 @@ def generate_search_candidates(args, M: int, N: int):
     seen = set()
     for chunk_rows in search_lists["chunk_rows_list"]:
         stripe_rows_candidates = search_lists["stripe_rows_list"]
+        if args.producer_order.startswith("panel_"):
+            stripe_rows_candidates = [chunk_rows]
         if stripe_rows_candidates is None:
             stripe_rows_candidates = [256, 512]
         stripe_rows_candidates = _unique_preserve_order(
@@ -446,6 +468,7 @@ def create_new_ctx(M, N, kernel_params, alloc_envelope=None):
         active_chunk_window=kernel_params["active_chunk_window"],
         n_bands=kernel_params["n_bands"],
         frontier_chunks=kernel_params["frontier_chunks"],
+        producer_order=kernel_params["producer_order"],
         stage_slots=kernel_params["stage_slots"],
         num_comm_sms=kernel_params["num_comm_sms"],
         comm_lanes=kernel_params["comm_lanes"],
@@ -594,6 +617,7 @@ def perf_test(
         "active_chunk_window": kernel_params["active_chunk_window"],
         "n_bands": kernel_params["n_bands"],
         "frontier_chunks": kernel_params["frontier_chunks"],
+        "producer_order": new_ctx.producer_order,
         "stage_slots": new_ctx.stage_slots,
         "comm_lanes": kernel_params["comm_lanes"],
         "num_comm_sms": kernel_params["num_comm_sms"],
@@ -738,7 +762,7 @@ def perf_test(
                 f"speedup_vs_baseline={metrics['new_speedup_vs_baseline']:.4f}, "
                 f"overlap_ratio={metrics['new_overlap_ratio_vs_torch_serial']:.4f}, "
                 f"internal_overlap={metrics['new_internal_overlap_ratio']:.4f}, "
-                f"streaming_depth={metrics['streaming_depth']}",
+                f"streaming_depth={metrics['streaming_depth']}, producer_order={new_ctx.producer_order}",
                 need_sync=True,
                 allowed_ranks=list(range(world_size)),
             )
@@ -789,6 +813,7 @@ def print_search_summary(model_name: str, results, *, topk: int, title: str) -> 
             f"chunk={int(item['chunk_rows'])}, stripe={int(item['stripe_rows'])}, "
             f"window={int(item['active_chunk_window'])}, bands={int(item['n_bands'])}, "
             f"frontier={int(item['frontier_chunks'])}, "
+            f"producer_order={item['producer_order']}, "
             f"stage={int(item['stage_slots'])}, lanes={int(item['comm_lanes'])}, sms={int(item['num_comm_sms'])}",
             flush=True,
         )
@@ -807,6 +832,7 @@ def write_search_csv(csv_file: Path, results) -> None:
                 "active_chunk_window",
                 "n_bands",
                 "frontier_chunks",
+                "producer_order",
                 "stage_slots",
                 "comm_lanes",
                 "num_comm_sms",
@@ -840,6 +866,7 @@ def write_search_csv(csv_file: Path, results) -> None:
                     str(int(item["active_chunk_window"])),
                     str(int(item["n_bands"])),
                     str(int(item["frontier_chunks"])),
+                    str(item["producer_order"]),
                     str(int(item["stage_slots"])),
                     str(int(item["comm_lanes"])),
                     str(int(item["num_comm_sms"])),
@@ -949,6 +976,7 @@ def search_best_params(model_name: str, M: int, config, pg: torch.distributed.Pr
             "active_chunk_window": int(coarse_results[idx]["active_chunk_window"]),
             "n_bands": int(coarse_results[idx]["n_bands"]),
             "frontier_chunks": int(coarse_results[idx]["frontier_chunks"]),
+            "producer_order": coarse_results[idx]["producer_order"],
             "stage_slots": int(coarse_results[idx]["stage_slots"]),
             "num_comm_sms": int(coarse_results[idx]["num_comm_sms"]),
             "comm_lanes": int(coarse_results[idx]["comm_lanes"]),
@@ -989,6 +1017,7 @@ def search_best_params(model_name: str, M: int, config, pg: torch.distributed.Pr
             f"--chunk_rows {int(best['chunk_rows'])} --stripe_rows {int(best['stripe_rows'])} "
             f"--active_chunk_window {int(best['active_chunk_window'])} --n_bands {int(best['n_bands'])} "
             f"--frontier_chunks {int(best['frontier_chunks'])} --stage_slots {int(best['stage_slots'])} "
+            f"--producer_order {best['producer_order']} "
             f"--comm_lanes {int(best['comm_lanes'])} --num_comm_sms {int(best['num_comm_sms'])} "
             f"{'--autotune ' if args.autotune else ''}"
             f"{'--no-check' if not args.check else ''}",
@@ -997,7 +1026,7 @@ def search_best_params(model_name: str, M: int, config, pg: torch.distributed.Pr
         if args.dump_csv:
             csv_dir = Path("csv")
             csv_dir.mkdir(exist_ok=True)
-            csv_file = csv_dir / f"perf_new_windowed_panel_gemm_allreduce_v23_search_{pg.size()}_ranks.csv"
+            csv_file = csv_dir / f"perf_new_windowed_panel_gemm_allreduce_v23_search_{args.producer_order}_{pg.size()}_ranks.csv"
             write_search_csv(csv_file, coarse_results)
             print(f"[search] csv file is dumped into {csv_file}", flush=True)
 
@@ -1031,6 +1060,7 @@ if __name__ == "__main__":
                 "active_chunk_window": args.active_chunk_window,
                 "n_bands": args.n_bands,
                 "frontier_chunks": args.frontier_chunks,
+                "producer_order": args.producer_order,
                 "stage_slots": args.stage_slots,
                 "num_comm_sms": args.num_comm_sms,
                 "comm_lanes": args.comm_lanes,
@@ -1050,7 +1080,7 @@ if __name__ == "__main__":
     if args.dump_csv and TP_GROUP.rank() == 0 and not args.search:
         csv_dir = Path("csv")
         csv_dir.mkdir(exist_ok=True)
-        csv_file = csv_dir / f"perf_new_windowed_panel_gemm_allreduce_v23_{TP_GROUP.size()}_ranks.csv"
+        csv_file = csv_dir / f"perf_new_windowed_panel_gemm_allreduce_v23_{args.producer_order}_{TP_GROUP.size()}_ranks.csv"
         with open(csv_file, "w", encoding="utf-8") as fout:
             print(
                 ",".join([
@@ -1059,6 +1089,7 @@ if __name__ == "__main__":
                     "N",
                     "K",
                     "baseline_status",
+                    "producer_order",
                     "new_total_ms",
                     "new_gemm_only_ms",
                     "new_ar_only_ms",
@@ -1085,6 +1116,7 @@ if __name__ == "__main__":
                             str(config["N"]),
                             str(config["K"]),
                             "skipped",
+                            args.producer_order,
                             "nan",
                             "nan",
                             "nan",
@@ -1110,6 +1142,7 @@ if __name__ == "__main__":
                         str(config["N"]),
                         str(config["K"]),
                         str(m["baseline_status"]),
+                        str(m["producer_order"]),
                         f"{m['new_total_ms']:.6f}",
                         f"{m['new_gemm_only_ms']:.6f}",
                         f"{m['new_ar_only_ms']:.6f}",

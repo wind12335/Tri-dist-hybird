@@ -1,0 +1,62 @@
+{
+  "command": "/root/miniconda3/bin/python3.12 python/triton_dist/benchmark/bench_frontier_order_controlled_gemmrs.py --M 8192 --N 29568 --K 8192 --dtype bfloat16 --no-measure_torch_reference --iters 50 --warmup_iters 20 --chunk_rows 512 --target_chunks_per_rank 2 --min_chunk_rows 512 --active_chunk_window 4 --stage_slots 4 --steady_sms 8 --tail_sms 20 --tail_chunk_window 1 --comm_lanes 2 --n_bands 2 --frontier_chunks 2 --no-autotune --local_seed_direct --trans_b --atol 0.02 --rtol 0.02 --measurement_order uniform_first --run_id controlled_8192x29568x8192_r3 --output_csv /root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/aggregate/controlled_8192x29568x8192_r3.csv --raw_samples_dir /root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3 --manifest_json /root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/manifests/controlled_8192x29568x8192_r3.manifest.json",
+  "configuration": {
+    "K": 8192,
+    "M": 8192,
+    "N": 29568,
+    "active_chunk_window": 4,
+    "atol": 0.02,
+    "autotune_enabled": false,
+    "chunk_rows": 512,
+    "comm_lanes": 2,
+    "controlled_variable": "logical producer tile order only",
+    "correctness_protocol": "Torch GEMM-RS all-close before timing",
+    "dtype": "bfloat16",
+    "frontier_chunks": 2,
+    "gemm_config": "{\"BLOCK_SIZE_K\": 32, \"BLOCK_SIZE_M\": 128, \"BLOCK_SIZE_N\": 256, \"GROUP_SIZE_M\": 4, \"num_ctas\": 1, \"num_stages\": 4, \"num_warps\": 8}",
+    "gemm_config_index": 0,
+    "iters": 50,
+    "measurement_order": "uniform_first",
+    "n_bands": 2,
+    "num_chunks": 4,
+    "raw_samples_dir": "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3",
+    "rtol": 0.02,
+    "run_id": "controlled_8192x29568x8192_r3",
+    "shape": "8192x29568x8192",
+    "stage_slots": 4,
+    "steady_sms": 8,
+    "tail_chunk_window": 1,
+    "tail_sms": 20,
+    "torch_reference_measured": false,
+    "warmup_iters": 20,
+    "world_size": 4
+  },
+  "controlled_condition": {
+    "frontier_first_definition": "frontier chunks from every destination segment followed by remainder",
+    "only_changed_factor": "logical producer tile permutation",
+    "same_complete_tile_set": true,
+    "same_ready_ticket_protocol": true,
+    "same_two_phase_grid_sizes": true,
+    "shared_kernel": "_controlled_order_banded_ready_kernel",
+    "shared_v5_context": true,
+    "uniform_definition": "contiguous segment-major prefix followed by remainder"
+  },
+  "created_at_utc": "2026-08-31T14:14:55.772749+00:00",
+  "output_csv": "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/aggregate/controlled_8192x29568x8192_r3.csv",
+  "policy_sequence": [
+    "uniform",
+    "frontier_first"
+  ],
+  "raw_sample_files": [
+    "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3/controlled_8192x29568x8192_r3_uniform_rank0.csv",
+    "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3/controlled_8192x29568x8192_r3_uniform_rank1.csv",
+    "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3/controlled_8192x29568x8192_r3_uniform_rank2.csv",
+    "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3/controlled_8192x29568x8192_r3_uniform_rank3.csv",
+    "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3/controlled_8192x29568x8192_r3_frontier_first_rank0.csv",
+    "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3/controlled_8192x29568x8192_r3_frontier_first_rank1.csv",
+    "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3/controlled_8192x29568x8192_r3_frontier_first_rank2.csv",
+    "/root/Triton-distributed/python/triton_dist/benchmark/frontier_order_controlled_runs/20260831_4xa100_formal_r2_no_torch_reference/raw_samples/controlled_8192x29568x8192_r3/controlled_8192x29568x8192_r3_frontier_first_rank3.csv"
+  ],
+  "run_id": "controlled_8192x29568x8192_r3",
+  "schema_version": 1
+}

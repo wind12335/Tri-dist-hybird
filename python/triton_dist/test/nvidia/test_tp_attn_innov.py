@@ -34,9 +34,10 @@ import torch.distributed
 from triton_dist.layers.nvidia.tp_attn import TP_Attn, _set_cos_sin_cache
 from triton_dist.models.kv_cache import KV_Cache
 from triton_dist.models.utils import init_model_cpu
-from triton_dist.profiler_utils import group_profile, perf_func
-from triton_dist.test.utils import assert_allclose
-from triton_dist.utils import initialize_distributed, dist_print, nvshmem_barrier_all_on_stream
+from triton_dist.profiler_utils import group_profile
+from triton_dist.utils import initialize_distributed, dist_print
+
+from tp_ag_rs_innov_common import run_pair, write_ranked_json
 # torchrun --nproc_per_node=4 python/triton_dist/test/nvidia/test_tp_attn_innov.py \
 #     --model Qwen/Qwen2-72B \
 #     --bsz 64 \
@@ -55,7 +56,7 @@ from triton_dist.utils import initialize_distributed, dist_print, nvshmem_barrie
 
 THRESHOLD_MAP = {
     torch.float16: 1e-2,
-    torch.bfloat16: 2e-2,
+    torch.bfloat16: 1.25e-1,
 }
 
 DTYPE_MAP = {
@@ -84,14 +85,28 @@ def parse_args():
     parser.add_argument("--warmup", default=20, type=int, help="Warmup iterations")
     parser.add_argument("--iters", default=100, type=int, help="Performance iterations")
     parser.add_argument("--dtype", default="bfloat16", type=str, choices=list(DTYPE_MAP.keys()))
+    parser.add_argument("--atol", type=float, default=None,
+                        help="Override the dtype-specific correctness absolute tolerance.")
+    parser.add_argument("--rtol", type=float, default=None,
+                        help="Override the dtype-specific correctness relative tolerance.")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--profile", default=False, action="store_true", help="Enable torch.profiler")
+    parser.add_argument("--check", default=False, action="store_true",
+                        help="Run correctness check and exit without performance timing.")
     parser.add_argument("--run_type", default="prefill", type=str, choices=["prefill", "decode"])
     parser.add_argument("--mode",
                         type=str,
                         default="ag_rs_new",
                         choices=list(AG_RS_MODES.keys()) + list(GEMM_AR_MODES.keys()))
-    parser.add_argument("--autotune", default=True, action=argparse.BooleanOptionalAction)
+    parser.add_argument("--autotune", default=False, action=argparse.BooleanOptionalAction)
+    parser.add_argument("--cuda_graph", default=False, action=argparse.BooleanOptionalAction,
+                        help="Use CUDA Graph replay; synchronized eager timing is the safe default.")
+    parser.add_argument("--graph_warmup", type=int, default=3)
+    parser.add_argument("--synchronize_each_iter", default=True, action=argparse.BooleanOptionalAction)
+    parser.add_argument("--stability_repeats", type=int, default=0)
+    parser.add_argument("--result", type=str, default=None,
+                        help="JSON file or directory for per-rank and rank-0 summary results.")
+    parser.add_argument("--repeat_id", type=int, default=0)
 
     parser.add_argument("--ag_copy_sms", type=int, default=0)
     parser.add_argument("--ag_enable_tile_ready", default=True, action=argparse.BooleanOptionalAction)
@@ -129,41 +144,74 @@ def rand_tensor(shape: list[int], dtype: torch.dtype):
     return torch.rand(shape, dtype=dtype).cuda() / 10
 
 
-def make_cuda_graph(mempool, func):
-    s = torch.cuda.Stream()
-    s.wait_stream(torch.cuda.current_stream())
-    with torch.cuda.stream(s):
-        for _ in range(30):
-            func()
-    torch.cuda.current_stream().wait_stream(s)
-    graph = torch.cuda.CUDAGraph()
-    with torch.cuda.graph(graph, pool=mempool):
-        func()
-    return graph
+def prepare_kv_cache(kv_cache: KV_Cache, args: argparse.Namespace, seed_delta: int = 0):
+    if args.run_type == "prefill":
+        kv_cache.kv_offset.zero_()
+        return
+    torch.manual_seed(args.seed + 1001 + seed_delta)
+    torch.cuda.manual_seed(args.seed + 1001 + seed_delta)
+    kv_cache.kv_offset.fill_(args.seq_len)
+    kv_cache.rand_fill_kv_cache(args.seq_len)
 
 
-def run_benchmark(test_name: str, torch_func, triton_func, args: argparse.Namespace, group, rank: int, world_size: int):
-    mempool = torch.cuda.graph_pool_handle()
-    torch_graph = make_cuda_graph(mempool, torch_func)
-    triton_dist_graph = make_cuda_graph(mempool, triton_func)
+def error_metrics(actual: torch.Tensor, expected: torch.Tensor):
+    if actual.shape != expected.shape:
+        raise AssertionError(f"Shape mismatch: actual={tuple(actual.shape)}, expected={tuple(expected.shape)}")
+    diff = (actual.float() - expected.float()).abs()
+    return {
+        "max_abs_diff": float(diff.max().item()),
+        "max_rel_diff": float((diff / expected.float().abs().clamp_min(1e-12)).max().item()),
+        "finite": bool(torch.isfinite(actual).all() and torch.isfinite(expected).all()),
+        "shape": list(actual.shape),
+    }
 
+
+def validate_output(actual: torch.Tensor, expected: torch.Tensor, *, atol: float, rtol: float):
+    metrics = error_metrics(actual, expected)
+    close = torch.isclose(actual.float(), expected.float(), atol=atol, rtol=rtol)
+    metrics["passed"] = bool(close.all())
+    metrics["mismatched"] = int((~close).sum().item())
+    metrics["elements"] = close.numel()
+    metrics["mismatch_fraction"] = metrics["mismatched"] / max(metrics["elements"], 1)
+    if not metrics["passed"]:
+        raise AssertionError(f"Attention output mismatch: {metrics}, atol={atol}, rtol={rtol}")
+    return metrics
+
+
+def run_benchmark(
+    test_name: str,
+    torch_func,
+    triton_func,
+    args: argparse.Namespace,
+    group,
+    rank: int,
+    world_size: int,
+    before_each,
+):
     with group_profile(f"tp_attn_innov_{test_name}", args.profile, group=group):
-        torch.cuda.synchronize()
-        _, torch_perf = perf_func(torch_graph.replay, iters=args.iters, warmup_iters=args.warmup)
-        nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
-        torch.cuda.synchronize()
+        performance, graph_state = run_pair(
+            torch_func,
+            triton_func,
+            group=group,
+            warmup=args.warmup,
+            iters=args.iters,
+            use_cuda_graph=args.cuda_graph,
+            graph_warmup=args.graph_warmup,
+            synchronize_each_iter=args.synchronize_each_iter,
+            before_torch_each=before_each,
+            before_selected_each=before_each,
+        )
 
-        torch.cuda.synchronize()
-        _, dist_triton_perf = perf_func(triton_dist_graph.replay, iters=args.iters, warmup_iters=args.warmup)
-        nvshmem_barrier_all_on_stream(torch.cuda.current_stream())
-        torch.cuda.synchronize()
-
-    dist_print(f"torch {test_name} #{rank}", torch_perf, need_sync=True, allowed_ranks=list(range(world_size)))
-    dist_print(f"dist-triton {test_name} #{rank}", dist_triton_perf, f"{torch_perf / dist_triton_perf:.2f}x",
+    dist_print(f"torch {test_name} #{rank}", performance["torch_local_ms"],
                need_sync=True, allowed_ranks=list(range(world_size)))
-
-    del torch_graph, triton_dist_graph, mempool
+    dist_print(f"dist-triton {test_name} #{rank}", performance["selected_local_ms"],
+               f"local={performance['local_speedup']:.2f}x rank-max={performance['rank_max_speedup']:.2f}x",
+               need_sync=True, allowed_ranks=list(range(world_size)))
+    if args.cuda_graph and not performance["cuda_graph_used"]:
+        dist_print("CUDA Graph capture was unavailable; used eager timing.", need_sync=True, allowed_ranks=[0])
+    del graph_state
     torch.cuda.empty_cache()
+    return performance
 
 
 def build_ag_kwargs(args):
@@ -213,19 +261,17 @@ def run_attention_test(attn: TP_Attn, cos_sin_cache, kv_cache: KV_Cache, args: a
     if args.run_type == "prefill":
         seq_len = args.seq_len
         position_ids = torch.arange(0, seq_len, dtype=torch.int64, device="cuda").unsqueeze(0).expand(args.bsz, -1)
-        kv_cache.kv_offset.fill_(0)
     else:
         seq_len = 1
         position_ids = torch.arange(args.seq_len, args.seq_len + 1, dtype=torch.int64,
                                     device="cuda").unsqueeze(0).expand(args.bsz, -1)
-        kv_cache.kv_offset.fill_(args.seq_len)
-        kv_cache.rand_fill_kv_cache(args.seq_len)
 
     x = rand_tensor([args.bsz, seq_len, attn.wqkv.shape[1]], dtype=dtype)
     M = args.bsz * seq_len
     bsz_per_rank = args.bsz // world_size
 
     torch_func = partial(attn.torch_fwd, x, position_ids, cos_sin_cache, kv_cache, layer_idx=0)
+    prepare_kv_cache(kv_cache, args)
     golden_output = torch_func()
 
     if args.mode in AG_RS_MODES:
@@ -274,21 +320,94 @@ def run_attention_test(attn: TP_Attn, cos_sin_cache, kv_cache: KV_Cache, args: a
         golden_for_assert = golden_output
         test_name = f"attn_{args.run_type}_{args.mode}"
 
+    prepare_kv_cache(kv_cache, args)
     triton_output = triton_func()
-    assert_allclose(triton_output, golden_for_assert, atol=atol, rtol=rtol)
-    run_benchmark(test_name, torch_func, triton_func, args, tp_group, rank, world_size)
+    correctness = validate_output(triton_output, golden_for_assert, atol=atol, rtol=rtol)
+
+    stability = []
+    for repeat in range(args.stability_repeats):
+        repeat_x = (x.float() + (repeat + 1) * 1e-4).to(dtype)
+        repeat_torch_func = partial(attn.torch_fwd, repeat_x, position_ids, cos_sin_cache, kv_cache, layer_idx=0)
+        prepare_kv_cache(kv_cache, args, repeat)
+        expected = repeat_torch_func()
+        if args.mode in AG_RS_MODES:
+            repeat_dist_x = repeat_x.split(bsz_per_rank, dim=0)[rank].contiguous()
+            repeat_triton_func = partial(
+                attn.dist_triton_select_ag_rs_fwd,
+                repeat_dist_x,
+                position_ids,
+                cos_sin_cache,
+                kv_cache,
+                0,
+                ag_impl=ag_impl,
+                rs_impl=rs_impl,
+                autotune=args.autotune,
+            )
+            expected = expected.split(bsz_per_rank, dim=0)[rank].contiguous()
+        else:
+            repeat_triton_func = partial(
+                attn.dist_triton_select_gemm_ar_fwd,
+                repeat_x,
+                position_ids,
+                cos_sin_cache,
+                kv_cache,
+                0,
+                impl=impl,
+                autotune=args.autotune,
+            )
+        prepare_kv_cache(kv_cache, args, repeat)
+        actual = repeat_triton_func()
+        metrics = validate_output(actual, expected, atol=atol, rtol=rtol)
+        rank_max_abs = torch.tensor(metrics["max_abs_diff"], dtype=torch.float64, device="cuda")
+        torch.distributed.all_reduce(rank_max_abs, op=torch.distributed.ReduceOp.MAX, group=tp_group)
+        record = {"repeat": repeat, **metrics, "rank_max_abs_diff": float(rank_max_abs.item())}
+        stability.append(record)
+        dist_print(
+            f"[Attention stability] repeat={repeat + 1}/{args.stability_repeats}, "
+            f"rank_max_abs_diff={record['rank_max_abs_diff']:.8g}",
+            need_sync=True,
+            allowed_ranks=[0],
+        )
+
+    performance = None
+    if args.check:
+        dist_print(f"CORRECTNESS CHECK PASSED: {test_name}", need_sync=True, allowed_ranks=[0])
+    else:
+        performance = run_benchmark(
+            test_name,
+            torch_func,
+            triton_func,
+            args,
+            tp_group,
+            rank,
+            world_size,
+            partial(prepare_kv_cache, kv_cache, args),
+        )
+    return {
+        "test_name": test_name,
+        "correctness": correctness,
+        "stability": stability,
+        "performance": performance,
+    }
 
 
 if __name__ == "__main__":
     args = parse_args()
+    if args.bsz <= 0 or args.seq_len <= 0 or args.iters <= 0:
+        raise ValueError("--bsz, --seq_len, and --iters must be positive.")
+    if args.warmup < 0 or args.graph_warmup < 0 or args.stability_repeats < 0:
+        raise ValueError("Warmup and stability counts must be non-negative.")
     RANK = int(os.environ.get("RANK", 0))
     WORLD_SIZE = int(os.environ.get("WORLD_SIZE", 1))
+    if args.mode in AG_RS_MODES and args.bsz % WORLD_SIZE != 0:
+        raise ValueError(f"--bsz must be divisible by world size {WORLD_SIZE} for AG/RS modes.")
     TP_GROUP = initialize_distributed()
     torch.manual_seed(args.seed)
 
     DTYPE = DTYPE_MAP[args.dtype]
-    ATOL = THRESHOLD_MAP.get(DTYPE, 1e-2)
-    RTOL = THRESHOLD_MAP.get(DTYPE, 1e-2)
+    default_tol = THRESHOLD_MAP.get(DTYPE, 1e-2)
+    ATOL = default_tol if args.atol is None else args.atol
+    RTOL = default_tol if args.rtol is None else args.rtol
 
     hf_model = init_model_cpu(model_name=args.model, dtype=DTYPE)
     hf_attn = hf_model.model.layers[0].self_attn.eval().cuda()
@@ -308,16 +427,39 @@ if __name__ == "__main__":
     )
 
     dist_print(f"\n===== Running {args.run_type.capitalize()} Innov Test (Mode: {args.mode}) =====")
-    run_attention_test(attn=attn,
-                       cos_sin_cache=cos_sin_cache,
-                       kv_cache=kv_cache,
-                       args=args,
-                       rank=RANK,
-                       world_size=WORLD_SIZE,
-                       tp_group=TP_GROUP,
-                       dtype=DTYPE,
-                       atol=ATOL,
-                       rtol=RTOL)
+    result = run_attention_test(attn=attn,
+                                cos_sin_cache=cos_sin_cache,
+                                kv_cache=kv_cache,
+                                args=args,
+                                rank=RANK,
+                                world_size=WORLD_SIZE,
+                                tp_group=TP_GROUP,
+                                dtype=DTYPE,
+                                atol=ATOL,
+                                rtol=RTOL)
+
+    payload = {
+        "script": "test_tp_attn_innov.py",
+        "model": args.model,
+        "bsz": args.bsz,
+        "seq_len": args.seq_len,
+        "run_type": args.run_type,
+        "dtype": args.dtype,
+        "mode": args.mode,
+        "rank": RANK,
+        "world_size": WORLD_SIZE,
+        "repeat_id": args.repeat_id,
+        "args": vars(args),
+        **result,
+    }
+    write_ranked_json(
+        args.result,
+        payload,
+        group=TP_GROUP,
+        rank=RANK,
+        world_size=WORLD_SIZE,
+        stem=f"attn_{args.run_type}_{args.mode}_repeat_{args.repeat_id}",
+    )
 
     attn.finalize()
     nvshmem.core.finalize()

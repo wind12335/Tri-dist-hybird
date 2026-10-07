@@ -1,0 +1,23 @@
+\begin{table*}[t]
+  \centering
+  \caption{Constraint-aware search cost and selected configurations on the frozen A100 TP=4 GEMM--RS spaces ($8192\times29568\times8192$).}
+  \label{tab:constraint_search_cost}
+  \scriptsize
+  \setlength{\tabcolsep}{2pt}
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{c l c c c c l}
+  \toprule
+  Space & Method & Coarse coverage & Launches & Selected tuple & Final rank-max (ms) & Relation to exhaustive \\
+  \midrule
+  64 & Exhaustive & 64/64 & $64+3=67$ & (512,4,4,6,12,2,2,1) & 5.49 & Full-space coarse reference \\
+  64 & Two-stage & $4+6$ & $4+6+3=13$ & (512,4,4,6,16,2,2,1) & 5.46 & Different configuration; observed ratio $0.995\times$ \\
+  128 & Exhaustive & 128/128 & $128+3=131$ & (512,4,4,6,24,2,2,1) & 5.39 & Full-space coarse reference \\
+  128 & Two-stage & $4+8$ & $4+8+3=15$ & (512,4,4,6,20,2,2,2) & 5.47 & Different configuration; observed ratio $1.015\times$ \\
+  \bottomrule
+  \end{tabular}
+  \par\smallskip
+  \begin{minipage}{0.97\linewidth}
+  \footnotesize
+  \textbf{Note:} Tuple fields are ordered as $(\texttt{chunk\_rows}, \texttt{active\_chunk\_window}, \texttt{stage\_slots}, \texttt{steady\_sms}, \texttt{tail\_sms}, \texttt{comm\_lanes}, \texttt{n\_bands}, \texttt{frontier\_chunks})$. Coarse coverage counts short-run candidates; launches include short runs and top-three final verification. Final rank-max is \texttt{v2\_total\_ms\_max} over four ranks from an independent 10-iteration verification. The ratio compares observed selected latencies only; it is neither regret nor a final-measurement oracle claim.
+  \end{minipage}
+\end{table*}

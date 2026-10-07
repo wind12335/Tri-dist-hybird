@@ -1,0 +1,183 @@
+{
+ "batch_id": "20260901_4xk100_paperdraft",
+ "captured_at": "2026-09-01T20:21:43+08:00",
+ "hostname": "crdnotebook-2076293935161401346-scnv1ejp8d-64407",
+ "os": {
+  "system": "Linux",
+  "release": "3.10.0-957.el7.x86_64",
+  "machine": "x86_64",
+  "platform": "Linux-3.10.0-957.el7.x86_64-x86_64-with-glibc2.39"
+ },
+ "dtk": {
+  "dtk_root": "/opt/dtk-26.04",
+  "rocm_version": "26.04",
+  "version-dev": "26.04",
+  "version-libs": "26.04",
+  "version-utils": "26.04"
+ },
+ "dcu_libraries": {
+  "librccl": {
+   "paths": [
+    "/opt/dtk/lib/librccl.so",
+    "/opt/dtk/lib/librccl.so.1",
+    "/opt/dtk/lib/librccl.so.1.0",
+    "/opt/dtk/rccl/lib/librccl.so"
+   ],
+   "version": "2.22.3",
+   "soname_version": "1.0",
+   "version_string": "2.22.3"
+  },
+  "libdushmem_host": {
+   "paths": [
+    "/opt/dtk/dushmem/lib/libdushmem_host.so",
+    "/opt/dtk/dushmem/lib/libdushmem_host.so.3",
+    "/opt/dtk/dushmem/lib/libdushmem_host.so.3.2.5"
+   ],
+   "version": "3.2.5"
+  },
+  "libhipblas": {
+   "paths": [
+    "/opt/dtk/lib/libhipblas.so",
+    "/opt/dtk/lib/libhipblas.so.0",
+    "/opt/dtk/lib/libhipblas.so.2",
+    "/opt/dtk/lib/libhipblas.so.2.3"
+   ],
+   "version": "2.3"
+  },
+  "libhipblaslt": {
+   "paths": [
+    "/opt/dtk/lib/libhipblaslt.so",
+    "/opt/dtk/lib/libhipblaslt.so.0",
+    "/opt/dtk/lib/libhipblaslt.so.0.10"
+   ],
+   "version": "0.10"
+  },
+  "libMIOpen": {
+   "paths": [
+    "/opt/dtk/lib/libMIOpen-recommend.so",
+    "/opt/dtk/lib/libMIOpen.so",
+    "/opt/dtk/lib/libMIOpen.so.1",
+    "/opt/dtk/lib/libMIOpen.so.1.0"
+   ],
+   "version": "1.0"
+  }
+ },
+ "dushmem": {
+  "lib_dir": "/opt/dtk/dushmem/lib",
+  "device_lib": "/opt/dtk/dushmem/lib/libdushmem_device.a",
+  "bootstrap_transport_plugins": [
+   "dushmem_bootstrap_mpi.so.3",
+   "dushmem_bootstrap_mpi.so.3.0.0",
+   "dushmem_bootstrap_pmi.so.3",
+   "dushmem_bootstrap_pmi.so.3.0.0",
+   "dushmem_bootstrap_pmi2.so.3",
+   "dushmem_bootstrap_pmi2.so.3.0.0",
+   "dushmem_bootstrap_uid.so.3",
+   "dushmem_bootstrap_uid.so.3.0.0",
+   "dushmem_transport_ibgda.so.3",
+   "dushmem_transport_ibgda.so.3.0.0",
+   "dushmem_transport_ibrc.so.3",
+   "dushmem_transport_ibrc.so.3.0.0"
+  ],
+  "info_tool": "/opt/dtk/dushmem/bin/dushmem-info"
+ },
+ "environment_vars": {
+  "AMDGPU_TARGETS": "gfx906;gfx926;gfx928;gfx936;gfx938",
+  "CLAUDE_CODE_EXECPATH": "/usr/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe",
+  "CMAKE_PREFIX_PATH": "/opt/hyhal:/opt/hyhal:/opt/hyhal:",
+  "CPLUS_INCLUDE_PATH": "/opt/dtk/dcc/gcvm/include:/opt/dtk/include:/opt/hyhal/include:/opt/dtk/llvm/include:/opt/dtk/dushmem/include:/opt/dtk/opencl/include:/opt/dtk-26.04/dcc/gcvm/include:/opt/dtk-26.04/include:/opt/hyhal/include:/opt/dtk-26.04/llvm/include:/opt/dtk-26.04/dushmem/include:/opt/dtk-26.04/opencl/include:/opt/dtk/dcc/gcvm/include:/opt/dtk/include:/opt/hyhal/include:/opt/dtk/llvm/include:/opt/dtk/dushmem/include:/opt/dtk/opencl/include:",
+  "C_INCLUDE_PATH": "/opt/dtk/dcc/gcvm/include:/opt/dtk/include:/opt/hyhal/include:/opt/dtk/llvm/include:/opt/dtk/opencl/include:/opt/dtk-26.04/dcc/gcvm/include:/opt/dtk-26.04/include:/opt/hyhal/include:/opt/dtk-26.04/llvm/include:/opt/dtk-26.04/opencl/include:/opt/dtk/dcc/gcvm/include:/opt/dtk/include:/opt/hyhal/include:/opt/dtk/llvm/include:/opt/dtk/opencl/include:",
+  "DTKROOT": "/opt/dtk",
+  "HIP_PATH": "/opt/dtk/hip",
+  "HYHAL_PATH": "/opt/hyhal",
+  "JUPYTER_CONFIG_PATH": "/etc",
+  "LD_LIBRARY_PATH": "/usr/local/lib/:/usr/local/lib64/:/opt/mpi/lib:/opt/hwloc/lib:/usr/local/lib/:/usr/local/lib64/:/opt/mpi/lib:/opt/hwloc/lib:/opt/dtk/dcc/gcvm/lib:/opt/dtk/hip/lib:/opt/dtk/llvm/lib:/opt/dtk/lib:/opt/dtk/lib64:/opt/hyhal/lib:/opt/hyhal/lib64:/opt/dtk/dushmem/lib:/opt/dtk/opencl/lib:/opt/dtk-26.04/dcc/gcvm/lib:/opt/dtk-26.04/hip/lib:/opt/dtk-26.04/llvm/lib:/opt/dtk-26.04/lib:/opt/dtk-26.04/lib64:/opt/hyhal/lib:/opt/hyhal/lib64:/opt/dtk-26.04/dushmem/lib:/opt/dtk-26.04/opencl/lib:/opt/ucx/lib:/opt/dtk/dcc/gcvm/lib:/opt/dtk/hip/lib:/opt/dtk/llvm/lib:/opt/dtk/lib:/opt/dtk/lib64:/opt/hyhal/lib:/opt/hyhal/lib64:/opt/dtk/dushmem/lib:/opt/dtk/opencl/lib:/opt/mpi/lib:/opt/hwloc/lib:/usr/local/lib/:/usr/local/lib64/:",
+  "LIBRARY_PATH": "/opt/hyhal/lib:/opt/dtk/opencl/lib:/opt/dtk/dushmem/lib:/opt/hyhal/lib:/opt/dtk-26.04/opencl/lib:/opt/dtk-26.04/dushmem/lib:/opt/hyhal/lib:/opt/dtk/opencl/lib:/opt/dtk/dushmem/lib:",
+  "MANPATH": "/opt/mpi/share/man:",
+  "NoDefaultCurrentDirectoryInExePath": "1",
+  "PATH": "/usr/local/bin:/opt/mpi/bin:/opt/hwloc/bin/:/usr/local/bin:/opt/ucx/bin:/opt/dtk/bin:/opt/dtk/llvm/bin:/opt/dtk/hip/bin:/opt/dtk/hip/bin/hipify:/opt/hyhal/bin:/opt/dtk/opencl/bin:/opt/mpi/bin:/opt/hwloc/bin/:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/conda/bin:/opt/conda/bin",
+  "PYTHONPATH": "/usr/local/:/usr/local/:/usr/local/:",
+  "ROCM_PATH": "/opt/dtk",
+  "TASK_PATH": "/public/home/scnv1ejp8d/.SothisAI/k8s_instance/jupyter/crdNotebook-2076293935161401346/2094745587139694594/"
+ },
+ "python_stack": {
+  "python": "3.11.9",
+  "executable": "/usr/local/bin/python3",
+  "torch": "2.7.1",
+  "torch_cuda": null,
+  "torch_hip": "6.3.26093",
+  "cuda_available": true,
+  "device_count": 4,
+  "devices": [
+   {
+    "index": 0,
+    "name": "k100_ai",
+    "total_mem_gib": 63.98,
+    "gcn_arch": "gfx936",
+    "multi_processor_count": 120,
+    "name_measured": "K500SM_AI",
+    "gcn_arch_measured": "gfx928:sramecc+:xnack-"
+   },
+   {
+    "index": 1,
+    "name": "k100_ai",
+    "total_mem_gib": 63.98,
+    "gcn_arch": "gfx936",
+    "multi_processor_count": 120,
+    "name_measured": "K500SM_AI",
+    "gcn_arch_measured": "gfx928:sramecc+:xnack-"
+   },
+   {
+    "index": 2,
+    "name": "k100_ai",
+    "total_mem_gib": 63.98,
+    "gcn_arch": "gfx936",
+    "multi_processor_count": 120,
+    "name_measured": "K500SM_AI",
+    "gcn_arch_measured": "gfx928:sramecc+:xnack-"
+   },
+   {
+    "index": 3,
+    "name": "k100_ai",
+    "total_mem_gib": 63.98,
+    "gcn_arch": "gfx936",
+    "multi_processor_count": 120,
+    "name_measured": "K500SM_AI",
+    "gcn_arch_measured": "gfx928:sramecc+:xnack-"
+   }
+  ],
+  "triton": "3.1.0",
+  "pip_selected": "apex                               1.7.0+das.opt1.dtk2604.torch271\nbyte_flux                          1.0.4+das.opt1.dtk2604.torch271\ndcu-megatron                       0.15.0+das.opt1.dtk2604.torch271\ndeepspeed                          0.18.2+das.opt1.dtk2604.torch271\nflash_attn                         2.6.1+das.opt1.dtk2604.torch271\nflash_mla                          1.0.0+das.opt1.dtk2604.torch271\nlightop                            0.6.0+das.dtk2604.torch271\nlmslim                             0.3.1+das.opt1.dtk2604.torch271\nmegatron-core                      0.15.4+das.opt1.dtk2604.torch271\nnumpy                              1.25.0\nonnxruntime                        1.19.2+das.opt1.dtk2604.torch271\ntorch                              2.7.1+das.opt1.dtk2604\ntorchdata                          0.8.0\ntorchvision                        0.22.0+das.opt1.dtk2604.torch271\ntransformer_engine                 2.10.0+das.opt1.dtk2604.torch271\ntransformers                       4.57.6\ntriton                             3.1.0+das.opt1.dtk2604.torch271\nvllm                               0.11.0+das.opt1.dtk2604.torch271"
+ },
+ "raw_files": [
+  "dcc_version.txt",
+  "hipcc_version.txt",
+  "hipconfig.txt",
+  "hy_smi.txt",
+  "hy_smi_allinfo.txt",
+  "hy_smi_driverversion.txt",
+  "hy_smi_showfwinfo.txt",
+  "hy_smi_showhw.txt",
+  "hy_smi_showtopo.txt",
+  "hy_smi_showvbios.txt",
+  "ibstat.txt",
+  "lscpu.txt",
+  "lspci_display.txt",
+  "meminfo.txt",
+  "mpirun_version.txt",
+  "os_release.txt",
+  "rocm_smi.txt",
+  "rocm_smi_showid.txt",
+  "rocm_smi_showtopo.txt",
+  "rocminfo.txt",
+  "uname.txt"
+ ],
+ "platform_label": {
+  "gpu": "k100_ai",
+  "gcn_arch": "gfx936",
+  "device_count": 4,
+  "vram_gib_per_card": 64,
+  "offload_arch": "gfx936",
+  "note": "论文平台行口径；DTK/DUSHMEM/RCCL 等软件版本为实测（两台 DTK 环境相同）"
+ }
+}

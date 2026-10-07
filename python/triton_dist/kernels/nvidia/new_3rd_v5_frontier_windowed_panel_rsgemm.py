@@ -51,14 +51,27 @@ class New3rdV5FrontierWindowedPanelGEMMRSContext:
     rs_ctx: New3rdV3WindowedPanelRSContext
     output_dtype: torch.dtype
     gemm_out: torch.Tensor
+    output_buf: torch.Tensor
+    workspace: torch.Tensor
     num_gemm_sms: int
     frontier_chunks: int
+    runtime_num_chunks_cache: dict[int, int] = dataclasses.field(default_factory=dict)
 
     def finalize(self) -> None:
         self.rs_ctx.finalize()
 
     def get_gemm_out_buf(self, input: torch.Tensor) -> torch.Tensor:
         return self.gemm_out[:input.shape[0]]
+
+    def get_output_buf(self, input: torch.Tensor) -> torch.Tensor:
+        return self.output_buf[:input.shape[0] // self.rs_ctx.world_size]
+
+    def get_num_runtime_chunks(self, M: int) -> int:
+        num_runtime_chunks = self.runtime_num_chunks_cache.get(M)
+        if num_runtime_chunks is None:
+            num_runtime_chunks = triton.cdiv(M // self.rs_ctx.world_size, self.rs_ctx.chunk_rows)
+            self.runtime_num_chunks_cache[M] = num_runtime_chunks
+        return num_runtime_chunks
 
 
 def launch_v5_frontier_panelized_gemm_producer(
@@ -157,10 +170,14 @@ def create_new_3rd_v5_frontier_windowed_panel_gemm_rs_context(
     )
     num_sms = torch.cuda.get_device_properties("cuda").multi_processor_count
     gemm_out = torch.empty((max_M, N), dtype=output_dtype, device="cuda")
+    output_buf = torch.empty((max_M // world_size, N), dtype=output_dtype, device="cuda")
+    workspace = torch.zeros((rs_ctx.n_bands * world_size * rs_ctx.num_chunks,), dtype=torch.int32, device="cuda")
     ctx = New3rdV5FrontierWindowedPanelGEMMRSContext(
         rs_ctx=rs_ctx,
         output_dtype=output_dtype,
         gemm_out=gemm_out,
+        output_buf=output_buf,
+        workspace=workspace,
         num_gemm_sms=num_sms,
         frontier_chunks=max(0, frontier_chunks),
     )
@@ -236,11 +253,11 @@ def new_3rd_v5_frontier_windowed_panel_gemm_rs_op(
     assert B.shape == (local_K, ctx.rs_ctx.N), f"B should be of shape [{local_K}, {ctx.rs_ctx.N}]"
     assert M % world_size == 0, "M must be divisible by world_size"
 
-    output = torch.empty((M // world_size, N), dtype=ctx.output_dtype, device=A.device)
-    workspace = torch.zeros((ctx.rs_ctx.n_bands * world_size * ctx.rs_ctx.num_chunks,), dtype=torch.int32, device=A.device)
+    output = ctx.get_output_buf(A)
+    workspace = ctx.workspace
     gemm_out = ctx.get_gemm_out_buf(A)
 
-    num_runtime_chunks = triton.cdiv(M // world_size, ctx.rs_ctx.chunk_rows)
+    num_runtime_chunks = ctx.get_num_runtime_chunks(M)
     signal_value = ctx.rs_ctx.begin_round(num_runtime_chunks)
     launch_v5_frontier_panelized_gemm_producer(A, B, gemm_out, ctx, workspace, signal_value, gemm_config)
     return new_3rd_v3_windowed_panel_rs_op(gemm_out, ctx.rs_ctx, output, prepare_round=False)

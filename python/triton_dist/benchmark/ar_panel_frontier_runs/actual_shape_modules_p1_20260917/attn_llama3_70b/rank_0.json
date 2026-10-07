@@ -1,0 +1,44 @@
+{
+  "scope": "tp_attention",
+  "model": "/root/eb-public/huggingface-models/meta-llama/Meta-Llama-3-70B",
+  "run_type": "prefill",
+  "bsz": 64,
+  "seq_len": 128,
+  "M": 8192,
+  "dtype": "bfloat16",
+  "world_size": 4,
+  "rank": 0,
+  "ar": {
+    "chunk_rows": 2048,
+    "stripe_rows": 2048,
+    "target_chunks": 4,
+    "min_chunk_rows": 512,
+    "active_chunk_window": 4,
+    "n_bands": 1,
+    "frontier_chunks": 0,
+    "stage_slots": 4,
+    "num_comm_sms": 32,
+    "comm_lanes": 2,
+    "producer_order": "panel_recursive_doubling_cublas"
+  },
+  "correctness": {
+    "passed": true,
+    "shape": [
+      64,
+      128,
+      8192
+    ],
+    "atol": 0.06,
+    "rtol": 0.06,
+    "max_abs_diff": 0.125,
+    "max_rel_diff": 15624999936.0
+  },
+  "performance": {
+    "timing_mode": "eager",
+    "torch_local_ms": 5.239142227172851,
+    "v23_local_ms": 5.794784164428711,
+    "torch_rank_max_ms": 5.239799880981446,
+    "v23_rank_max_ms": 5.795483016967774,
+    "rank_max_speedup": 0.9041178907160246
+  }
+}

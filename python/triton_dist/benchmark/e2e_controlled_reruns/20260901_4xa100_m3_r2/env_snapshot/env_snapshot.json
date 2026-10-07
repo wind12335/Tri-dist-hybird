@@ -1,0 +1,89 @@
+{
+ "batch_id": "20260901_4xa100_m3_r2",
+ "captured_at": "2026-09-01T15:21:25+08:00",
+ "hostname": "cs-d085f-deb6f-server",
+ "os": {
+  "system": "Linux",
+  "release": "5.15.0-94-generic",
+  "machine": "x86_64"
+ },
+ "kernel_cmdline": "BOOT_IMAGE=/boot/vmlinuz-5.15.0-94-generic root=/dev/mapper/vg0-lv--0 ro",
+ "invocation": [
+  "/root/miniconda3/bin/python3",
+  "python/triton_dist/benchmark/collect_env_snapshot.py",
+  "--output_dir",
+  "/root/Triton-distributed/python/triton_dist/benchmark/e2e_controlled_reruns/20260901_4xa100_m3_r2/env_snapshot",
+  "--batch_id",
+  "20260901_4xa100_m3_r2"
+ ],
+ "collector": {
+  "path": "/root/Triton-distributed/python/triton_dist/benchmark/collect_env_snapshot.py",
+  "sha256": "043d5a56695a90288ede018d58a48e4414bd792d99b54cdea1c56100414f4b98"
+ },
+ "environment": {
+  "CONDA_PREFIX": "/root/miniconda3",
+  "CUDA_HOME": "<unset>",
+  "CUDA_PATH": "<unset>",
+  "CUDA_VISIBLE_DEVICES": "<unset>",
+  "LD_LIBRARY_PATH": "/root/.cache/nvshmem_src/build/src/lib:/usr/local/cuda/lib64:/root/miniconda3/lib/python3.12/site-packages/nvidia/nvshmem/lib:/root/Triton-distributed/shmem/rocshmem_bind/ompi_build/install/ompi/lib",
+  "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libstdc++.so.6",
+  "PATH": "/usr/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/root/miniconda3/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+  "PYTHONPATH": ":/root/Triton-distributed/python",
+  "CUDA_LAUNCH_BLOCKING": "0",
+  "CUDA_VERSION": "12.9.1",
+  "NCCL_DEBUG": "ERROR",
+  "NCCL_VERSION": "2.27.3-1",
+  "NVSHMEM_BOOTSTRAP": "UID",
+  "NVSHMEM_BOOTSTRAP_UID_SOCK_IFNAME": "eth0",
+  "NVSHMEM_DISABLE_CUDA_VMM": "1",
+  "NVSHMEM_HOME": "/root/miniconda3/lib/python3.12/site-packages/nvidia/nvshmem",
+  "NVSHMEM_SRC_HOME": "/root/.cache/nvshmem_src/build/src",
+  "TORCH_CPP_LOG_LEVEL": "1",
+  "TRITON_CACHE_DIR": "/root/Triton-distributed/triton_cache"
+ },
+ "python_stack": {
+  "python": "3.12.9",
+  "executable": "/root/miniconda3/bin/python3",
+  "torch": "2.7.0+cu126",
+  "cuda_runtime": "12.6",
+  "nccl": [
+   2,
+   26,
+   2
+  ],
+  "cudnn": 90501,
+  "gpu_name": "NVIDIA A100-SXM4-80GB",
+  "gpu_count": 4,
+  "gpu_total_mem_gib": 79.25,
+  "triton": "3.4.0",
+  "triton_dist": "unknown",
+  "pip_distribution_versions": {
+   "torch": "2.7.0",
+   "nvidia-nvshmem-cu12": "3.3.9",
+   "nvshmem4py-cu12": "0.1.2",
+   "triton-dist": "3.4.0"
+  },
+  "nvshmem_wheel_path": "/root/miniconda3/lib/python3.12/site-packages/nvidia/nvshmem"
+ },
+ "git": {
+  "commit": "b3ba2b753c316c2dd834f95756184f1a61d3fdf8",
+  "branch": "main",
+  "describe": "b3ba2b7-dirty",
+  "status_short": "? 3rdparty/triton\n M python/triton_dist/benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs_search.py\n M python/triton_dist/benchmark/bench_active_window_ablation_gemmrs.py\n M python/triton_dist/benchmark/bench_frontier_timeline_collect_gemmrs.py\n M python/triton_dist/benchmark/bench_new_allgather_gemm_8rank.py\n M python/triton_dist/benchmark/plot_active_window_ablation_gemmrs.py\n M python/triton_dist/benchmark/plot_rs_active_window_footprint.py\n M python/triton_dist/kernels/nvidia/new_allgather_gemm_hurastic.py\n M python/triton_dist/kernels/nvidia/new_allgather_gemm_tileready.py\n M python/triton_dist/test/nvidia/test_tp_e2e_innov_real.py\n?? python/triton_dist/.ipynb_checkpoints/\n?? python/triton_dist/_tmp_arch_figs/\n?? python/triton_dist/ag_bifurcated_overlap_draft.svg\n?? python/triton_dist/benchmark/.ipynb_checkpoints/active_window_effect_draft-checkpoint.svg\n?? python/triton_dist/benchmark/.ipynb_checkpoints/bench_ag_gemm_eval_8rank-checkpoint.py\n?? python/triton_dist/benchmark/.ipynb_checkpoints/bench_ag_ready_granularity_sweep_eval-checkpoint.py\n?? python/triton_dist/benchmark/.ipynb_checkpoints/benchmark_gemm_reducescatter-checkpoint.py\n?? python/triton_dist/benchmark/.ipynb_checkpoints/benchmark_gemm_reducescatter_1-checkpoint.py\n?? python/triton_dist/benchmark/.ipynb_checkpoints/plot_ag_ready_ablation-checkpoint.py\n?? python/triton_dist/benchmark/.ipynb_checkpoints/rsar_active_window_staging_draft-checkpoint.svg\n?? python/triton_dist/benchmark/active_window_effect_draft.svg\n?? python/triton_dist/benchmark/active_window_sweep_runs/\n?? python/triton_dist/benchmark/ag_ready_granularity_eval_results/\n?? python/triton_dist/benchmark/backups/\n?? python/triton_dist/benchmark/bench_active_window_sweep_driver.py\n?? python/triton_dist/benchmark/bench_ag_gemm_eval_8rank.py\n?? python/triton_dist/benchmark/bench_ag_ready_granularity_multi.py\n?? python/triton_dist/benchmark/bench_ag_ready_granularity_sweep_eval.py\n?? python/triton_dist/benchmark/bench_frontier_order_controlled_gemmrs.py\n?? python/triton_dist/benchmark/collect_env_snapshot.py\n?? python/triton_dist/benchmark/e2e_controlled_reruns/\n?? python/triton_dist/benchmark/e2e_decode_runs/\n?? python/triton_dist/benchmark/e2e_mlp_runs/\n?? python/triton_dist/benchmark/evaluation_figures/\n?? python/triton_dist/benchmark/frontier_order_controlled_backups/\n?? python/triton_dist/benchmark/frontier_order_controlled_runs/\n?? python/triton_dist/benchmark/merge_ag_ready_shapes.py\n?? python/triton_dist/benchmark/merge_frontier_schedule_ablation_csvs.py\n?? python/triton_dist/benchmark/merge_rs_frontier_timeline_csvs.py\n?? python/triton_dist/benchmark/operator_a800_8rank_runs/\n?? python/triton_dist/benchmark/plot_active_window_sweep_gemmrs.py\n?? python/triton_dist/benchmark/plot_ag_ready_ablation.py\n?? python/triton_dist/benchmark/plot_e2e_prefill_speedup.py\n?? python/triton_dist/benchmark/plot_feasibility_evidence_composite.py\n?? python/triton_dist/benchmark/plot_feasibility_evidence_composite.py.bak-20260828\n?? python/triton_dist/benchmark/plot_frontier_schedule_ablation_multi_shape.py\n?? python/triton_dist/benchmark/plot_rs_frontier_timeline_multi_shape.py\n?? python/triton_dist/benchmark/plot_rs_frontier_timeline_multi_shape_clean.py\n?? python/triton_dist/benchmark/plot_rs_frontier_timeline_multi_shape_vertical.py\n?? python/triton_dist/benchmark/rs_frontier_schedule_results/20260701_193626/.ipynb_checkpoints/rs_frontier_prestart_panel_mix-checkpoint.png\n?? python/triton_dist/benchmark/rs_frontier_timeline_results/.ipynb_checkpoints/\n?? python/triton_dist/benchmark/rs_frontier_timeline_results/8192_49152_12288_c512_f2_a800_pcie_noautotune/\n?? python/triton_dist/benchmark/rs_frontier_timeline_results/8192_53248_16384_c512_f2_a800_pcie_noautotune/\n?? python/triton_dist/benchmark/rs_frontier_timeline_results/rs_frontier_timeline_multi_shape.png\n?? python/triton_dist/benchmark/rs_frontier_timeline_results/rs_frontier_timeline_multi_shape.svg\n?? python/triton_dist/benchmark/rsar_active_window_staging_draft.svg\n?? python/triton_dist/benchmark/search_compare_runs/\n?? python/triton_dist/benchmark/tests/\n?? python/triton_dist/bibtex.stdout\n?? python/triton_dist/bifurcated_overlap_draft.svg\n?? python/triton_dist/chapters/\n?? python/triton_dist/csv/.ipynb_checkpoints/frontier_schedule_ablation-checkpoint.png\n?? python/triton_dist/csv/.ipynb_checkpoints/frontier_schedule_ablation_multi_shape-checkpoint.png\n?? python/triton_dist/csv/.ipynb_checkpoints/frontier_schedule_ablation_multi_shape-checkpoint.svg\n?? python/triton_dist/csv/frontier_schedule_ablation_multi_shape.png\n?? python/triton_dist/csv/frontier_schedule_ablation_multi_shape.svg\n?? python/triton_dist/figures/\n?? python/triton_dist/kernels/nvidia/experimental_frontier_order_controlled.py\n?? python/triton_dist/methodology_zh_main.tex\n?? python/triton_dist/overleaf_methodology_zh-eurosys27-acm-pdf-viewer-2026-08-28-r3/\n?? python/triton_dist/overleaf_methodology_zh-eurosys27-acm-pdf-viewer-2026-08-28-r5.zip.nested-layout-backup\n?? python/triton_dist/overleaf_methodology_zh-eurosys27-acm-pdf-viewer-2026-08-28-r5/\n?? python/triton_dist/overleaf_methodology_zh-eurosys27-acm-pdf-viewer-2026-08-28/\n?? python/triton_dist/overleaf_methodology_zh-eurosys27-acm-pdf-viewer-2026-08-29-r6/\n?? python/triton_dist/overleaf_methodology_zh-eurosys27-acm-pdf-viewer-2026-09-01-r7/\n?? python/triton_dist/overleaf_methodology_zh/\n?? python/triton_dist/pass1.stdout\n?? python/triton_dist/pass2.stdout\n?? python/triton_dist/pass3.stdout\n?? python/triton_dist/plan/\n?? python/triton_dist/rsar_bifurcated_overlap_arch_draft.svg\n?? python/triton_dist/rsar_bifurcated_overlap_timeline_draft.svg\n?? python/triton_dist/tables/\n?? python/triton_dist/test/nvidia/.ipynb_checkpoints/\n?? python/triton_dist/texput.log\n?? \"python/triton_dist/\\344\\270\\255\\346\\226\\207\\345\\210\\235\\347\\250\\277\\344\\277\\256\\346\\224\\271\\345\\217\\212\\345\\220\\204\\347\\247\\215\\351\\227\\256\\351\\242\\230.pdf\"\n?? \"python/triton_dist/\\345\\274\\225\\347\\224\\250\\350\\256\\272\\346\\226\\207/\"",
+  "tracked_diff_sha256": "7040e876a2db9a3737c278f4036cf0d0bbf990419d146cf7c7f582cfce4f1634",
+  "tracked_diff_bytes": 54518,
+  "tracked_diff_returncode": 0
+ },
+ "raw_files": [
+  "ibstat.txt",
+  "lscpu.txt",
+  "meminfo.txt",
+  "nvcc.txt",
+  "nvidia_smi.txt",
+  "nvidia_smi_short.txt",
+  "nvidia_smi_topo.txt",
+  "os_release.txt",
+  "pip_selected.txt",
+  "uname.txt"
+ ]
+}

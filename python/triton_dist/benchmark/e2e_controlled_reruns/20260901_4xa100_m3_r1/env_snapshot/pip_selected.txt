@@ -1,0 +1,47 @@
+Name: torch
+Version: 2.7.0
+Summary: Tensors and Dynamic neural networks in Python with strong GPU acceleration
+Home-page: https://pytorch.org/
+Author: PyTorch Team
+Author-email: packages@pytorch.org
+License: BSD-3-Clause
+Location: /root/miniconda3/lib/python3.12/site-packages
+Requires: filelock, fsspec, jinja2, networkx, nvidia-cublas-cu12, nvidia-cuda-cupti-cu12, nvidia-cuda-nvrtc-cu12, nvidia-cuda-runtime-cu12, nvidia-cudnn-cu12, nvidia-cufft-cu12, nvidia-cufile-cu12, nvidia-curand-cu12, nvidia-cusolver-cu12, nvidia-cusparse-cu12, nvidia-cusparselt-cu12, nvidia-nccl-cu12, nvidia-nvjitlink-cu12, nvidia-nvtx-cu12, setuptools, sympy, triton, typing-extensions
+Required-by: flash_attn, torchaudio, torchvision
+---
+Name: nvidia-nvshmem-cu12
+Version: 3.3.9
+Summary: NVSHMEM creates a global address space that provides efficient and scalable communication for NVIDIA GPU clusters.
+Home-page: https://developer.nvidia.com/cuda-zone
+Author: Nvidia CUDA Installer Team
+Author-email: compute_installer@nvidia.com
+License: BSD-3-Clause
+Location: /root/miniconda3/lib/python3.12/site-packages
+Requires: 
+Required-by: nvshmem4py-cu12, triton-dist
+---
+Name: nvshmem4py-cu12
+Version: 0.1.2
+Summary: Python bindings for NVSHMEM
+Home-page: 
+Author: NVIDIA Corporation
+Author-email: 
+License: 
+Location: /root/miniconda3/lib/python3.12/site-packages
+Requires: cuda-python, cuda.core, Cython, numpy, nvidia-nvshmem-cu12
+Required-by: triton-dist
+---
+Name: triton-dist
+Version: 3.4.0
+Summary: Triton language and compiler extension for distributed deep learning systems
+Home-page: https://github.com/ByteDance-Seed/Triton-distributed
+Author: ByteDance Seed
+Author-email: zheng.size@bytedance.com
+License: 
+Location: /root/miniconda3/lib/python3.12/site-packages
+Editable project location: /root/Triton-distributed/python
+Requires: cuda-python, cuda.core, Cython, nvidia-nvshmem-cu12, nvshmem4py-cu12, packaging, setuptools
+Required-by: 
+
+--- stderr ---
+WARNING: Package(s) not found: triton

@@ -28,6 +28,7 @@ from pathlib import Path
 
 import torch
 import torch.distributed
+import triton
 
 from triton_dist.layers.nvidia import GemmARLayer
 from triton_dist.profiler_utils import group_profile, perf_func
@@ -55,6 +56,13 @@ def parse_args():
     parser.add_argument("--row_wise", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--low_latency", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--check", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument(
+        "--block_size_n",
+        type=int,
+        choices=[0, 64, 128, 256],
+        default=0,
+        help="Override GEMM BLOCK_SIZE_N; 0 keeps GemmARLayer's default (256).",
+    )
     return parser.parse_args()
 
 
@@ -107,6 +115,21 @@ def perf_test(model_name: str, M: int, config, pg: torch.distributed.ProcessGrou
     a, weight = make_data(M, N, K, dtype, pg)
     partial = torch.matmul(a, weight.T)
 
+    user_gemm_config = None
+    if args.block_size_n:
+        num_sms = torch.cuda.get_device_properties("cuda").multi_processor_count
+        user_gemm_config = triton.Config(
+            {
+                "BLOCK_SIZE_M": 128,
+                "BLOCK_SIZE_N": args.block_size_n,
+                "BLOCK_SIZE_K": 64,
+                "GROUP_SIZE_M": 1,
+                "NUM_GEMM_SMS": num_sms - args.num_comm_sms,
+            },
+            num_stages=3,
+            num_warps=8,
+        )
+
     try:
         gemm_ar = GemmARLayer(
             pg,
@@ -121,6 +144,7 @@ def perf_test(model_name: str, M: int, config, pg: torch.distributed.ProcessGrou
             copy_to_local=args.copy_to_local,
             NUM_COMM_SMS=args.num_comm_sms,
             TILE_MAP_LEVEL=int(args.row_wise),
+            user_gemm_config=user_gemm_config,
         )
     except Exception as exc:
         err_msg = str(exc)

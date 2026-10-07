@@ -1,0 +1,150 @@
+{
+  "experiment": "v23 panel_recursive_doubling vs panel_recursive_doubling_cublas (see mode definitions; not necessarily order-only)",
+  "args": {
+    "M": 1025,
+    "N": 1030,
+    "K": 1024,
+    "dtype": "bfloat16",
+    "chunk_rows": 512,
+    "stripe_rows": 512,
+    "n_bands": 2,
+    "frontier_chunks": 2,
+    "active_chunk_window": 2,
+    "stage_slots": 1,
+    "comm_lanes": 2,
+    "num_comm_sms": 16,
+    "modes": [
+      "panel_recursive_doubling",
+      "panel_recursive_doubling_cublas"
+    ],
+    "first_mode_stripe_rows": null,
+    "check_rounds": 6,
+    "warmup_iters": 2,
+    "iters": 3,
+    "seed": 20260916,
+    "output_json": "python/triton_dist/benchmark/ar_panel_frontier_runs/rd_smoke_bf16_slot1_20260916_r1.json"
+  },
+  "world_size": 4,
+  "device": "NVIDIA A800-SXM4-80GB",
+  "torch_version": "2.7.0+cu126",
+  "cuda_version": "12.6",
+  "gemm_config": "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 2, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+  "kernel_sha256": "212266898cf9b17e9811c977036a1fb93eb9b43c5c93a7c258485172659cfea1",
+  "symmetric_scatter_bytes": 2109440,
+  "allocation_by_mode": {
+    "panel_recursive_doubling": {
+      "stripe_rows": 512,
+      "stage_slots": 1,
+      "scatter_bytes": 2109440
+    },
+    "panel_recursive_doubling_cublas": {
+      "stripe_rows": 512,
+      "stage_slots": 1,
+      "scatter_bytes": 2109440
+    }
+  },
+  "checks": [
+    {
+      "round": 0,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.062218666076660156,
+      "relative_l2": 0.003041609190404415
+    },
+    {
+      "round": 0,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.062218666076660156,
+      "relative_l2": 0.003041609190404415
+    },
+    {
+      "round": 1,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.06153583526611328,
+      "relative_l2": 0.0030459847766906023
+    },
+    {
+      "round": 1,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.06153583526611328,
+      "relative_l2": 0.0030459847766906023
+    },
+    {
+      "round": 2,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.05135536193847656,
+      "relative_l2": 0.0030425593722611666
+    },
+    {
+      "round": 2,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.05135536193847656,
+      "relative_l2": 0.0030425593722611666
+    },
+    {
+      "round": 3,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.05379295349121094,
+      "relative_l2": 0.0030425554141402245
+    },
+    {
+      "round": 3,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.05379295349121094,
+      "relative_l2": 0.0030425554141402245
+    },
+    {
+      "round": 4,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.06849193572998047,
+      "relative_l2": 0.0030432913918048143
+    },
+    {
+      "round": 4,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.06849193572998047,
+      "relative_l2": 0.0030432913918048143
+    },
+    {
+      "round": 5,
+      "mode": "panel_recursive_doubling",
+      "failed": false,
+      "max_abs_error": 0.049895286560058594,
+      "relative_l2": 0.003038295079022646
+    },
+    {
+      "round": 5,
+      "mode": "panel_recursive_doubling_cublas",
+      "failed": false,
+      "max_abs_error": 0.049895286560058594,
+      "relative_l2": 0.0030382985714823008
+    }
+  ],
+  "rank_max_samples_ms": {
+    "panel_recursive_doubling": [
+      2.168031930923462,
+      2.1204800605773926,
+      2.131135940551758
+    ],
+    "panel_recursive_doubling_cublas": [
+      2.3317759037017822,
+      2.355936050415039,
+      2.378943920135498
+    ]
+  },
+  "median_ms": {
+    "panel_recursive_doubling": 2.131135940551758,
+    "panel_recursive_doubling_cublas": 2.355936050415039
+  },
+  "ratio_of_medians": 0.9045814041413905,
+  "median_paired_speedup": 0.9000584121134498
+}

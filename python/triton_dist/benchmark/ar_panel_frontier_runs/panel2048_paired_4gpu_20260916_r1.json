@@ -1,0 +1,142 @@
+{
+  "experiment": "v23 panel_bulk vs panel_frontier (see mode definitions; not necessarily order-only)",
+  "args": {
+    "M": 8192,
+    "N": 49152,
+    "K": 12288,
+    "dtype": "bfloat16",
+    "chunk_rows": 2048,
+    "stripe_rows": 2048,
+    "n_bands": 2,
+    "frontier_chunks": 2,
+    "active_chunk_window": 4,
+    "stage_slots": 2,
+    "comm_lanes": 2,
+    "num_comm_sms": 24,
+    "modes": [
+      "panel_bulk",
+      "panel_frontier"
+    ],
+    "first_mode_stripe_rows": null,
+    "check_rounds": 3,
+    "warmup_iters": 5,
+    "iters": 20,
+    "seed": 20260916,
+    "output_json": "python/triton_dist/benchmark/ar_panel_frontier_runs/panel2048_paired_4gpu_20260916_r1.json"
+  },
+  "world_size": 4,
+  "device": "NVIDIA A800-SXM4-80GB",
+  "torch_version": "2.7.0+cu126",
+  "cuda_version": "12.6",
+  "gemm_config": "BLOCK_SIZE_M: 128, BLOCK_SIZE_N: 128, BLOCK_SIZE_K: 32, GROUP_SIZE_M: 4, num_warps: 4, num_ctas: 1, num_stages: 4, maxnreg: None",
+  "kernel_sha256": "b7df2d4a39a703a11c12c892aa0834eed1b6dbed302122c95f0d307a5876d619",
+  "symmetric_scatter_bytes": 805306368,
+  "allocation_by_mode": {
+    "panel_bulk": {
+      "stripe_rows": 2048,
+      "stage_slots": 2,
+      "scatter_bytes": 805306368
+    },
+    "panel_frontier": {
+      "stripe_rows": 2048,
+      "stage_slots": 2,
+      "scatter_bytes": 805306368
+    }
+  },
+  "checks": [
+    {
+      "round": 0,
+      "mode": "panel_bulk",
+      "failed": false,
+      "max_abs_error": 0.05238914489746094,
+      "relative_l2": 0.002372884191572666
+    },
+    {
+      "round": 0,
+      "mode": "panel_frontier",
+      "failed": false,
+      "max_abs_error": 0.05238914489746094,
+      "relative_l2": 0.002372884191572666
+    },
+    {
+      "round": 1,
+      "mode": "panel_bulk",
+      "failed": false,
+      "max_abs_error": 0.052257537841796875,
+      "relative_l2": 0.0023728497326374054
+    },
+    {
+      "round": 1,
+      "mode": "panel_frontier",
+      "failed": false,
+      "max_abs_error": 0.052257537841796875,
+      "relative_l2": 0.0023728497326374054
+    },
+    {
+      "round": 2,
+      "mode": "panel_bulk",
+      "failed": false,
+      "max_abs_error": 0.0572052001953125,
+      "relative_l2": 0.0023729943204671144
+    },
+    {
+      "round": 2,
+      "mode": "panel_frontier",
+      "failed": false,
+      "max_abs_error": 0.0572052001953125,
+      "relative_l2": 0.0023729943204671144
+    }
+  ],
+  "rank_max_samples_ms": {
+    "panel_bulk": [
+      26.438335418701172,
+      26.2653751373291,
+      25.774431228637695,
+      24.029151916503906,
+      24.960384368896484,
+      25.74553680419922,
+      26.705280303955078,
+      21.65363121032715,
+      26.804096221923828,
+      25.46259117126465,
+      26.392736434936523,
+      25.201984405517578,
+      27.607776641845703,
+      27.03865623474121,
+      25.085952758789062,
+      25.925472259521484,
+      25.030336380004883,
+      25.879135131835938,
+      25.814559936523438,
+      23.647552490234375
+    ],
+    "panel_frontier": [
+      25.74176025390625,
+      27.65430450439453,
+      27.67932891845703,
+      24.68035125732422,
+      21.029279708862305,
+      24.578784942626953,
+      27.714496612548828,
+      24.992416381835938,
+      24.286527633666992,
+      26.713247299194336,
+      27.560224533081055,
+      27.33782386779785,
+      29.902463912963867,
+      26.343616485595703,
+      25.27190399169922,
+      27.516704559326172,
+      25.335359573364258,
+      27.21945571899414,
+      24.810016632080078,
+      22.65760040283203
+    ]
+  },
+  "median_ms": {
+    "panel_bulk": 25.794495582580566,
+    "panel_frontier": 26.042688369750977
+  },
+  "ratio_of_medians": 0.9904697708759327,
+  "median_paired_speedup": 0.9685999602303026
+}

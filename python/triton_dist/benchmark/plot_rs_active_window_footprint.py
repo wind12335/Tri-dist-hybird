@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plot RS active-window symmetric-memory footprint summaries."""
+"""Plot derived RS active-window symmetric-allocation envelopes."""
 
 from __future__ import annotations
 
@@ -16,6 +16,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--input_csv", type=str, required=True)
     parser.add_argument("--output_dir", type=str, default=None)
     parser.add_argument("--log_scale", action="store_true", default=False)
+    parser.add_argument("--dpi", type=int, default=450)
     return parser.parse_args()
 
 
@@ -25,7 +26,7 @@ def load_rows(csv_path: Path) -> list[dict[str, str]]:
 
 
 def shape_label(row: dict[str, str]) -> str:
-    return f"{row['M']}x{row['N']}x{row['K']}"
+    return f"{row['M']}x{row['N']}\nx{row['K']}"
 
 
 def main() -> None:
@@ -48,15 +49,23 @@ def main() -> None:
     active_window = [int(row["effective_active_chunk_window"]) for row in rows]
 
     plt.rcParams.update({
-        "font.size": 11,
+        "font.family": "serif",
+        "font.serif": ["Times New Roman", "DejaVu Serif", "STIXGeneral"],
+        "font.size": 9.5,
         "axes.spines.top": False,
         "axes.spines.right": False,
+        "axes.grid": True,
+        "axes.axisbelow": True,
+        "grid.color": "#D8DEE9",
+        "grid.alpha": 0.55,
+        "grid.linewidth": 0.65,
+        "savefig.bbox": "tight",
     })
 
     fig, (ax0, ax1) = plt.subplots(
         1,
         2,
-        figsize=(12.8, 4.8),
+        figsize=(8.0, 3.45),
         gridspec_kw={"width_ratios": [1.45, 1.0]},
         constrained_layout=True,
     )
@@ -69,17 +78,18 @@ def main() -> None:
         "legacy": "#7A7A7A",
     }
 
-    ax0.bar(x - width, no_reuse, width=width, color=colors["no_reuse"], label="Without slot reuse")
-    ax0.bar(x, windowed, width=width, color=colors["windowed"], label="With active window")
-    ax0.bar(x + width, legacy, width=width, color=colors["legacy"], label="Legacy old path")
+    ax0.bar(x - width, no_reuse, width=width, color=colors["no_reuse"], label="No-reuse envelope")
+    ax0.bar(x, windowed, width=width, color=colors["windowed"], label="Active-window envelope")
+    ax0.bar(x + width, legacy, width=width, color=colors["legacy"], label="Legacy allocation")
     if args.log_scale:
         ax0.set_yscale("log")
     else:
         ax0.set_ylim(0.0, max(np.max(no_reuse), np.max(windowed), np.max(legacy)) * 1.28)
     ax0.set_ylabel("Total symmetric allocation (GiB)")
     ax0.set_xticks(x)
-    ax0.set_xticklabels(labels, rotation=0)
-    ax0.legend(frameon=False, loc="upper left")
+    ax0.set_xticklabels(labels, rotation=0, fontsize=7.4)
+    ax0.tick_params(axis="x", pad=3)
+    ax0.legend(frameon=False, loc="upper left", fontsize=8.1)
 
     for idx, row in enumerate(rows):
         note = f"chunks={num_chunks[idx]}, window={active_window[idx]}"
@@ -89,7 +99,7 @@ def main() -> None:
             note,
             ha="center",
             va="bottom",
-            fontsize=9,
+            fontsize=7.5,
             color="#444444",
         )
 
@@ -99,20 +109,21 @@ def main() -> None:
         reuse_factor,
         width=ratio_width,
         color=colors["no_reuse"],
-        label="Without slot reuse / with active window",
+        label="No-reuse / active-window",
     )
     ax1.bar(
         x + ratio_width / 2,
         legacy_factor,
         width=ratio_width,
         color=colors["legacy"],
-        label="Legacy old path / with active window",
+        label="Legacy / active-window",
     )
     ax1.axhline(1.0, color="#444444", linewidth=1.0, linestyle="--")
     ax1.set_ylabel("Footprint ratio vs windowed")
     ax1.set_xticks(x)
-    ax1.set_xticklabels(labels, rotation=0)
-    ax1.legend(frameon=False, loc="upper left")
+    ax1.set_xticklabels(labels, rotation=0, fontsize=7.4)
+    ax1.tick_params(axis="x", pad=3)
+    ax1.legend(frameon=False, loc="upper left", fontsize=7.7)
     ax1.set_ylim(0.0, max(np.max(reuse_factor), np.max(legacy_factor)) * 1.18)
 
     for idx, factor in enumerate(reuse_factor):
@@ -122,7 +133,7 @@ def main() -> None:
             f"{factor:.2f}x",
             ha="center",
             va="bottom",
-            fontsize=9,
+            fontsize=7.8,
             color="#7A4B00",
         )
     for idx, factor in enumerate(legacy_factor):
@@ -132,18 +143,21 @@ def main() -> None:
             f"{factor:.2f}x",
             ha="center",
             va="bottom",
-            fontsize=9,
+            fontsize=7.8,
             color="#444444",
         )
 
     png_path = output_dir / "rs_active_window_footprint_summary.png"
     svg_path = output_dir / "rs_active_window_footprint_summary.svg"
-    fig.savefig(png_path, dpi=220, bbox_inches="tight")
+    pdf_path = output_dir / "rs_active_window_footprint_summary.pdf"
+    fig.savefig(png_path, dpi=args.dpi, bbox_inches="tight")
     fig.savefig(svg_path, bbox_inches="tight")
+    fig.savefig(pdf_path, bbox_inches="tight")
     plt.close(fig)
 
     print(f"[png] {png_path}")
     print(f"[svg] {svg_path}")
+    print(f"[pdf] {pdf_path}")
 
 
 if __name__ == "__main__":

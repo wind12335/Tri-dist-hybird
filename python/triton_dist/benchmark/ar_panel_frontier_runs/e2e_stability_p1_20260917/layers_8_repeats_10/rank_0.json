@@ -1,0 +1,94 @@
+{
+  "scope": "transformer_body_excluding_lm_head",
+  "model": "/root/eb-public/huggingface-models/meta-llama/Meta-Llama-3-70B",
+  "run_type": "prefill",
+  "bsz": 64,
+  "seq_len": 128,
+  "max_M": 8192,
+  "dtype": "bfloat16",
+  "world_size": 4,
+  "rank": 0,
+  "num_layers": 8,
+  "include_lm_head": false,
+  "ar": {
+    "attention": {
+      "chunk_rows": 2048,
+      "stripe_rows": 2048,
+      "target_chunks": 4,
+      "min_chunk_rows": 512,
+      "active_chunk_window": 4,
+      "n_bands": 1,
+      "frontier_chunks": 0,
+      "stage_slots": 4,
+      "num_comm_sms": 32,
+      "comm_lanes": 2,
+      "producer_order": "panel_recursive_doubling_cublas"
+    },
+    "mlp": {
+      "chunk_rows": 1024,
+      "stripe_rows": 1024,
+      "target_chunks": 4,
+      "min_chunk_rows": 512,
+      "active_chunk_window": 4,
+      "n_bands": 1,
+      "frontier_chunks": 0,
+      "stage_slots": 4,
+      "num_comm_sms": 64,
+      "comm_lanes": 2,
+      "producer_order": "panel_recursive_doubling_cublas"
+    }
+  },
+  "correctness": null,
+  "stability": [
+    {
+      "repeat": 0.0,
+      "checksum_min": -0.022060759365558624,
+      "checksum_max": -0.022060759365558624
+    },
+    {
+      "repeat": 1.0,
+      "checksum_min": -0.01792513206601143,
+      "checksum_max": -0.01792513206601143
+    },
+    {
+      "repeat": 2.0,
+      "checksum_min": -0.019400009885430336,
+      "checksum_max": -0.019400009885430336
+    },
+    {
+      "repeat": 3.0,
+      "checksum_min": -0.022039828822016716,
+      "checksum_max": -0.022039828822016716
+    },
+    {
+      "repeat": 4.0,
+      "checksum_min": -0.020672691985964775,
+      "checksum_max": -0.020672691985964775
+    },
+    {
+      "repeat": 5.0,
+      "checksum_min": -0.01744718849658966,
+      "checksum_max": -0.01744718849658966
+    },
+    {
+      "repeat": 6.0,
+      "checksum_min": -0.018061848357319832,
+      "checksum_max": -0.018061848357319832
+    },
+    {
+      "repeat": 7.0,
+      "checksum_min": -0.019717801362276077,
+      "checksum_max": -0.019717801362276077
+    },
+    {
+      "repeat": 8.0,
+      "checksum_min": -0.022148363292217255,
+      "checksum_max": -0.022148363292217255
+    },
+    {
+      "repeat": 9.0,
+      "checksum_min": -0.018562179058790207,
+      "checksum_max": -0.018562179058790207
+    }
+  ]
+}

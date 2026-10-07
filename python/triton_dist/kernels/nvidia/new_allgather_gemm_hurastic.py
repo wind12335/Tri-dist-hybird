@@ -42,7 +42,7 @@ from triton_dist.kernels.nvidia.allgather_gemm import (AllGatherGEMMTensorParall
                                                        ag_gemm_config_space, create_ag_gemm_context, key_fn,
                                                        prune_fn, swizzle_2d)
 from triton_dist.kernels.nvidia.gemm import get_config_space, matmul_kernel, prune_fn as gemm_prune_fn
-from triton_dist.kernels.nvidia.new_allgather import launch_new_allgather_intra_node
+from triton_dist.kernels.nvidia.new_allgather_tileready import launch_new_allgather_intra_node
 from triton_dist.utils import nvshmem_create_tensors, nvshmem_free_tensor_sync
 
 
@@ -369,6 +369,10 @@ def kernel_consumer_gemm_non_persistent_skip_local_tile_barrier(
 class NewAllGatherGEMMContext:
     base_ctx: AllGatherGEMMTensorParallelContext
     local_compute_stream: torch.cuda.Stream
+    output_buf: torch.Tensor
+    all_gather_method: AllGatherMethod
+    persistent: bool
+    use_row_tile_barrier: bool
     copy_sms: int = 0
     # Row-tile ready parameters (used only on intra-node + full-mesh NVLink).
     # NOTE: Too fine a granularity increases P2P memcpy launch overhead.
@@ -389,6 +393,9 @@ class NewAllGatherGEMMContext:
     @property
     def num_local_ranks(self):
         return self.base_ctx.num_local_ranks
+
+    def get_output_buf(self, M: int) -> torch.Tensor:
+        return self.output_buf[:M]
 
     def finalize(self):
         if self.symm_tile_barrier is not None:
@@ -454,9 +461,25 @@ def create_new_ag_gemm_context(
     else:
         effective_tile_rows_per_chunk = tile_rows_per_chunk if tile_rows_per_chunk > 0 else 0
 
+    method = base_ctx.all_gather_method
+    if method == AllGatherMethod.Auto:
+        method = get_auto_all_gather_method(base_ctx.num_ranks, base_ctx.num_local_ranks)
+    persistent = torch.cuda.get_device_capability()[0] >= 9
+    use_row_tile_barrier = (
+        effective_enable_row_tile_barrier
+        and not persistent
+        and not base_ctx.is_multinode
+        and method == AllGatherMethod.All2All_IntraNode
+        and symm_tile_barrier is not None
+    )
+
     return NewAllGatherGEMMContext(
         base_ctx=base_ctx,
         local_compute_stream=local_compute_stream or torch.cuda.Stream(priority=0),
+        output_buf=torch.empty((max_M, base_ctx.N_per_rank), dtype=dtype, device="cuda"),
+        all_gather_method=method,
+        persistent=persistent,
+        use_row_tile_barrier=use_row_tile_barrier,
         copy_sms=copy_sms,
         tile_rows_per_chunk=effective_tile_rows_per_chunk,
         enable_row_tile_barrier=effective_enable_row_tile_barrier,
@@ -553,23 +576,14 @@ def new_ag_gemm(
     assert base.dtype == A.dtype == B.dtype, f"dtype mismatch: A {A.dtype}, B {B.dtype}, ctx {base.dtype}"
 
     M = M_per_rank * base.num_ranks
-    C = torch.empty((M, N_per_rank), dtype=A.dtype, device=A.device)
+    C = ctx.get_output_buf(M)
 
     # IMPORTANT: A/B are typically produced on the current stream. If we launch
     # the local GEMM on another stream without a dependency, it may read
     # uninitialized data and produce wrong results.
     current_stream = torch.cuda.current_stream()
-    method = base.all_gather_method
-    if method == AllGatherMethod.Auto:
-        method = get_auto_all_gather_method(base.num_ranks, base.num_local_ranks)
-    persistent = torch.cuda.get_device_capability()[0] >= 9
-    use_row_tile_barrier = (
-        ctx.enable_row_tile_barrier
-        and not persistent
-        and not base.is_multinode
-        and method == AllGatherMethod.All2All_IntraNode
-        and ctx.symm_tile_barrier is not None
-    )
+    method = ctx.all_gather_method
+    use_row_tile_barrier = ctx.use_row_tile_barrier
 
     ag_stream = launch_new_allgather_intra_node(
         A,
@@ -591,7 +605,7 @@ def new_ag_gemm(
         C_local_out = C[local_row_start:local_row_end, :]
         _run_local_shard_gemm_into(A, B, C_local_out, gemm_config, autotune)
 
-    if persistent:
+    if ctx.persistent:
         def alloc_fn(size: int, alignment: int, stream: Optional[int]):
             return torch.empty(size, device="cuda", dtype=torch.int8)
 

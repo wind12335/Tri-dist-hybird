@@ -28,6 +28,7 @@ import csv
 import math
 import os
 import re
+import signal
 import subprocess
 import sys
 from pathlib import Path
@@ -120,6 +121,15 @@ def parse_args():
     parser.add_argument("--sms_refine_strategy", default="focused", choices=["focused", "full_grid"],
                         help="How many steady_sms/tail_sms points to explore for each selected structure.")
     parser.add_argument("--dump_csv", action="store_true", default=False)
+    parser.add_argument(
+        "--exhaustive_checkpoint_csv",
+        type=str,
+        default="",
+        help=(
+            "Optional completed-candidate checkpoint for exhaustive search. It is atomically rewritten after "
+            "each successful coarse candidate; rerunning with the same candidate space resumes from it."
+        ),
+    )
     parser.add_argument("--quiet_subprocess", action="store_true", default=False)
     parser.add_argument("--candidate_timeout_sec", type=float, default=0.0,
                         help="Per-subprocess timeout in seconds. <=0 disables timeout.")
@@ -533,22 +543,72 @@ def build_bench_cmd(args,
     return cmd
 
 
+def descendant_pids(root_pid: int) -> list[int]:
+    """Return live descendants of a launcher, including workers in separate sessions."""
+    children_by_parent: dict[int, list[int]] = {}
+    for proc_path in Path("/proc").iterdir():
+        if not proc_path.name.isdigit():
+            continue
+        try:
+            # The command name may contain spaces and parentheses, so split only
+            # after its final closing parenthesis. The next fields are state, PPID.
+            fields = (proc_path / "stat").read_text(encoding="utf-8").rsplit(")", 1)[1].split()
+            pid = int(proc_path.name)
+            parent_pid = int(fields[1])
+        except (FileNotFoundError, IndexError, ValueError):
+            continue
+        children_by_parent.setdefault(parent_pid, []).append(pid)
+
+    descendants: list[int] = []
+    pending = list(children_by_parent.get(root_pid, []))
+    while pending:
+        pid = pending.pop()
+        descendants.append(pid)
+        pending.extend(children_by_parent.get(pid, []))
+    return descendants
+
+
+def signal_launcher_tree(process: subprocess.Popen[str], signum: int) -> None:
+    """Signal the launcher and its rank workers without touching unrelated jobs."""
+    target_pids = descendant_pids(process.pid)
+    if process.poll() is None:
+        target_pids.append(process.pid)
+    for pid in reversed(target_pids):
+        try:
+            os.kill(pid, signum)
+        except ProcessLookupError:
+            pass
+
+
+def terminate_child_process_group(process: subprocess.Popen[str]) -> tuple[str, str]:
+    """Stop torchrun and every rank worker even when torchrun creates new sessions."""
+    signal_launcher_tree(process, signal.SIGTERM)
+    try:
+        return process.communicate(timeout=15)
+    except subprocess.TimeoutExpired:
+        signal_launcher_tree(process, signal.SIGKILL)
+        return process.communicate()
+
+
 def run_and_capture(cmd: list[str], quiet: bool, timeout_sec: float = 0.0) -> tuple[int, str]:
     env = os.environ.copy()
     env["PYTHONUNBUFFERED"] = "1"
+    process = subprocess.Popen(
+        cmd,
+        cwd=str(ROOT),
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        env=env,
+        start_new_session=True,
+    )
     try:
-        process = subprocess.run(
-            cmd,
-            cwd=str(ROOT),
-            text=True,
-            capture_output=True,
-            env=env,
-            timeout=timeout_sec if timeout_sec > 0 else None,
-        )
-        merged = process.stdout + ("\n" + process.stderr if process.stderr else "")
-    except subprocess.TimeoutExpired as exc:
-        stdout = exc.stdout or ""
-        stderr = exc.stderr or ""
+        stdout, stderr = process.communicate(timeout=timeout_sec if timeout_sec > 0 else None)
+        merged = stdout + ("\n" + stderr if stderr else "")
+    except subprocess.TimeoutExpired:
+        # torchrun owns all four rank workers. Kill its dedicated process group,
+        # not just the launcher, before moving to the next search candidate.
+        stdout, stderr = terminate_child_process_group(process)
         merged = stdout + ("\n" + stderr if stderr else "")
         merged += f"\n[search] timeout after {timeout_sec:.1f}s"
         if not quiet:
@@ -558,11 +618,14 @@ def run_and_capture(cmd: list[str], quiet: bool, timeout_sec: float = 0.0) -> tu
                 print(stderr, end="", file=sys.stderr)
             print(f"[search] candidate timed out after {timeout_sec:.1f}s", flush=True)
         return 124, merged
+    except KeyboardInterrupt:
+        terminate_child_process_group(process)
+        raise
     if not quiet:
-        if process.stdout:
-            print(process.stdout, end="")
-        if process.stderr:
-            print(process.stderr, end="", file=sys.stderr)
+        if stdout:
+            print(stdout, end="")
+        if stderr:
+            print(stderr, end="", file=sys.stderr)
     return process.returncode, merged
 
 
@@ -591,32 +654,85 @@ def result_sort_key(result: dict[str, object]):
     )
 
 
+RESULT_FIELDS = [
+    "chunk_rows",
+    "active_chunk_window",
+    "stage_slots",
+    "steady_sms",
+    "tail_sms",
+    "comm_lanes",
+    "n_bands",
+    "frontier_chunks",
+    "lead_ratio",
+    "rank_count",
+    "torch_total_ms_mean",
+    "v2_total_ms_mean",
+    "v2_total_ms_max",
+    "v2_gemm_only_ms_mean",
+    "v2_rs_only_ms_mean",
+    "v2_speedup_vs_torch_mean",
+    "v2_speedup_vs_torch_min",
+    "v2_internal_overlap_mean",
+]
+RESULT_INT_FIELDS = [
+    "chunk_rows",
+    "active_chunk_window",
+    "stage_slots",
+    "steady_sms",
+    "tail_sms",
+    "comm_lanes",
+    "n_bands",
+    "frontier_chunks",
+    "rank_count",
+]
+
+
 def write_csv(csv_file: Path, results: list[dict[str, object]]) -> None:
-    fields = [
-        "chunk_rows",
-        "active_chunk_window",
-        "stage_slots",
-        "steady_sms",
-        "tail_sms",
-        "comm_lanes",
-        "n_bands",
-        "frontier_chunks",
-        "lead_ratio",
-        "rank_count",
-        "torch_total_ms_mean",
-        "v2_total_ms_mean",
-        "v2_total_ms_max",
-        "v2_gemm_only_ms_mean",
-        "v2_rs_only_ms_mean",
-        "v2_speedup_vs_torch_mean",
-        "v2_speedup_vs_torch_min",
-        "v2_internal_overlap_mean",
-    ]
-    with open(csv_file, "w", newline="", encoding="utf-8") as fout:
-        writer = csv.DictWriter(fout, fieldnames=fields)
+    csv_file.parent.mkdir(parents=True, exist_ok=True)
+    temporary = csv_file.with_suffix(csv_file.suffix + ".tmp")
+    with temporary.open("w", newline="", encoding="utf-8") as fout:
+        writer = csv.DictWriter(fout, fieldnames=RESULT_FIELDS)
         writer.writeheader()
         for item in results:
-            writer.writerow({name: item.get(name) for name in fields})
+            writer.writerow({name: item.get(name) for name in RESULT_FIELDS})
+    temporary.replace(csv_file)
+
+
+def load_exhaustive_checkpoint(csv_file: Path) -> dict[tuple[int, ...], dict[str, object]]:
+    """Load valid completed coarse results while rejecting a mixed candidate space."""
+    if not csv_file.is_file():
+        return {}
+
+    results: dict[tuple[int, ...], dict[str, object]] = {}
+    with csv_file.open(newline="", encoding="utf-8") as fin:
+        reader = csv.DictReader(fin)
+        missing = [field for field in RESULT_FIELDS if field not in (reader.fieldnames or [])]
+        if missing:
+            raise SystemExit(
+                f"[search] exhaustive checkpoint is missing columns: {', '.join(missing)} ({csv_file})"
+            )
+        for line_number, row in enumerate(reader, start=2):
+            try:
+                result: dict[str, object] = {}
+                for field in RESULT_INT_FIELDS:
+                    result[field] = int(row[field])
+                for field in RESULT_FIELDS:
+                    if field not in RESULT_INT_FIELDS:
+                        value = float(row[field])
+                        if not math.isfinite(value):
+                            raise ValueError(f"{field} is not finite")
+                        result[field] = value
+            except (TypeError, ValueError) as exc:
+                raise SystemExit(
+                    f"[search] invalid exhaustive checkpoint row {line_number} in {csv_file}: {exc}"
+                ) from exc
+            key = candidate_key(result)
+            if key in results:
+                raise SystemExit(
+                    f"[search] duplicate candidate in exhaustive checkpoint row {line_number}: {csv_file}"
+                )
+            results[key] = result
+    return results
 
 
 def print_topk(title: str, results: list[dict[str, object]], topk: int) -> None:
@@ -689,13 +805,30 @@ def main():
 
     if args.search_strategy == "exhaustive":
         candidates = generate_candidates(args)
+        candidate_keys = {candidate_key(candidate) for candidate in candidates}
+        checkpoint_path = Path(args.exhaustive_checkpoint_csv) if args.exhaustive_checkpoint_csv else None
+        completed_by_key = load_exhaustive_checkpoint(checkpoint_path) if checkpoint_path is not None else {}
+        unknown_keys = set(completed_by_key) - candidate_keys
+        if unknown_keys:
+            raise SystemExit(
+                "[search] exhaustive checkpoint contains candidates outside the current search space; "
+                "use a fresh checkpoint path for this command."
+            )
         print(
             f"[search] exhaustive search: {len(candidates)} candidates for M={args.M}, N={args.N}, K={args.K}, nproc={args.nproc_per_node}",
             flush=True,
         )
-        coarse_results = []
+        if checkpoint_path is not None:
+            print(
+                f"[search] exhaustive checkpoint: {len(completed_by_key)}/{len(candidates)} completed candidates <- {checkpoint_path}",
+                flush=True,
+            )
+        coarse_results = list(completed_by_key.values())
         total_candidates = len(candidates)
         for idx, candidate in enumerate(candidates, start=1):
+            if candidate_key(candidate) in completed_by_key:
+                print(f"[search][coarse] resume: retain candidate {idx}/{total_candidates}", flush=True)
+                continue
             summary = evaluate_candidate(
                 args,
                 candidate,
@@ -708,6 +841,9 @@ def main():
             )
             if summary is not None:
                 coarse_results.append(summary)
+                completed_by_key[candidate_key(candidate)] = summary
+                if checkpoint_path is not None:
+                    write_csv(checkpoint_path, coarse_results)
     else:
         all_structural_candidates, search_lists = generate_structural_candidates(args)
         structural_candidates, sms_pairs, bucket_count = reduce_structural_candidates(

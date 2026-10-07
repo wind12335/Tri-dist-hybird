@@ -245,6 +245,8 @@ def kernel_consumer_gemm_non_persistent_skip_local(
 class NewAllGatherGEMMContext:
     base_ctx: AllGatherGEMMTensorParallelContext
     local_compute_stream: torch.cuda.Stream
+    output_buf: torch.Tensor
+    persistent: bool
     copy_sms: int = 0
 
     @property
@@ -258,6 +260,9 @@ class NewAllGatherGEMMContext:
     @property
     def num_local_ranks(self):
         return self.base_ctx.num_local_ranks
+
+    def get_output_buf(self, M: int) -> torch.Tensor:
+        return self.output_buf[:M]
 
     def finalize(self):
         self.base_ctx.finalize()
@@ -290,6 +295,8 @@ def create_new_ag_gemm_context(
     return NewAllGatherGEMMContext(
         base_ctx=base_ctx,
         local_compute_stream=local_compute_stream or torch.cuda.Stream(priority=0),
+        output_buf=torch.empty((max_M, base_ctx.N_per_rank), dtype=dtype, device="cuda"),
+        persistent=torch.cuda.get_device_capability()[0] >= 9,
         copy_sms=copy_sms,
     )
 
@@ -381,7 +388,7 @@ def new_ag_gemm(
     assert base.dtype == A.dtype == B.dtype, f"dtype mismatch: A {A.dtype}, B {B.dtype}, ctx {base.dtype}"
 
     M = M_per_rank * base.num_ranks
-    C = torch.empty((M, N_per_rank), dtype=A.dtype, device=A.device)
+    C = ctx.get_output_buf(M)
 
     # IMPORTANT: A/B are typically produced on the current stream. If we launch
     # the local GEMM on another stream without a dependency, it may read
@@ -404,8 +411,7 @@ def new_ag_gemm(
         C_local_out = C[local_row_start:local_row_end, :]
         _run_local_shard_gemm_into(A, B, C_local_out, gemm_config, autotune)
 
-    persistent = torch.cuda.get_device_capability()[0] >= 9
-    if persistent:
+    if ctx.persistent:
         def alloc_fn(size: int, alignment: int, stream: Optional[int]):
             return torch.empty(size, device="cuda", dtype=torch.int8)
 

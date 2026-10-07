@@ -61,7 +61,6 @@ def launch_new_allgather_intra_node(
         raise NotImplementedError("launch_new_allgather_intra_node is for intra-node only")
 
     current_stream = torch.cuda.current_stream()
-    ctx.ag_intranode_stream.wait_stream(current_stream)
 
     method = all_gather_method
     if method == AllGatherMethod.Auto:
@@ -76,6 +75,15 @@ def launch_new_allgather_intra_node(
             raise ValueError(f"num_tile_chunks must be > 0, got {num_tile_chunks}")
         if tile_rows_per_chunk <= 0:
             raise ValueError(f"tile_rows_per_chunk must be > 0, got {tile_rows_per_chunk}")
+
+        # Initialize the ready state before the AG stream is allowed to submit
+        # copies or readiness signals.  The remote consumer stream already
+        # follows the caller's current stream; placing the clear here makes
+        # that initialization an explicit predecessor of both paths.
+        tile_barrier = row_tile_barrier_buffers[ctx.local_rank]
+        tile_barrier.zero_()
+
+    ctx.ag_intranode_stream.wait_stream(current_stream)
 
     with torch.cuda.stream(ctx.ag_intranode_stream):
         M_per_rank, K = local_tensor.shape
@@ -129,9 +137,6 @@ def launch_new_allgather_intra_node(
             # - We only need *local* ready flags (consumer waits on this rank).
             # - Because full-mesh pull writes into the local workspace, we can
             #   set a local chunk barrier right after each chunk copy_.
-            tile_barrier = row_tile_barrier_buffers[ctx.local_rank]
-            tile_barrier.zero_()
-
             # Chunk-major schedule: improves overlap because early row chunks
             # become ready quickly across all src_ranks.
             local_ws = ctx.symm_workspace

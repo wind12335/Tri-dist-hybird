@@ -1,0 +1,1685 @@
+W0830 19:46:16.104000 20341 site-packages/torch/distributed/run.py:766] 
+W0830 19:46:16.104000 20341 site-packages/torch/distributed/run.py:766] *****************************************
+W0830 19:46:16.104000 20341 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0830 19:46:16.104000 20341 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 338.50it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 331.05it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 340.47it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 335.47it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 337.32it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 334.12it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 337.71it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 335.88it/s]
+[RANK 4] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 2] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 7] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 3] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 1] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 6] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 5] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 0] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 85, in make_cuda_graph
+[rank4]:     func()
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank4]:     return func(*args, **kwargs)
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 255, in dist_triton_select_ag_rs_fwd
+[rank4]:     out = self.dist_triton_new_gemm_rs(out, autotune=autotune)
+[rank4]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank4]:     return func(*args, **kwargs)
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 229, in dist_triton_new_gemm_rs
+[rank4]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs(
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank4]:     return self.fn(
+[rank4]:            ^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 261, in new_3rd_v5_frontier_windowed_panel_gemm_rs
+[rank4]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs_op(A, B, ctx, gemm_config, persistent)
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 246, in new_3rd_v5_frontier_windowed_panel_gemm_rs_op
+[rank4]:     return new_3rd_v3_windowed_panel_rs_op(gemm_out, ctx.rs_ctx, output, prepare_round=False)
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 620, in new_3rd_v3_windowed_panel_rs_op
+[rank4]:     ctx.wait_all(torch.cuda.current_stream())
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 243, in wait_all
+[rank4]:     current_stream.wait_stream(stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 71, in wait_stream
+[rank4]:     self.wait_event(stream.record_event())
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 57, in wait_event
+[rank4]:     event.wait(self)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 199, in wait
+[rank4]:     super().wait(stream)
+[rank4]: RuntimeError: CUDA error: dependency created on uncaptured work in another stream
+[rank4]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank4]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank4]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+[rank4]: During handling of the above exception, another exception occurred:
+
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 264, in <module>
+[rank4]:     run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 92, in run_benchmark
+[rank4]:     triton_dist_graph = make_cuda_graph(mempool, triton_func)
+[rank4]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 84, in make_cuda_graph
+[rank4]:     with torch.cuda.graph(graph, pool=mempool):
+[rank4]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186, in __exit__
+[rank4]:     self.cuda_graph.capture_end()
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 84, in capture_end
+[rank4]:     super().capture_end()
+[rank4]: RuntimeError: CUDA error: operation failed due to a previous error during capture
+[rank4]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank4]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank4]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 85, in make_cuda_graph
+[rank3]:     func()
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank3]:     return func(*args, **kwargs)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 255, in dist_triton_select_ag_rs_fwd
+[rank3]:     out = self.dist_triton_new_gemm_rs(out, autotune=autotune)
+[rank3]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank3]:     return func(*args, **kwargs)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 229, in dist_triton_new_gemm_rs
+[rank3]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs(
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank3]:     return self.fn(
+[rank3]:            ^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 261, in new_3rd_v5_frontier_windowed_panel_gemm_rs
+[rank3]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs_op(A, B, ctx, gemm_config, persistent)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 246, in new_3rd_v5_frontier_windowed_panel_gemm_rs_op
+[rank3]:     return new_3rd_v3_windowed_panel_rs_op(gemm_out, ctx.rs_ctx, output, prepare_round=False)
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 620, in new_3rd_v3_windowed_panel_rs_op
+[rank3]:     ctx.wait_all(torch.cuda.current_stream())
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 243, in wait_all
+[rank3]:     current_stream.wait_stream(stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 71, in wait_stream
+[rank3]:     self.wait_event(stream.record_event())
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 57, in wait_event
+[rank3]:     event.wait(self)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 199, in wait
+[rank3]:     super().wait(stream)
+[rank3]: RuntimeError: CUDA error: dependency created on uncaptured work in another stream
+[rank3]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank3]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank3]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+[rank3]: During handling of the above exception, another exception occurred:
+
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 264, in <module>
+[rank3]:     run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 92, in run_benchmark
+[rank3]:     triton_dist_graph = make_cuda_graph(mempool, triton_func)
+[rank3]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 84, in make_cuda_graph
+[rank3]:     with torch.cuda.graph(graph, pool=mempool):
+[rank3]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186, in __exit__
+[rank3]:     self.cuda_graph.capture_end()
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 84, in capture_end
+[rank3]:     super().capture_end()
+[rank3]: RuntimeError: CUDA error: operation failed due to a previous error during capture
+[rank3]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank3]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank3]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 85, in make_cuda_graph
+[rank2]:     func()
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank2]:     return func(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 255, in dist_triton_select_ag_rs_fwd
+[rank2]:     out = self.dist_triton_new_gemm_rs(out, autotune=autotune)
+[rank2]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank2]:     return func(*args, **kwargs)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 229, in dist_triton_new_gemm_rs
+[rank2]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs(
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank2]:     return self.fn(
+[rank2]:            ^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 261, in new_3rd_v5_frontier_windowed_panel_gemm_rs
+[rank2]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs_op(A, B, ctx, gemm_config, persistent)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 246, in new_3rd_v5_frontier_windowed_panel_gemm_rs_op
+[rank2]:     return new_3rd_v3_windowed_panel_rs_op(gemm_out, ctx.rs_ctx, output, prepare_round=False)
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 620, in new_3rd_v3_windowed_panel_rs_op
+[rank2]:     ctx.wait_all(torch.cuda.current_stream())
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 243, in wait_all
+[rank2]:     current_stream.wait_stream(stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 71, in wait_stream
+[rank2]:     self.wait_event(stream.record_event())
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 57, in wait_event
+[rank2]:     event.wait(self)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 199, in wait
+[rank2]:     super().wait(stream)
+[rank2]: RuntimeError: CUDA error: dependency created on uncaptured work in another stream
+[rank2]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank2]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank2]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+[rank2]: During handling of the above exception, another exception occurred:
+
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 264, in <module>
+[rank2]:     run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 92, in run_benchmark
+[rank2]:     triton_dist_graph = make_cuda_graph(mempool, triton_func)
+[rank2]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 84, in make_cuda_graph
+[rank2]:     with torch.cuda.graph(graph, pool=mempool):
+[rank2]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186, in __exit__
+[rank2]:     self.cuda_graph.capture_end()
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 84, in capture_end
+[rank2]:     super().capture_end()
+[rank2]: RuntimeError: CUDA error: operation failed due to a previous error during capture
+[rank2]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank2]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank2]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f73275f76d0> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe4f406ba50> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e2484310> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f7327658290> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe48fba0590> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e0f0e7d0> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f73276584d0> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe48b12a890> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e2469b10> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f73275f6150> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe48fb90450> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f0884c59410> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f7328c10190> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe48ef2f3d0> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e24973d0> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f73275f5450> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe48fbae4d0> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e2494150> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f7327658110> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe48fb987d0> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e0ee2050> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f7328c26f10> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe48ef17b50> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e247f510> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f732765be90> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe53816bed0> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e24a3ed0> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f7328c0aa50> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe4f4074050> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e2495610> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f73c80c7110> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe5383a8110> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f04e1862290> freed implicitly.
+[rank4]: Traceback (most recent call last):
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank4]:     f()
+[rank4]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank4]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank4]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank4]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank4]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank4]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank4]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f7328c0ba50> freed implicitly.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank2]:     f()
+[rank2]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank2]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank2]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank2]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank2]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank2]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank2]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fe48fae30d0> freed implicitly.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank3]:     f()
+[rank3]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank3]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank3]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank3]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank3]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank3]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank3]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f08b6567cd0> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 85, in make_cuda_graph
+[rank0]:     func()
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank0]:     return func(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 255, in dist_triton_select_ag_rs_fwd
+[rank0]:     out = self.dist_triton_new_gemm_rs(out, autotune=autotune)
+[rank0]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank0]:     return func(*args, **kwargs)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 229, in dist_triton_new_gemm_rs
+[rank0]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs(
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank0]:     return self.fn(
+[rank0]:            ^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 261, in new_3rd_v5_frontier_windowed_panel_gemm_rs
+[rank0]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs_op(A, B, ctx, gemm_config, persistent)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 246, in new_3rd_v5_frontier_windowed_panel_gemm_rs_op
+[rank0]:     return new_3rd_v3_windowed_panel_rs_op(gemm_out, ctx.rs_ctx, output, prepare_round=False)
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 620, in new_3rd_v3_windowed_panel_rs_op
+[rank0]:     ctx.wait_all(torch.cuda.current_stream())
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 243, in wait_all
+[rank0]:     current_stream.wait_stream(stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 71, in wait_stream
+[rank0]:     self.wait_event(stream.record_event())
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 57, in wait_event
+[rank0]:     event.wait(self)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 199, in wait
+[rank0]:     super().wait(stream)
+[rank0]: RuntimeError: CUDA error: dependency created on uncaptured work in another stream
+[rank0]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank0]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank0]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+[rank0]: During handling of the above exception, another exception occurred:
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 264, in <module>
+[rank0]:     run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 92, in run_benchmark
+[rank0]:     triton_dist_graph = make_cuda_graph(mempool, triton_func)
+[rank0]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 84, in make_cuda_graph
+[rank0]:     with torch.cuda.graph(graph, pool=mempool):
+[rank0]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186, in __exit__
+[rank0]:     self.cuda_graph.capture_end()
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 84, in capture_end
+[rank0]:     super().capture_end()
+[rank0]: RuntimeError: CUDA error: operation failed due to a previous error during capture
+[rank0]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank0]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank0]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 85, in make_cuda_graph
+[rank7]:     func()
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank7]:     return func(*args, **kwargs)
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 255, in dist_triton_select_ag_rs_fwd
+[rank7]:     out = self.dist_triton_new_gemm_rs(out, autotune=autotune)
+[rank7]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank7]:     return func(*args, **kwargs)
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 229, in dist_triton_new_gemm_rs
+[rank7]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs(
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank7]:     return self.fn(
+[rank7]:            ^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 261, in new_3rd_v5_frontier_windowed_panel_gemm_rs
+[rank7]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs_op(A, B, ctx, gemm_config, persistent)
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 246, in new_3rd_v5_frontier_windowed_panel_gemm_rs_op
+[rank7]:     return new_3rd_v3_windowed_panel_rs_op(gemm_out, ctx.rs_ctx, output, prepare_round=False)
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 620, in new_3rd_v3_windowed_panel_rs_op
+[rank7]:     ctx.wait_all(torch.cuda.current_stream())
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 243, in wait_all
+[rank7]:     current_stream.wait_stream(stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 71, in wait_stream
+[rank7]:     self.wait_event(stream.record_event())
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 57, in wait_event
+[rank7]:     event.wait(self)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 199, in wait
+[rank7]:     super().wait(stream)
+[rank7]: RuntimeError: CUDA error: dependency created on uncaptured work in another stream
+[rank7]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank7]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank7]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+[rank7]: During handling of the above exception, another exception occurred:
+
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 264, in <module>
+[rank7]:     run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 92, in run_benchmark
+[rank7]:     triton_dist_graph = make_cuda_graph(mempool, triton_func)
+[rank7]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 84, in make_cuda_graph
+[rank7]:     with torch.cuda.graph(graph, pool=mempool):
+[rank7]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186, in __exit__
+[rank7]:     self.cuda_graph.capture_end()
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 84, in capture_end
+[rank7]:     super().capture_end()
+[rank7]: RuntimeError: CUDA error: operation failed due to a previous error during capture
+[rank7]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank7]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank7]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 85, in make_cuda_graph
+[rank1]:     func()
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank1]:     return func(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 255, in dist_triton_select_ag_rs_fwd
+[rank1]:     out = self.dist_triton_new_gemm_rs(out, autotune=autotune)
+[rank1]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank1]:     return func(*args, **kwargs)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 229, in dist_triton_new_gemm_rs
+[rank1]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs(
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank1]:     return self.fn(
+[rank1]:            ^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 261, in new_3rd_v5_frontier_windowed_panel_gemm_rs
+[rank1]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs_op(A, B, ctx, gemm_config, persistent)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 246, in new_3rd_v5_frontier_windowed_panel_gemm_rs_op
+[rank1]:     return new_3rd_v3_windowed_panel_rs_op(gemm_out, ctx.rs_ctx, output, prepare_round=False)
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 620, in new_3rd_v3_windowed_panel_rs_op
+[rank1]:     ctx.wait_all(torch.cuda.current_stream())
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 243, in wait_all
+[rank1]:     current_stream.wait_stream(stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 71, in wait_stream
+[rank1]:     self.wait_event(stream.record_event())
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 57, in wait_event
+[rank1]:     event.wait(self)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 199, in wait
+[rank1]:     super().wait(stream)
+[rank1]: RuntimeError: CUDA error: dependency created on uncaptured work in another stream
+[rank1]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank1]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank1]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+[rank1]: During handling of the above exception, another exception occurred:
+
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 264, in <module>
+[rank1]:     run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 92, in run_benchmark
+[rank1]:     triton_dist_graph = make_cuda_graph(mempool, triton_func)
+[rank1]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 84, in make_cuda_graph
+[rank1]:     with torch.cuda.graph(graph, pool=mempool):
+[rank1]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186, in __exit__
+[rank1]:     self.cuda_graph.capture_end()
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 84, in capture_end
+[rank1]:     super().capture_end()
+[rank1]: RuntimeError: CUDA error: operation failed due to a previous error during capture
+[rank1]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank1]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank1]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 85, in make_cuda_graph
+[rank6]:     func()
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank6]:     return func(*args, **kwargs)
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 255, in dist_triton_select_ag_rs_fwd
+[rank6]:     out = self.dist_triton_new_gemm_rs(out, autotune=autotune)
+[rank6]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank6]:     return func(*args, **kwargs)
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 229, in dist_triton_new_gemm_rs
+[rank6]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs(
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank6]:     return self.fn(
+[rank6]:            ^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 261, in new_3rd_v5_frontier_windowed_panel_gemm_rs
+[rank6]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs_op(A, B, ctx, gemm_config, persistent)
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 246, in new_3rd_v5_frontier_windowed_panel_gemm_rs_op
+[rank6]:     return new_3rd_v3_windowed_panel_rs_op(gemm_out, ctx.rs_ctx, output, prepare_round=False)
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 620, in new_3rd_v3_windowed_panel_rs_op
+[rank6]:     ctx.wait_all(torch.cuda.current_stream())
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 243, in wait_all
+[rank6]:     current_stream.wait_stream(stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 71, in wait_stream
+[rank6]:     self.wait_event(stream.record_event())
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 57, in wait_event
+[rank6]:     event.wait(self)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 199, in wait
+[rank6]:     super().wait(stream)
+[rank6]: RuntimeError: CUDA error: dependency created on uncaptured work in another stream
+[rank6]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank6]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank6]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+[rank6]: During handling of the above exception, another exception occurred:
+
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 264, in <module>
+[rank6]:     run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 92, in run_benchmark
+[rank6]:     triton_dist_graph = make_cuda_graph(mempool, triton_func)
+[rank6]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 84, in make_cuda_graph
+[rank6]:     with torch.cuda.graph(graph, pool=mempool):
+[rank6]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186, in __exit__
+[rank6]:     self.cuda_graph.capture_end()
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 84, in capture_end
+[rank6]:     super().capture_end()
+[rank6]: RuntimeError: CUDA error: operation failed due to a previous error during capture
+[rank6]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank6]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank6]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 85, in make_cuda_graph
+[rank5]:     func()
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank5]:     return func(*args, **kwargs)
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 255, in dist_triton_select_ag_rs_fwd
+[rank5]:     out = self.dist_triton_new_gemm_rs(out, autotune=autotune)
+[rank5]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+[rank5]:     return func(*args, **kwargs)
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/layers/nvidia/tp_mlp.py", line 229, in dist_triton_new_gemm_rs
+[rank5]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs(
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/tune.py", line 349, in __call__
+[rank5]:     return self.fn(
+[rank5]:            ^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 261, in new_3rd_v5_frontier_windowed_panel_gemm_rs
+[rank5]:     return new_3rd_v5_frontier_windowed_panel_gemm_rs_op(A, B, ctx, gemm_config, persistent)
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v5_frontier_windowed_panel_rsgemm.py", line 246, in new_3rd_v5_frontier_windowed_panel_gemm_rs_op
+[rank5]:     return new_3rd_v3_windowed_panel_rs_op(gemm_out, ctx.rs_ctx, output, prepare_round=False)
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 620, in new_3rd_v3_windowed_panel_rs_op
+[rank5]:     ctx.wait_all(torch.cuda.current_stream())
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/kernels/nvidia/new_3rd_v3_windowed_panel_rs.py", line 243, in wait_all
+[rank5]:     current_stream.wait_stream(stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 71, in wait_stream
+[rank5]:     self.wait_event(stream.record_event())
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 57, in wait_event
+[rank5]:     event.wait(self)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/streams.py", line 199, in wait
+[rank5]:     super().wait(stream)
+[rank5]: RuntimeError: CUDA error: dependency created on uncaptured work in another stream
+[rank5]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank5]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank5]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+[rank5]: During handling of the above exception, another exception occurred:
+
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 264, in <module>
+[rank5]:     run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 92, in run_benchmark
+[rank5]:     triton_dist_graph = make_cuda_graph(mempool, triton_func)
+[rank5]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 84, in make_cuda_graph
+[rank5]:     with torch.cuda.graph(graph, pool=mempool):
+[rank5]:          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186, in __exit__
+[rank5]:     self.cuda_graph.capture_end()
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/torch/cuda/graphs.py", line 84, in capture_end
+[rank5]:     super().capture_end()
+[rank5]: RuntimeError: CUDA error: operation failed due to a previous error during capture
+[rank5]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank5]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank5]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f25d9952710> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f26041fea50> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f26041fed50> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc9c290f350> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc4ab1390> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc880322050> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f26802cd110> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa2d35142d0> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fcd01d2f810> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc4ab04d0> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f262e167950> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc82c613910> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa2d4ca9e10> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fcdac49c3d0> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc4ab23d0> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f26041e7b50> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc82c675190> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa2d4ca9210> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc9c290de90> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc4acd210> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f26042022d0> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc880086a90> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa2d4ccf550> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fcd01d12e50> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc4ab8750> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f26041d0dd0> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc8800a33d0> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa2d4c8fc90> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc9c2973c10> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc0cc0790> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f2604234690> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc880097e10> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa2d4c83b10> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fcd01d2e4d0> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc4ae0150> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f268021fe10> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa2d36b3650> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc82c613a50> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fcd01d44ed0> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc520fb10> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f26041eff10> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa2d3515010> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc88009ba90> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fcd01d22290> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc4ac80d0> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f26466751d0> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc82c5effd0> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa33c267a50> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc9c2970810> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc520fb90> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa2d4c82a90> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc8800a2dd0> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fcd01d10d10> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f4fc5200e50> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc8d01865d0> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa3680ae5d0> freed implicitly.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank1]:     f()
+[rank1]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank1]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank1]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank1]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank1]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank1]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f507029a490> freed implicitly.
+[rank7]: Traceback (most recent call last):
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank7]:     f()
+[rank7]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank7]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank7]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank7]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank7]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank7]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank7]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fcd003a7350> freed implicitly.
+[rank6]: Traceback (most recent call last):
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank6]:     f()
+[rank6]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank6]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank6]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank6]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank6]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank6]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank6]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fc8e0417ed0> freed implicitly.
+[rank5]: Traceback (most recent call last):
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank5]:     f()
+[rank5]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank5]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank5]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank5]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank5]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank5]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank5]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7fa33c0e3c50> freed implicitly.
+[rank0]:[W830 19:46:54.987149520 ProcessGroupNCCL.cpp:1476] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[rank6]:[E830 20:02:23.833974073 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 6] ProcessGroupNCCL's watchdog got stuck for 480 seconds without making progress in monitoring enqueued collectives. This typically indicates a NCCL/CUDA API (e.g., CudaEventDestroy) hang blocking the watchdog, and could be triggered by another thread holding the GIL inside a CUDA api (for example, CudaEventDestroy), or other deadlock-prone behaviors.If you suspect the watchdog is not actually stuck and a longer timeout would help, you can either increase the timeout (TORCH_NCCL_HEARTBEAT_TIMEOUT_SEC) to a larger value or disable the heartbeat monitor (TORCH_NCCL_ENABLE_MONITORING=0).If either of aforementioned helps, feel free to file an issue to PyTorch about the short timeout or false positive abort; otherwise, please attempt to debug the hang. 
+[rank2]:[E830 20:02:23.833963402 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 2] ProcessGroupNCCL's watchdog got stuck for 480 seconds without making progress in monitoring enqueued collectives. This typically indicates a NCCL/CUDA API (e.g., CudaEventDestroy) hang blocking the watchdog, and could be triggered by another thread holding the GIL inside a CUDA api (for example, CudaEventDestroy), or other deadlock-prone behaviors.If you suspect the watchdog is not actually stuck and a longer timeout would help, you can either increase the timeout (TORCH_NCCL_HEARTBEAT_TIMEOUT_SEC) to a larger value or disable the heartbeat monitor (TORCH_NCCL_ENABLE_MONITORING=0).If either of aforementioned helps, feel free to file an issue to PyTorch about the short timeout or false positive abort; otherwise, please attempt to debug the hang. 
+[rank0]:[E830 20:02:23.834002406 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL's watchdog got stuck for 480 seconds without making progress in monitoring enqueued collectives. This typically indicates a NCCL/CUDA API (e.g., CudaEventDestroy) hang blocking the watchdog, and could be triggered by another thread holding the GIL inside a CUDA api (for example, CudaEventDestroy), or other deadlock-prone behaviors.If you suspect the watchdog is not actually stuck and a longer timeout would help, you can either increase the timeout (TORCH_NCCL_HEARTBEAT_TIMEOUT_SEC) to a larger value or disable the heartbeat monitor (TORCH_NCCL_ENABLE_MONITORING=0).If either of aforementioned helps, feel free to file an issue to PyTorch about the short timeout or false positive abort; otherwise, please attempt to debug the hang. 
+[rank4]:[E830 20:02:23.834007155 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 4] ProcessGroupNCCL's watchdog got stuck for 480 seconds without making progress in monitoring enqueued collectives. This typically indicates a NCCL/CUDA API (e.g., CudaEventDestroy) hang blocking the watchdog, and could be triggered by another thread holding the GIL inside a CUDA api (for example, CudaEventDestroy), or other deadlock-prone behaviors.If you suspect the watchdog is not actually stuck and a longer timeout would help, you can either increase the timeout (TORCH_NCCL_HEARTBEAT_TIMEOUT_SEC) to a larger value or disable the heartbeat monitor (TORCH_NCCL_ENABLE_MONITORING=0).If either of aforementioned helps, feel free to file an issue to PyTorch about the short timeout or false positive abort; otherwise, please attempt to debug the hang. 
+[rank7]:[E830 20:02:23.834012506 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 7] ProcessGroupNCCL's watchdog got stuck for 480 seconds without making progress in monitoring enqueued collectives. This typically indicates a NCCL/CUDA API (e.g., CudaEventDestroy) hang blocking the watchdog, and could be triggered by another thread holding the GIL inside a CUDA api (for example, CudaEventDestroy), or other deadlock-prone behaviors.If you suspect the watchdog is not actually stuck and a longer timeout would help, you can either increase the timeout (TORCH_NCCL_HEARTBEAT_TIMEOUT_SEC) to a larger value or disable the heartbeat monitor (TORCH_NCCL_ENABLE_MONITORING=0).If either of aforementioned helps, feel free to file an issue to PyTorch about the short timeout or false positive abort; otherwise, please attempt to debug the hang. 
+[rank5]:[E830 20:02:23.834019088 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 5] ProcessGroupNCCL's watchdog got stuck for 480 seconds without making progress in monitoring enqueued collectives. This typically indicates a NCCL/CUDA API (e.g., CudaEventDestroy) hang blocking the watchdog, and could be triggered by another thread holding the GIL inside a CUDA api (for example, CudaEventDestroy), or other deadlock-prone behaviors.If you suspect the watchdog is not actually stuck and a longer timeout would help, you can either increase the timeout (TORCH_NCCL_HEARTBEAT_TIMEOUT_SEC) to a larger value or disable the heartbeat monitor (TORCH_NCCL_ENABLE_MONITORING=0).If either of aforementioned helps, feel free to file an issue to PyTorch about the short timeout or false positive abort; otherwise, please attempt to debug the hang. 
+[rank3]:[E830 20:02:23.834033966 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 3] ProcessGroupNCCL's watchdog got stuck for 480 seconds without making progress in monitoring enqueued collectives. This typically indicates a NCCL/CUDA API (e.g., CudaEventDestroy) hang blocking the watchdog, and could be triggered by another thread holding the GIL inside a CUDA api (for example, CudaEventDestroy), or other deadlock-prone behaviors.If you suspect the watchdog is not actually stuck and a longer timeout would help, you can either increase the timeout (TORCH_NCCL_HEARTBEAT_TIMEOUT_SEC) to a larger value or disable the heartbeat monitor (TORCH_NCCL_ENABLE_MONITORING=0).If either of aforementioned helps, feel free to file an issue to PyTorch about the short timeout or false positive abort; otherwise, please attempt to debug the hang. 
+[rank1]:[E830 20:02:23.834041832 ProcessGroupNCCL.cpp:1743] [PG ID 0 PG GUID 0(default_pg) Rank 1] ProcessGroupNCCL's watchdog got stuck for 480 seconds without making progress in monitoring enqueued collectives. This typically indicates a NCCL/CUDA API (e.g., CudaEventDestroy) hang blocking the watchdog, and could be triggered by another thread holding the GIL inside a CUDA api (for example, CudaEventDestroy), or other deadlock-prone behaviors.If you suspect the watchdog is not actually stuck and a longer timeout would help, you can either increase the timeout (TORCH_NCCL_HEARTBEAT_TIMEOUT_SEC) to a larger value or disable the heartbeat monitor (TORCH_NCCL_ENABLE_MONITORING=0).If either of aforementioned helps, feel free to file an issue to PyTorch about the short timeout or false positive abort; otherwise, please attempt to debug the hang. 
+[rank4]:[E830 20:02:23.834336773 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 4] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank2]:[E830 20:02:23.834356891 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 2] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank6]:[E830 20:02:23.834413328 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 6] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank3]:[E830 20:02:23.834449527 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 3] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank0]:[E830 20:02:23.834456330 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 0] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank1]:[E830 20:02:23.834486066 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 1] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank5]:[E830 20:02:23.834505954 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 5] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank7]:[E830 20:02:23.834516344 ProcessGroupNCCL.cpp:1533] [PG ID 0 PG GUID 0(default_pg) Rank 7] ProcessGroupNCCL preparing to dump debug info. Include stack trace: 1
+[rank4]:[F830 20:10:23.835094712 ProcessGroupNCCL.cpp:1554] [PG ID 0 PG GUID 0(default_pg) Rank 4] [PG ID 0 PG GUID 0(default_pg) Rank 4] Terminating the process after attempting to dump debug info, due to ProcessGroupNCCL watchdog hang.
+[rank6]:[F830 20:10:23.835290294 ProcessGroupNCCL.cpp:1554] [PG ID 0 PG GUID 0(default_pg) Rank 6] [PG ID 0 PG GUID 0(default_pg) Rank 6] Terminating the process after attempting to dump debug info, due to ProcessGroupNCCL watchdog hang.
+[rank5]:[F830 20:10:23.835311614 ProcessGroupNCCL.cpp:1554] [PG ID 0 PG GUID 0(default_pg) Rank 5] [PG ID 0 PG GUID 0(default_pg) Rank 5] Terminating the process after attempting to dump debug info, due to ProcessGroupNCCL watchdog hang.
+[rank2]:[F830 20:10:23.835366418 ProcessGroupNCCL.cpp:1554] [PG ID 0 PG GUID 0(default_pg) Rank 2] [PG ID 0 PG GUID 0(default_pg) Rank 2] Terminating the process after attempting to dump debug info, due to ProcessGroupNCCL watchdog hang.
+[rank7]:[F830 20:10:23.835379573 ProcessGroupNCCL.cpp:1554] [PG ID 0 PG GUID 0(default_pg) Rank 7] [PG ID 0 PG GUID 0(default_pg) Rank 7] Terminating the process after attempting to dump debug info, due to ProcessGroupNCCL watchdog hang.
+[rank3]:[F830 20:10:23.835412606 ProcessGroupNCCL.cpp:1554] [PG ID 0 PG GUID 0(default_pg) Rank 3] [PG ID 0 PG GUID 0(default_pg) Rank 3] Terminating the process after attempting to dump debug info, due to ProcessGroupNCCL watchdog hang.
+[rank1]:[F830 20:10:23.835455347 ProcessGroupNCCL.cpp:1554] [PG ID 0 PG GUID 0(default_pg) Rank 1] [PG ID 0 PG GUID 0(default_pg) Rank 1] Terminating the process after attempting to dump debug info, due to ProcessGroupNCCL watchdog hang.
+[rank0]:[F830 20:10:23.835613788 ProcessGroupNCCL.cpp:1554] [PG ID 0 PG GUID 0(default_pg) Rank 0] [PG ID 0 PG GUID 0(default_pg) Rank 0] Terminating the process after attempting to dump debug info, due to ProcessGroupNCCL watchdog hang.
+W0830 20:10:23.824000 20341 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 20407 closing signal SIGTERM
+W0830 20:10:23.825000 20341 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 20408 closing signal SIGTERM
+W0830 20:10:23.826000 20341 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 20409 closing signal SIGTERM
+W0830 20:10:23.826000 20341 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 20410 closing signal SIGTERM
+W0830 20:10:23.827000 20341 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 20412 closing signal SIGTERM
+W0830 20:10:23.827000 20341 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 20413 closing signal SIGTERM
+W0830 20:10:23.828000 20341 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 20414 closing signal SIGTERM
+E0830 20:10:24.658000 20341 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: -6) local_rank: 4 (pid: 20411) of binary: /root/miniconda3/bin/python3.12
+Traceback (most recent call last):
+  File "/root/miniconda3/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+==========================================================
+python/triton_dist/test/nvidia/test_tp_mlp_innov.py FAILED
+----------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+----------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-08-30_20:10:23
+  host      : cs-d085f-deb6f-server
+  rank      : 4 (local_rank: 4)
+  exitcode  : -6 (pid: 20411)
+  error_file: <N/A>
+  traceback : Signal 6 (SIGABRT) received by PID 20411
+==========================================================

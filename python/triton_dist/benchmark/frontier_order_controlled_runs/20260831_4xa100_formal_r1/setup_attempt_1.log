@@ -1,0 +1,1 @@
+[setup] pre-launch attempt exited before torchrun: set -u is incompatible with scripts/setenv.sh when NVSHMEM_HOME is initially undefined; no benchmark process was started.

@@ -1,0 +1,67 @@
+ ? ../../3rdparty/triton
+ M benchmark/bench_3rdv5_frontier_windowed_panel_gemmrs_search.py
+ M benchmark/bench_active_window_ablation_gemmrs.py
+ M benchmark/bench_frontier_timeline_collect_gemmrs.py
+ M benchmark/plot_active_window_ablation_gemmrs.py
+ M benchmark/plot_rs_active_window_footprint.py
+ M kernels/nvidia/new_allgather_gemm_hurastic.py
+ M kernels/nvidia/new_allgather_gemm_tileready.py
+ M test/nvidia/test_tp_e2e_innov_real.py
+?? .ipynb_checkpoints/
+?? _tmp_arch_figs/
+?? ag_bifurcated_overlap_draft.svg
+?? benchmark/.ipynb_checkpoints/active_window_effect_draft-checkpoint.svg
+?? benchmark/.ipynb_checkpoints/bench_ag_ready_granularity_sweep_eval-checkpoint.py
+?? benchmark/.ipynb_checkpoints/plot_ag_ready_ablation-checkpoint.py
+?? benchmark/.ipynb_checkpoints/rsar_active_window_staging_draft-checkpoint.svg
+?? benchmark/active_window_effect_draft.svg
+?? benchmark/active_window_sweep_runs/
+?? benchmark/ag_ready_granularity_eval_results/
+?? benchmark/backups/
+?? benchmark/bench_active_window_sweep_driver.py
+?? benchmark/bench_ag_gemm_eval_8rank.py
+?? benchmark/bench_ag_ready_granularity_multi.py
+?? benchmark/bench_ag_ready_granularity_sweep_eval.py
+?? benchmark/evaluation_figures/
+?? benchmark/merge_ag_ready_shapes.py
+?? benchmark/merge_frontier_schedule_ablation_csvs.py
+?? benchmark/merge_rs_frontier_timeline_csvs.py
+?? benchmark/plot_active_window_sweep_gemmrs.py
+?? benchmark/plot_ag_ready_ablation.py
+?? benchmark/plot_e2e_prefill_speedup.py
+?? benchmark/plot_frontier_schedule_ablation_multi_shape.py
+?? benchmark/plot_rs_frontier_timeline_multi_shape.py
+?? benchmark/plot_rs_frontier_timeline_multi_shape_clean.py
+?? benchmark/plot_rs_frontier_timeline_multi_shape_vertical.py
+?? benchmark/rs_frontier_schedule_results/20260701_193626/.ipynb_checkpoints/rs_frontier_prestart_panel_mix-checkpoint.png
+?? benchmark/rs_frontier_timeline_results/.ipynb_checkpoints/
+?? benchmark/rs_frontier_timeline_results/8192_49152_12288_c512_f2_a800_pcie_noautotune/
+?? benchmark/rs_frontier_timeline_results/8192_53248_16384_c512_f2_a800_pcie_noautotune/
+?? benchmark/rs_frontier_timeline_results/rs_frontier_timeline_multi_shape.png
+?? benchmark/rs_frontier_timeline_results/rs_frontier_timeline_multi_shape.svg
+?? benchmark/rsar_active_window_staging_draft.svg
+?? benchmark/search_compare_runs/
+?? benchmark/tests/
+?? bibtex.stdout
+?? bifurcated_overlap_draft.svg
+?? chapters/
+?? csv/.ipynb_checkpoints/frontier_schedule_ablation-checkpoint.png
+?? csv/.ipynb_checkpoints/frontier_schedule_ablation_multi_shape-checkpoint.png
+?? csv/.ipynb_checkpoints/frontier_schedule_ablation_multi_shape-checkpoint.svg
+?? csv/frontier_schedule_ablation_multi_shape.png
+?? csv/frontier_schedule_ablation_multi_shape.svg
+?? figures/
+?? methodology_zh_main.tex
+?? overleaf_methodology_zh-eurosys27-acm-pdf-viewer-2026-08-28-r3/
+?? overleaf_methodology_zh-eurosys27-acm-pdf-viewer-2026-08-28/
+?? overleaf_methodology_zh/
+?? pass1.stdout
+?? pass2.stdout
+?? pass3.stdout
+?? plan/
+?? rsar_bifurcated_overlap_arch_draft.svg
+?? rsar_bifurcated_overlap_timeline_draft.svg
+?? tables/
+?? texput.log
+?? "\344\270\255\346\226\207\345\210\235\347\250\277\344\277\256\346\224\271\345\217\212\345\220\204\347\247\215\351\227\256\351\242\230.pdf"
+?? "\345\274\225\347\224\250\350\256\272\346\226\207/"

@@ -1,0 +1,3 @@
+
+--- stderr ---
+ibstat not on PATH

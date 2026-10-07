@@ -107,6 +107,9 @@ def parse_args():
     parser.add_argument("--autotune", default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument("--plot", default=True, action=argparse.BooleanOptionalAction)
     parser.add_argument("--dump_csv", default=True, action=argparse.BooleanOptionalAction)
+    parser.add_argument("--atol", type=float, default=None, help="Override correctness-check absolute tolerance.")
+    parser.add_argument("--rtol", type=float, default=None, help="Override correctness-check relative tolerance.")
+    parser.add_argument("--skip_correctness", default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument("--dtype", default="float16", choices=["float16", "bfloat16"])
     parser.add_argument("--trans_b", default=True, action=argparse.BooleanOptionalAction)
     parser.add_argument("--persistent", action=argparse.BooleanOptionalAction, default=False)
@@ -379,8 +382,9 @@ def collect_policy_timeline(
 
         M_per_rank = M // world_size
         torch_ref = torch_gemm_rs(pg, A, B)
-        atol = 6e-2 if dtype == torch.bfloat16 else 1e-2
-        rtol = atol
+        default_tol = 6e-2 if dtype == torch.bfloat16 else 1e-2
+        atol = args.atol if args.atol is not None else default_tol
+        rtol = args.rtol if args.rtol is not None else atol
         workspace = torch.zeros((ctx.rs_ctx.n_bands * world_size * ctx.rs_ctx.num_chunks,), dtype=torch.int32, device=A.device)
         gemm_out = ctx.get_gemm_out_buf(A)
         output = torch.empty((M_per_rank, B.shape[1]), dtype=dtype, device=A.device)
@@ -400,10 +404,11 @@ def collect_policy_timeline(
             first_output_commit_event=None,
         )
         sync_all(pg)
-        for i in range(world_size):
-            torch.distributed.barrier(pg, device_ids=[torch.cuda.current_device()])
-            if rank == i:
-                assert_allclose(torch_ref, out, atol=atol, rtol=rtol)
+        if not args.skip_correctness:
+            for i in range(world_size):
+                torch.distributed.barrier(pg, device_ids=[torch.cuda.current_device()])
+                if rank == i:
+                    assert_allclose(torch_ref, out, atol=atol, rtol=rtol)
 
         wait_until_max_gpu_clock_or_warning(torch.cuda.current_device())
         ready_times = []

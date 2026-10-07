@@ -1,0 +1,27 @@
+{
+  "correctness": {
+    "bulk": {
+      "max_abs": 0.001953125,
+      "max_rel": 244.140625,
+      "ok": true
+    },
+    "frontier": {
+      "max_abs": 0.001953125,
+      "max_rel": 244.140625,
+      "ok": true
+    }
+  },
+  "local_rank": 3,
+  "local_samples_ms": {
+    "bulk": [
+      7.920000076293945,
+      9.720735549926758
+    ],
+    "frontier": [
+      9.459136009216309,
+      8.925984382629395
+    ]
+  },
+  "rank": 3,
+  "summary_file": "summary.json"
+}

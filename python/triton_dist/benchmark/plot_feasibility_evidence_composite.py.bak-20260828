@@ -1,0 +1,288 @@
+#!/usr/bin/env python3
+"""Compose the feasibility-aware operator evidence figure.
+
+The top row parses the author's recorded RS/AR operator logs and shows
+normalized speedup only for paths that completed.  A hatched status cell is
+used for allocation failures, so a failed run is never rendered as a zero
+speedup.  The bottom row embeds the author-supplied NVSHMEM feasibility
+curves after rasterizing their PDFs at 450 DPI.  Those curves are archival
+real measurements and are intentionally not regenerated from synthetic data.
+"""
+
+from __future__ import annotations
+
+import argparse
+import re
+import subprocess
+import tempfile
+from pathlib import Path
+
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.patches import Patch, Rectangle
+
+
+METHODS = ["Triton-Dist", "Ours"]
+COLORS = {"Triton-Dist": "#4E79A7", "Ours": "#F28E2B"}
+FAILURE_COLOR = "#C73E1D"
+HEADER_RE = re.compile(r"^#\s*(\d+)\s+(\d+)\s+(\d+)\s*$")
+RANGE_RE = re.compile(r"最低\s*([0-9.]+)\s*最高\s*([0-9.]+)")
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--rs_log",
+        type=Path,
+        default=Path("/root/做的实验/rs-gemm.txt"),
+        help="author-recorded GEMM--RS result text",
+    )
+    parser.add_argument(
+        "--ar_log",
+        type=Path,
+        default=Path("/root/做的实验/ar-gemm.txt"),
+        help="author-recorded GEMM--AR result text",
+    )
+    parser.add_argument(
+        "--curve_rs_pdf",
+        type=Path,
+        default=Path("/root/做的实验/实验部分配图/nvshmem_feasibility_curves_N_by_M_baseline_rs.pdf"),
+    )
+    parser.add_argument(
+        "--curve_ar_pdf",
+        type=Path,
+        default=Path("/root/做的实验/实验部分配图/nvshmem_feasibility_curves_N_by_M_baseline_ar.pdf"),
+    )
+    parser.add_argument("--output_dir", type=Path, default=Path("/root/做的实验/figures"))
+    parser.add_argument("--output_stem", default="feasibility_evidence_composite")
+    return parser.parse_args()
+
+
+def parse_result(line: str):
+    normalized = line.lower()
+    if "symmetric failed" in normalized:
+        return "failure", "SYM-MEM"
+    if "无法处理" in line:
+        return "failure", "UNSUPPORTED"
+    if "failed" in normalized:
+        return "failure", "FAILED"
+    match = RANGE_RE.search(line)
+    if not match:
+        raise ValueError(f"cannot parse result line: {line}")
+    return "range", (float(match.group(1)), float(match.group(2)))
+
+
+def shape_key(shape: tuple[int, int, int]) -> str:
+    m, n, k = shape
+    left = f"{m // 1024}K" if m >= 1024 and m % 1024 == 0 else str(m)
+    return f"{left}x{n}\n x{k}"
+
+
+def parse_speedup_file(path: Path) -> list[dict[str, object]]:
+    records: list[dict[str, object]] = []
+    current_shape: tuple[int, int, int] | None = None
+    current_values: dict[str, tuple[str, object]] = {}
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        match = HEADER_RE.match(line)
+        if match:
+            if current_shape is not None:
+                records.append({"shape": shape_key(current_shape), "values": current_values})
+            current_shape = tuple(int(match.group(i)) for i in range(1, 4))
+            current_values = {}
+            continue
+        if current_shape is None:
+            continue
+        normalized = line.lower()
+        method = None
+        if normalized.startswith("triton-dist") or normalized.startswith("tri-dist"):
+            method = "Triton-Dist"
+        elif line.startswith("我的创新"):
+            method = "Ours"
+        if method is not None:
+            current_values[method] = parse_result(line)
+    if current_shape is not None:
+        records.append({"shape": shape_key(current_shape), "values": current_values})
+    if not records:
+        raise ValueError(f"no records parsed from {path}")
+    return records
+
+
+def draw_speedup_panel(ax, records: list[dict[str, object]], title: str, show_ylabel: bool) -> None:
+    x = np.arange(len(records), dtype=float)
+    width = 0.29
+    status_y0, status_y1 = 0.905, 0.975
+
+    for method_index, method in enumerate(METHODS):
+        positions = x + (method_index - 0.5) * 0.34
+        for position, record in zip(positions, records):
+            result = record["values"].get(method)  # type: ignore[union-attr]
+            if result is None:
+                continue
+            kind, value = result
+            if kind == "failure":
+                ax.add_patch(
+                    Rectangle(
+                        (position - width / 2, status_y0),
+                        width,
+                        status_y1 - status_y0,
+                        facecolor="#FCE4DE",
+                        edgecolor=FAILURE_COLOR,
+                        hatch="///",
+                        linewidth=0.8,
+                        zorder=3,
+                    )
+                )
+                ax.text(
+                    position,
+                    (status_y0 + status_y1) / 2,
+                    str(value),
+                    ha="center",
+                    va="center",
+                    fontsize=5.0,
+                    fontweight="bold",
+                    color=FAILURE_COLOR,
+                    rotation=90,
+                    zorder=4,
+                )
+                continue
+            low, high = value  # type: ignore[misc]
+            midpoint = (low + high) / 2
+            ax.bar(
+                position,
+                midpoint,
+                width=width,
+                color=COLORS[method],
+                edgecolor="black",
+                linewidth=0.65,
+                zorder=3,
+            )
+            ax.errorbar(
+                position,
+                midpoint,
+                yerr=[[midpoint - low], [high - midpoint]],
+                fmt="none",
+                ecolor="black",
+                elinewidth=0.75,
+                capsize=2.0,
+                capthick=0.75,
+                zorder=4,
+            )
+
+    ax.axhline(1.0, color="#666666", linestyle="--", linewidth=0.8, zorder=2)
+    ax.set_title(title, fontsize=8.5, fontweight="bold", pad=4)
+    ax.set_xticks(x)
+    ax.set_xticklabels([record["shape"] for record in records], fontsize=5.9)
+    ax.set_xlim(-0.62, len(records) - 0.38)
+    ax.set_ylim(0.89, 1.31)
+    ax.set_yticks([0.9, 1.0, 1.1, 1.2, 1.3])
+    ax.tick_params(axis="x", length=2.3, width=0.7, pad=3)
+    ax.tick_params(axis="y", labelsize=6.6, length=2.3, width=0.7)
+    ax.grid(axis="y", color="#D8D8D8", linewidth=0.55, alpha=0.85, zorder=0)
+    if show_ylabel:
+        ax.set_ylabel("Normalized speedup", fontsize=7.3)
+    else:
+        ax.tick_params(axis="y", labelleft=False)
+    for spine in ax.spines.values():
+        spine.set_linewidth(0.8)
+
+
+def rasterize_pdf(pdf_path: Path, output_path: Path) -> Path:
+    command = ["pdftocairo", "-png", "-r", "450", "-singlefile", str(pdf_path), str(output_path)]
+    subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return output_path.with_suffix(".png")
+
+
+def add_curve_panel(ax, image_path: Path, label: str) -> None:
+    image = mpimg.imread(image_path)
+    ax.imshow(image, aspect="equal")
+    ax.set_axis_off()
+    ax.text(
+        0.015,
+        0.98,
+        label,
+        transform=ax.transAxes,
+        ha="left",
+        va="top",
+        fontsize=8.5,
+        fontweight="bold",
+        color="#222222",
+        bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.8, "pad": 1.5},
+    )
+
+
+def main() -> None:
+    args = parse_args()
+    for path in (args.rs_log, args.ar_log, args.curve_rs_pdf, args.curve_ar_pdf):
+        if not path.is_file():
+            raise SystemExit(f"missing input: {path}")
+    rs_records = parse_speedup_file(args.rs_log)
+    ar_records = parse_speedup_file(args.ar_log)
+
+    plt.rcParams.update(
+        {
+            "font.family": "DejaVu Sans",
+            "font.size": 7.5,
+            "axes.linewidth": 0.8,
+            "axes.unicode_minus": False,
+            "savefig.dpi": 450,
+            "savefig.bbox": "tight",
+        }
+    )
+    with tempfile.TemporaryDirectory(prefix="feasibility_curves_") as temp_dir:
+        temp = Path(temp_dir)
+        rs_png = rasterize_pdf(args.curve_rs_pdf, temp / "curve_rs")
+        ar_png = rasterize_pdf(args.curve_ar_pdf, temp / "curve_ar")
+
+        fig = plt.figure(figsize=(7.2, 5.8), constrained_layout=False)
+        grid = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.08], hspace=0.10, wspace=0.06)
+        top_left = fig.add_subplot(grid[0, 0])
+        top_right = fig.add_subplot(grid[0, 1], sharey=top_left)
+        draw_speedup_panel(top_left, rs_records, "(a) GEMM--RS: speedup and run status", True)
+        draw_speedup_panel(top_right, ar_records, "(b) GEMM--AR: speedup and run status", False)
+
+        bottom_left = fig.add_subplot(grid[1, 0])
+        bottom_right = fig.add_subplot(grid[1, 1])
+        add_curve_panel(bottom_left, rs_png, "(c)")
+        add_curve_panel(bottom_right, ar_png, "(d)")
+        fig.text(
+            0.5,
+            0.475,
+            "Archived baseline symmetric-data feasibility traces (allocation status, not speedup)",
+            ha="center",
+            va="center",
+            fontsize=7.2,
+            color="#444444",
+        )
+
+        legend_handles = [
+            Patch(facecolor=COLORS["Triton-Dist"], edgecolor="black", label="Triton-Dist (measured)"),
+            Patch(facecolor=COLORS["Ours"], edgecolor="black", label="Ours (measured)"),
+            Patch(facecolor="#FCE4DE", edgecolor=FAILURE_COLOR, hatch="///", label="SYM-MEM: allocation failed"),
+        ]
+        fig.legend(
+            handles=legend_handles,
+            loc="upper center",
+            bbox_to_anchor=(0.5, 0.992),
+            ncol=3,
+            fontsize=6.8,
+            frameon=False,
+            handlelength=1.5,
+            columnspacing=1.0,
+        )
+        fig.subplots_adjust(left=0.065, right=0.995, top=0.91, bottom=0.015)
+
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        output_base = args.output_dir / args.output_stem
+        for suffix in ("pdf", "png", "svg"):
+            fig.savefig(output_base.with_suffix(f".{suffix}"), dpi=450)
+        plt.close(fig)
+    for suffix in ("pdf", "png", "svg"):
+        print(f"[plot] {args.output_dir / (args.output_stem + '.' + suffix)}")
+
+
+if __name__ == "__main__":
+    main()

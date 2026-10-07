@@ -190,6 +190,12 @@ def release_python_cuda_refs() -> None:
 
 
 def perf_func_lockstep(func: Callable[[], torch.Tensor], pg: torch.distributed.ProcessGroup, iters: int, warmup_iters: int):
+    """Return local CUDA-event latency and the per-iteration rank maximum.
+
+    Lockstep barriers align control flow but do not make a rank-0 event time
+    equal to the distributed-step latency. The local mean remains available for
+    historical CSV compatibility; new callers can publish the rank maximum.
+    """
     start_events = [torch.cuda.Event(enable_timing=True) for _ in range(iters)]
     stop_events = [torch.cuda.Event(enable_timing=True) for _ in range(iters)]
     output = None
@@ -201,11 +207,15 @@ def perf_func_lockstep(func: Callable[[], torch.Tensor], pg: torch.distributed.P
         if n >= warmup_iters:
             stop_events[n - warmup_iters].record()
         sync_all(pg)
-    duration_ms = 0.0
+    iteration_ms: list[float] = []
     for i in range(iters):
         stop_events[i].synchronize()
-        duration_ms += start_events[i].elapsed_time(stop_events[i])
-    return output, duration_ms / iters
+        iteration_ms.append(start_events[i].elapsed_time(stop_events[i]))
+    rank_max_iteration_ms = torch.tensor(
+        iteration_ms, dtype=torch.float64, device=f"cuda:{torch.cuda.current_device()}"
+    )
+    torch.distributed.all_reduce(rank_max_iteration_ms, op=torch.distributed.ReduceOp.MAX, group=pg)
+    return output, sum(iteration_ms) / iters, rank_max_iteration_ms.mean().item()
 
 
 def profile_section_lockstep(label: str,
@@ -296,6 +306,8 @@ def run_stage(label: str,
         metrics[f"{label}_num_chunks"] = float(ctx.rs_ctx.num_chunks)
         metrics[f"{label}_active_chunk_window"] = float(ctx.rs_ctx.active_chunk_window)
         metrics[f"{label}_stage_slots"] = float(ctx.rs_ctx.stage_slots)
+        metrics[f"{label}_steady_sms"] = float(args.steady_sms)
+        metrics[f"{label}_tail_sms"] = float(args.tail_sms)
         metrics[f"{label}_comm_lanes"] = float(len(ctx.rs_ctx.comm_streams))
         metrics[f"{label}_n_bands"] = float(ctx.rs_ctx.n_bands)
         metrics[f"{label}_frontier_chunks"] = float(ctx.frontier_chunks)
@@ -353,19 +365,16 @@ def run_stage(label: str,
 
         _reset_runtime()
         wait_until_max_gpu_clock_or_warning(torch.cuda.current_device())
-        _, metrics[f"{label}_total_ms"] = perf_func_lockstep(_total, pg=pg, iters=args.iters, warmup_iters=args.warmup_iters)
+        _, metrics[f"{label}_total_ms"], metrics[f"{label}_rank_max_total_ms"] = perf_func_lockstep(
+            _total, pg=pg, iters=args.iters, warmup_iters=args.warmup_iters)
         _reset_runtime()
         wait_until_max_gpu_clock_or_warning(torch.cuda.current_device())
-        _, metrics[f"{label}_gemm_only_ms"] = perf_func_lockstep(_gemm_only,
-                                                                 pg=pg,
-                                                                 iters=args.iters,
-                                                                 warmup_iters=args.warmup_iters)
+        _, metrics[f"{label}_gemm_only_ms"], metrics[f"{label}_rank_max_gemm_only_ms"] = perf_func_lockstep(
+            _gemm_only, pg=pg, iters=args.iters, warmup_iters=args.warmup_iters)
         _reset_runtime()
         wait_until_max_gpu_clock_or_warning(torch.cuda.current_device())
-        _, metrics[f"{label}_rs_only_ms"] = perf_func_lockstep(_rs_only,
-                                                               pg=pg,
-                                                               iters=args.iters,
-                                                               warmup_iters=args.warmup_iters)
+        _, metrics[f"{label}_rs_only_ms"], metrics[f"{label}_rank_max_rs_only_ms"] = perf_func_lockstep(
+            _rs_only, pg=pg, iters=args.iters, warmup_iters=args.warmup_iters)
     finally:
         sync_all(pg)
         if ctx is not None:
@@ -403,13 +412,21 @@ def perf_test(model_name: str, M: int, config: Dict[str, int], pg: torch.distrib
         "torch_total_ms": float("nan"),
         "torch_gemm_only_ms": float("nan"),
         "torch_rs_only_ms": float("nan"),
+        "torch_rank_max_total_ms": float("nan"),
+        "torch_rank_max_gemm_only_ms": float("nan"),
+        "torch_rank_max_rs_only_ms": float("nan"),
         "windowed_total_ms": float("nan"),
         "windowed_gemm_only_ms": float("nan"),
         "windowed_rs_only_ms": float("nan"),
+        "windowed_rank_max_total_ms": float("nan"),
+        "windowed_rank_max_gemm_only_ms": float("nan"),
+        "windowed_rank_max_rs_only_ms": float("nan"),
         "windowed_chunk_rows": float("nan"),
         "windowed_num_chunks": float("nan"),
         "windowed_active_chunk_window": float("nan"),
         "windowed_stage_slots": float("nan"),
+        "windowed_steady_sms": float("nan"),
+        "windowed_tail_sms": float("nan"),
         "windowed_comm_lanes": float("nan"),
         "windowed_n_bands": float("nan"),
         "windowed_frontier_chunks": float("nan"),
@@ -418,10 +435,15 @@ def perf_test(model_name: str, M: int, config: Dict[str, int], pg: torch.distrib
         "unbounded_total_ms": float("nan"),
         "unbounded_gemm_only_ms": float("nan"),
         "unbounded_rs_only_ms": float("nan"),
+        "unbounded_rank_max_total_ms": float("nan"),
+        "unbounded_rank_max_gemm_only_ms": float("nan"),
+        "unbounded_rank_max_rs_only_ms": float("nan"),
         "unbounded_chunk_rows": float("nan"),
         "unbounded_num_chunks": float("nan"),
         "unbounded_active_chunk_window": float("nan"),
         "unbounded_stage_slots": float("nan"),
+        "unbounded_steady_sms": float("nan"),
+        "unbounded_tail_sms": float("nan"),
         "unbounded_comm_lanes": float("nan"),
         "unbounded_n_bands": float("nan"),
         "unbounded_frontier_chunks": float("nan"),
@@ -508,19 +530,16 @@ def perf_test(model_name: str, M: int, config: Dict[str, int], pg: torch.distrib
 
         sync_all(pg)
         wait_until_max_gpu_clock_or_warning(torch.cuda.current_device())
-        _, metrics["torch_total_ms"] = perf_func_lockstep(_torch_total, pg=pg, iters=args.iters, warmup_iters=args.warmup_iters)
+        _, metrics["torch_total_ms"], metrics["torch_rank_max_total_ms"] = perf_func_lockstep(
+            _torch_total, pg=pg, iters=args.iters, warmup_iters=args.warmup_iters)
         sync_all(pg)
         wait_until_max_gpu_clock_or_warning(torch.cuda.current_device())
-        _, metrics["torch_gemm_only_ms"] = perf_func_lockstep(_torch_gemm_only,
-                                                              pg=pg,
-                                                              iters=args.iters,
-                                                              warmup_iters=args.warmup_iters)
+        _, metrics["torch_gemm_only_ms"], metrics["torch_rank_max_gemm_only_ms"] = perf_func_lockstep(
+            _torch_gemm_only, pg=pg, iters=args.iters, warmup_iters=args.warmup_iters)
         sync_all(pg)
         wait_until_max_gpu_clock_or_warning(torch.cuda.current_device())
-        _, metrics["torch_rs_only_ms"] = perf_func_lockstep(_torch_rs_only,
-                                                            pg=pg,
-                                                            iters=args.iters,
-                                                            warmup_iters=args.warmup_iters)
+        _, metrics["torch_rs_only_ms"], metrics["torch_rank_max_rs_only_ms"] = perf_func_lockstep(
+            _torch_rs_only, pg=pg, iters=args.iters, warmup_iters=args.warmup_iters)
     finally:
         sync_all(pg)
 
@@ -609,20 +628,41 @@ if __name__ == "__main__":
             "torch_total_ms",
             "torch_gemm_only_ms",
             "torch_rs_only_ms",
+            "torch_rank_max_total_ms",
+            "torch_rank_max_gemm_only_ms",
+            "torch_rank_max_rs_only_ms",
             "windowed_total_ms",
             "windowed_gemm_only_ms",
             "windowed_rs_only_ms",
+            "windowed_rank_max_total_ms",
+            "windowed_rank_max_gemm_only_ms",
+            "windowed_rank_max_rs_only_ms",
             "windowed_internal_overlap_ratio",
             "windowed_symmetric_staging_gib",
             "windowed_num_chunks",
             "windowed_active_chunk_window",
+            "windowed_stage_slots",
+            "windowed_steady_sms",
+            "windowed_tail_sms",
+            "windowed_comm_lanes",
+            "windowed_n_bands",
+            "windowed_frontier_chunks",
             "unbounded_total_ms",
             "unbounded_gemm_only_ms",
             "unbounded_rs_only_ms",
+            "unbounded_rank_max_total_ms",
+            "unbounded_rank_max_gemm_only_ms",
+            "unbounded_rank_max_rs_only_ms",
             "unbounded_internal_overlap_ratio",
             "unbounded_symmetric_staging_gib",
             "unbounded_num_chunks",
             "unbounded_active_chunk_window",
+            "unbounded_stage_slots",
+            "unbounded_steady_sms",
+            "unbounded_tail_sms",
+            "unbounded_comm_lanes",
+            "unbounded_n_bands",
+            "unbounded_frontier_chunks",
             "window_speedup_vs_unbounded",
             "window_latency_ratio_vs_unbounded",
             "window_symmetric_ratio_vs_unbounded",
@@ -638,20 +678,41 @@ if __name__ == "__main__":
                     f"{metrics['torch_total_ms']:.4f}",
                     f"{metrics['torch_gemm_only_ms']:.4f}",
                     f"{metrics['torch_rs_only_ms']:.4f}",
+                    f"{metrics['torch_rank_max_total_ms']:.4f}",
+                    f"{metrics['torch_rank_max_gemm_only_ms']:.4f}",
+                    f"{metrics['torch_rank_max_rs_only_ms']:.4f}",
                     f"{metrics['windowed_total_ms']:.4f}",
                     f"{metrics['windowed_gemm_only_ms']:.4f}",
                     f"{metrics['windowed_rs_only_ms']:.4f}",
+                    f"{metrics['windowed_rank_max_total_ms']:.4f}",
+                    f"{metrics['windowed_rank_max_gemm_only_ms']:.4f}",
+                    f"{metrics['windowed_rank_max_rs_only_ms']:.4f}",
                     f"{metrics['windowed_internal_overlap_ratio']:.4f}",
                     f"{metrics['windowed_symmetric_staging_gib']:.6f}",
                     f"{metrics['windowed_num_chunks']:.0f}",
                     f"{metrics['windowed_active_chunk_window']:.0f}",
+                    f"{metrics['windowed_stage_slots']:.0f}",
+                    f"{metrics['windowed_steady_sms']:.0f}",
+                    f"{metrics['windowed_tail_sms']:.0f}",
+                    f"{metrics['windowed_comm_lanes']:.0f}",
+                    f"{metrics['windowed_n_bands']:.0f}",
+                    f"{metrics['windowed_frontier_chunks']:.0f}",
                     f"{metrics['unbounded_total_ms']:.4f}",
                     f"{metrics['unbounded_gemm_only_ms']:.4f}",
                     f"{metrics['unbounded_rs_only_ms']:.4f}",
+                    f"{metrics['unbounded_rank_max_total_ms']:.4f}",
+                    f"{metrics['unbounded_rank_max_gemm_only_ms']:.4f}",
+                    f"{metrics['unbounded_rank_max_rs_only_ms']:.4f}",
                     f"{metrics['unbounded_internal_overlap_ratio']:.4f}",
                     f"{metrics['unbounded_symmetric_staging_gib']:.6f}",
                     f"{metrics['unbounded_num_chunks']:.0f}",
                     f"{metrics['unbounded_active_chunk_window']:.0f}",
+                    f"{metrics['unbounded_stage_slots']:.0f}",
+                    f"{metrics['unbounded_steady_sms']:.0f}",
+                    f"{metrics['unbounded_tail_sms']:.0f}",
+                    f"{metrics['unbounded_comm_lanes']:.0f}",
+                    f"{metrics['unbounded_n_bands']:.0f}",
+                    f"{metrics['unbounded_frontier_chunks']:.0f}",
                     f"{metrics['window_speedup_vs_unbounded']:.4f}",
                     f"{metrics['window_latency_ratio_vs_unbounded']:.4f}",
                     f"{metrics['window_symmetric_ratio_vs_unbounded']:.4f}",

@@ -1,0 +1,36 @@
+W0916 22:06:51.053000 57297 site-packages/torch/distributed/run.py:766] 
+W0916 22:06:51.053000 57297 site-packages/torch/distributed/run.py:766] *****************************************
+W0916 22:06:51.053000 57297 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0916 22:06:51.053000 57297 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+new v2.3 kernel params: {'chunk_rows': 1024, 'stripe_rows': 1024, 'target_chunks': 4, 'min_chunk_rows': 512, 'active_chunk_window': 4, 'n_bands': 1, 'frontier_chunks': 0, 'producer_order': 'panel_recursive_doubling', 'stage_slots': 4, 'num_comm_sms': 64, 'comm_lanes': 2, 'autotune': False, 'streaming_depth': 1, 'search': False}
+[custom] test shape: M=8192, N=49152, K=12288
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+[custom] v2.3 symmetric scratch: {'compact_scatter_rows': 16384, 'baseline_scatter_rows_est': 16384, 'compaction_ratio': 1.0, 'chunk_rows': 1024, 'stripe_rows': 1024, 'stage_slots': 4, 'lead_ratio': 1.0}
+Rank 0 [custom] new latency (ms): total=16.3491, gemm_only=12.5971, ar_only=11.2574, speedup_vs_torch=1.0400, speedup_vs_baseline=nan, overlap_ratio=0.1250, internal_overlap=0.3146, streaming_depth=1, producer_order=panel_recursive_doubling
+Rank 1 [custom] new latency (ms): total=16.3493, gemm_only=12.6527, ar_only=11.2577, speedup_vs_torch=1.0400, speedup_vs_baseline=nan, overlap_ratio=0.1254, internal_overlap=0.3162, streaming_depth=1, producer_order=panel_recursive_doubling
+Rank 2 [custom] new latency (ms): total=16.3492, gemm_only=12.6128, ar_only=11.2575, speedup_vs_torch=1.0400, speedup_vs_baseline=nan, overlap_ratio=0.1256, internal_overlap=0.3151, streaming_depth=1, producer_order=panel_recursive_doubling
+Rank 3 [custom] new latency (ms): total=16.3494, gemm_only=12.6313, ar_only=11.2578, speedup_vs_torch=1.0400, speedup_vs_baseline=nan, overlap_ratio=0.1246, internal_overlap=0.3156, streaming_depth=1, producer_order=panel_recursive_doubling
+Rank 0 [custom] torch latency (ms): total=17.0035, gemm_only=9.7233, ar_only=8.9612
+Rank 1 [custom] torch latency (ms): total=17.0034, gemm_only=9.7319, ar_only=8.9624
+Rank 2 [custom] torch latency (ms): total=17.0031, gemm_only=9.7359, ar_only=8.9619
+Rank 3 [custom] torch latency (ms): total=17.0033, gemm_only=9.7149, ar_only=8.9616
+Rank 0 [custom] allreduce BW (GB/s): new=66.6229, baseline=nan, torch=83.6938
+Rank 1 [custom] allreduce BW (GB/s): new=66.6208, baseline=nan, torch=83.6826
+Rank 2 [custom] allreduce BW (GB/s): new=66.6224, baseline=nan, torch=83.6880
+Rank 3 [custom] allreduce BW (GB/s): new=66.6206, baseline=nan, torch=83.6903
+csv file is dumped into csv/perf_new_windowed_panel_gemm_allreduce_v23_panel_recursive_doubling_4_ranks.csv

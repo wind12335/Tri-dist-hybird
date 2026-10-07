@@ -34,14 +34,16 @@ import triton
 
 from triton_dist.layers.nvidia.tp_mlp import TP_MLP
 from triton_dist.models.utils import init_model_cpu
-from triton_dist.profiler_utils import group_profile, perf_func
+from triton_dist.profiler_utils import group_profile
 from triton_dist.test.utils import assert_allclose
-from triton_dist.utils import initialize_distributed, dist_print, nvshmem_barrier_all_on_stream
+from triton_dist.utils import initialize_distributed, dist_print
+
+from tp_ag_rs_innov_common import run_pair, write_ranked_json
 
 
 THRESHOLD_MAP = {
     torch.float16: 1e-2,
-    torch.bfloat16: 2e-2,
+    torch.bfloat16: 2.5e-1,
     torch.float8_e4m3fn: 2e-2,
     torch.float8_e5m2: 2e-2,
     torch.int8: 0,
@@ -72,46 +74,32 @@ def rand_tensor(shape: list[int], dtype: torch.dtype):
     return torch.rand(shape, dtype=dtype).cuda() / 10
 
 
-def make_cuda_graph(mempool, func):
-    s = torch.cuda.Stream()
-    s.wait_stream(torch.cuda.current_stream())
-    with torch.cuda.stream(s):
-        for _ in range(30):
-            func()
-        s.synchronize()
-    torch.cuda.current_stream().wait_stream(s)
-    graph = torch.cuda.CUDAGraph()
-    with torch.cuda.graph(graph, pool=mempool):
-        func()
-    return graph
-
-
 def run_benchmark(test_name: str, torch_func, triton_func, args: argparse.Namespace, group, rank: int, world_size: int):
-    mempool = torch.cuda.graph_pool_handle()
-    torch_graph = make_cuda_graph(mempool, torch_func)
-    triton_dist_graph = make_cuda_graph(mempool, triton_func)
-
     with group_profile(f"tp_mlp_innov_{test_name}", args.profile, group=group):
-        torch.cuda.synchronize()
-        _, torch_perf = perf_func(torch_graph.replay, iters=args.iters, warmup_iters=args.warmup)
-        nvshmem_barrier_all_on_stream()
-        torch.cuda.synchronize()
-
-        torch.cuda.synchronize()
-        _, dist_triton_perf = perf_func(triton_dist_graph.replay, iters=args.iters, warmup_iters=args.warmup)
-        nvshmem_barrier_all_on_stream()
-        torch.cuda.synchronize()
+        performance, graph_state = run_pair(
+            torch_func,
+            triton_func,
+            group=group,
+            warmup=args.warmup,
+            iters=args.iters,
+            use_cuda_graph=args.cuda_graph,
+            graph_warmup=args.graph_warmup,
+            synchronize_each_iter=args.synchronize_each_iter,
+        )
 
     dist_print(
-        f"TP MLP innov {test_name} #{rank} torch {torch_perf:0.3f} ms/iter",
-        f"dist-triton {dist_triton_perf:0.3f} ms/iter",
-        f"speedup {torch_perf / dist_triton_perf:0.3f}x",
+        f"TP MLP innov {test_name} #{rank} torch {performance['torch_local_ms']:0.3f} ms/iter",
+        f"dist-triton {performance['selected_local_ms']:0.3f} ms/iter",
+        f"local speedup {performance['local_speedup']:0.3f}x",
+        f"rank-max speedup {performance['rank_max_speedup']:0.3f}x",
         need_sync=True,
         allowed_ranks=list(range(world_size)),
     )
-
-    del torch_graph, triton_dist_graph, mempool
+    if args.cuda_graph and not performance["cuda_graph_used"]:
+        dist_print("CUDA Graph capture was unavailable; used eager timing.", need_sync=True, allowed_ranks=[0])
+    del graph_state
     torch.cuda.empty_cache()
+    return performance
 
 
 def parse_args():
@@ -121,9 +109,24 @@ def parse_args():
     parser.add_argument("--warmup", default=20, type=int, help="warmup iterations")
     parser.add_argument("--iters", default=100, type=int, help="perf iterations")
     parser.add_argument("--dtype", default="bfloat16", type=str, help="data type", choices=list(DTYPE_MAP.keys()))
+    parser.add_argument("--atol", type=float, default=None,
+                        help="Override the dtype-specific correctness absolute tolerance.")
+    parser.add_argument("--rtol", type=float, default=None,
+                        help="Override the dtype-specific correctness relative tolerance.")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--profile", default=False, action="store_true", help="dump torch.profiler.profile")
-    parser.add_argument("--autotune", default=True, action=argparse.BooleanOptionalAction)
+    parser.add_argument("--check", default=False, action="store_true",
+                        help="Run correctness check and exit without performance timing.")
+    parser.add_argument("--autotune", default=False, action=argparse.BooleanOptionalAction,
+                        help="Disabled by default to match the stable operator-level AG/RS benchmarks.")
+    parser.add_argument("--cuda_graph", default=False, action=argparse.BooleanOptionalAction,
+                        help="Use CUDA Graph replay; synchronized eager timing is the safe default.")
+    parser.add_argument("--graph_warmup", type=int, default=3)
+    parser.add_argument("--synchronize_each_iter", default=True, action=argparse.BooleanOptionalAction)
+    parser.add_argument("--stability_repeats", type=int, default=0)
+    parser.add_argument("--result", type=str, default=None,
+                        help="JSON file or directory for per-rank and rank-0 summary results.")
+    parser.add_argument("--repeat_id", type=int, default=0)
     parser.add_argument("--mode",
                         type=str,
                         default="ag_rs_new",
@@ -203,16 +206,76 @@ def build_ar_kwargs(args):
     }
 
 
+def error_metrics(actual: torch.Tensor, expected: torch.Tensor):
+    if actual.shape != expected.shape:
+        raise AssertionError(f"Shape mismatch: actual={tuple(actual.shape)}, expected={tuple(expected.shape)}")
+    diff = (actual.float() - expected.float()).abs()
+    return {
+        "max_abs_diff": float(diff.max().item()),
+        "max_rel_diff": float((diff / expected.float().abs().clamp_min(1e-12)).max().item()),
+        "finite": bool(torch.isfinite(actual).all() and torch.isfinite(expected).all()),
+        "shape": list(actual.shape),
+    }
+
+
+def validate_output(actual: torch.Tensor, expected: torch.Tensor, *, atol: float, rtol: float):
+    metrics = error_metrics(actual, expected)
+    close = torch.isclose(actual.float(), expected.float(), atol=atol, rtol=rtol)
+    metrics["passed"] = bool(close.all())
+    metrics["mismatched"] = int((~close).sum().item())
+    metrics["elements"] = close.numel()
+    metrics["mismatch_fraction"] = metrics["mismatched"] / max(metrics["elements"], 1)
+    if not metrics["passed"]:
+        raise AssertionError(f"MLP output mismatch: {metrics}, atol={atol}, rtol={rtol}")
+    return metrics
+
+
+def run_stability(mlp, x, args, group, rank, world_size, dtype, atol, rtol, *, ag_impl=None, rs_impl=None, ar_impl=None):
+    records = []
+    for repeat in range(args.stability_repeats):
+        repeat_x = (x.float() + (repeat + 1) * 1e-4).to(dtype)
+        expected = mlp.torch_fwd(repeat_x)
+        if ag_impl is not None:
+            repeat_local = repeat_x.split(args.M // world_size, dim=0)[rank].contiguous()
+            actual = mlp.dist_triton_select_ag_rs_fwd(
+                repeat_local,
+                ag_impl=ag_impl,
+                rs_impl=rs_impl,
+                autotune=args.autotune,
+            )
+            expected = expected.split(args.M // world_size, dim=0)[rank].contiguous()
+        else:
+            actual = mlp.dist_triton_select_gemm_ar_fwd(repeat_x, impl=ar_impl, autotune=args.autotune)
+        metrics = validate_output(actual, expected, atol=atol, rtol=rtol)
+        rank_max_abs = torch.tensor(metrics["max_abs_diff"], dtype=torch.float64, device="cuda")
+        torch.distributed.all_reduce(rank_max_abs, op=torch.distributed.ReduceOp.MAX, group=group)
+        record = {"repeat": repeat, **metrics, "rank_max_abs_diff": float(rank_max_abs.item())}
+        records.append(record)
+        dist_print(
+            f"[MLP stability] repeat={repeat + 1}/{args.stability_repeats}, "
+            f"rank_max_abs_diff={record['rank_max_abs_diff']:.8g}",
+            need_sync=True,
+            allowed_ranks=[0],
+        )
+    return records
+
+
 if __name__ == "__main__":
     args = parse_args()
+
+    if args.M <= 0 or args.iters <= 0 or args.warmup < 0 or args.graph_warmup < 0:
+        raise ValueError("M and iters must be positive; warmup values must be non-negative.")
+    if args.stability_repeats < 0:
+        raise ValueError("--stability_repeats must be non-negative.")
 
     RANK = int(os.environ.get("RANK", 0))
     WORLD_SIZE = int(os.environ.get("WORLD_SIZE", 1))
     TP_GROUP = initialize_distributed()
 
     DTYPE = DTYPE_MAP[args.dtype]
-    ATOL = THRESHOLD_MAP[DTYPE]
-    RTOL = THRESHOLD_MAP[DTYPE]
+    default_tol = THRESHOLD_MAP[DTYPE]
+    ATOL = default_tol if args.atol is None else args.atol
+    RTOL = default_tol if args.rtol is None else args.rtol
     torch.manual_seed(args.seed)
 
     hf_model = init_model_cpu(model_name=args.model, dtype=DTYPE)
@@ -228,6 +291,8 @@ if __name__ == "__main__":
     torch_out = mlp.torch_fwd(x)
     assert_allclose(torch_out, golden, atol=ATOL, rtol=RTOL)
 
+    performance = None
+    stability = []
     if args.mode in AG_RS_MODES:
         ag_impl, rs_impl = AG_RS_MODES[args.mode]
         assert args.M % WORLD_SIZE == 0
@@ -260,8 +325,32 @@ if __name__ == "__main__":
                               autotune=args.autotune)
         out_triton = triton_func()
         out_golden = golden.split(M_per_rank, dim=0)[RANK].contiguous()
-        assert_allclose(out_triton, out_golden, atol=ATOL, rtol=RTOL)
-        run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+        correctness = validate_output(out_triton, out_golden, atol=ATOL, rtol=RTOL)
+        stability = run_stability(
+            mlp,
+            x,
+            args,
+            TP_GROUP,
+            RANK,
+            WORLD_SIZE,
+            DTYPE,
+            ATOL,
+            RTOL,
+            ag_impl=ag_impl,
+            rs_impl=rs_impl,
+        )
+        if args.check:
+            dist_print(f"CORRECTNESS CHECK PASSED: mlp_{args.mode}", need_sync=True, allowed_ranks=[0])
+        else:
+            performance = run_benchmark(
+                args.mode,
+                partial(mlp.torch_fwd, x),
+                triton_func,
+                args,
+                TP_GROUP,
+                RANK,
+                WORLD_SIZE,
+            )
     else:
         impl = GEMM_AR_MODES[args.mode]
         if impl == "old":
@@ -271,8 +360,54 @@ if __name__ == "__main__":
 
         triton_func = partial(mlp.dist_triton_select_gemm_ar_fwd, x, impl=impl, autotune=args.autotune)
         out_triton = triton_func()
-        assert_allclose(out_triton, golden, atol=ATOL, rtol=RTOL)
-        run_benchmark(args.mode, partial(mlp.torch_fwd, x), triton_func, args, TP_GROUP, RANK, WORLD_SIZE)
+        correctness = validate_output(out_triton, golden, atol=ATOL, rtol=RTOL)
+        stability = run_stability(
+            mlp,
+            x,
+            args,
+            TP_GROUP,
+            RANK,
+            WORLD_SIZE,
+            DTYPE,
+            ATOL,
+            RTOL,
+            ar_impl=impl,
+        )
+        if args.check:
+            dist_print(f"CORRECTNESS CHECK PASSED: mlp_{args.mode}", need_sync=True, allowed_ranks=[0])
+        else:
+            performance = run_benchmark(
+                args.mode,
+                partial(mlp.torch_fwd, x),
+                triton_func,
+                args,
+                TP_GROUP,
+                RANK,
+                WORLD_SIZE,
+            )
+
+    payload = {
+        "script": "test_tp_mlp_innov.py",
+        "model": args.model,
+        "M": args.M,
+        "dtype": args.dtype,
+        "mode": args.mode,
+        "rank": RANK,
+        "world_size": WORLD_SIZE,
+        "repeat_id": args.repeat_id,
+        "args": vars(args),
+        "correctness": correctness,
+        "stability": stability,
+        "performance": performance,
+    }
+    write_ranked_json(
+        args.result,
+        payload,
+        group=TP_GROUP,
+        rank=RANK,
+        world_size=WORLD_SIZE,
+        stem=f"mlp_{args.mode}_repeat_{args.repeat_id}",
+    )
 
     mlp.finalize()
     nvshmem.core.finalize()

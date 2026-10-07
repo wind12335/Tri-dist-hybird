@@ -1,0 +1,239 @@
+W0830 19:39:20.299000 18255 site-packages/torch/distributed/run.py:766] 
+W0830 19:39:20.299000 18255 site-packages/torch/distributed/run.py:766] *****************************************
+W0830 19:39:20.299000 18255 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0830 19:39:20.299000 18255 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+Loading model from pre-trained weights. This may take a while...
+Loading model from pre-trained weights. This may take a while...
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+`torch_dtype` is deprecated! Use `dtype` instead!
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading model from pre-trained weights. This may take a while...
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards:   0%|                                                                                                                         | 0/30 [00:00<?, ?it/s]Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 323.77it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 328.48it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 340.22it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 343.69it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 339.10it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 332.56it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 332.30it/s]
+Loading checkpoint shards: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 30/30 [00:00<00:00, 337.38it/s]
+[RANK 4] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 5] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 3] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 0] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 7] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 2] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+[RANK 6] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])[RANK 1] MLP initialized with parameters: gate_up_proj shape: torch.Size([7168, 8192]), down_proj shape: torch.Size([8192, 3584])
+
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!✅ all close!
+
+✅ all close!
+✅ all close!
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+/root/Triton-distributed/python/triton_dist/kernels/nvidia/comm_perf_model.py:78: UserWarning: can not get max bandwidth of interface bonding_masters, return 0...
+  warnings.warn(f"can not get max bandwidth of interface {interface}, return 0...")
+shape of x: torch.Size([2048, 8192])
+shape of y: torch.Size([2048, 8192])
+x:
+✅ all close!✅ all close!
+
+✅ all close!✅ all close!
+
+✅ all close!
+✅ all close!
+✅ all close!
+tensor([[ 0.11, -0.75,  0.03,  ..., -0.31, -0.25,  0.10],
+        [-0.01, -0.29, -0.04,  ..., -0.12,  0.05,  0.01],
+        [-0.10, -0.71,  0.11,  ..., -0.25, -0.26,  0.08],
+        ...,
+        [-0.02, -0.07,  0.04,  ..., -0.02,  0.02, -0.01],
+        [ 0.15, -1.13,  0.19,  ..., -0.54, -0.34,  0.20],
+        [ 0.05, -0.25, -0.03,  ..., -0.08, -0.05, -0.01]], device='cuda:0',
+       dtype=torch.bfloat16)
+y:
+tensor([[ 0.11, -0.75,  0.03,  ..., -0.30, -0.25,  0.10],
+        [-0.01, -0.30, -0.04,  ..., -0.12,  0.05,  0.01],
+        [-0.10, -0.71,  0.11,  ..., -0.25, -0.26,  0.08],
+        ...,
+        [-0.02, -0.07,  0.04,  ..., -0.02,  0.02, -0.01],
+        [ 0.15, -1.12,  0.19,  ..., -0.54, -0.34,  0.20],
+        [ 0.05, -0.25, -0.03,  ..., -0.08, -0.05, -0.01]], device='cuda:0',
+       dtype=torch.bfloat16)
+x-y tensor([[ 9.77e-04,  0.00e+00,  2.32e-03,  ..., -1.95e-03,  0.00e+00,
+          4.88e-04],
+        [ 3.05e-05,  1.95e-03, -2.44e-04,  ..., -4.88e-04, -2.44e-04,
+          6.71e-04],
+        [ 4.88e-04,  0.00e+00, -9.77e-04,  ...,  9.77e-04,  1.95e-03,
+          0.00e+00],
+        ...,
+        [ 1.22e-04,  0.00e+00,  0.00e+00,  ...,  0.00e+00,  0.00e+00,
+          0.00e+00],
+        [ 9.77e-04, -7.81e-03,  9.77e-04,  ...,  0.00e+00,  0.00e+00,
+         -9.77e-04],
+        [-2.44e-04,  0.00e+00,  0.00e+00,  ...,  0.00e+00,  0.00e+00,
+          2.44e-04]], device='cuda:0', dtype=torch.bfloat16)
+x@diff:
+tensor([0.01], device='cuda:0', dtype=torch.bfloat16)
+y@diff:
+tensor([-0.02], device='cuda:0', dtype=torch.bfloat16)
+diff count: 1 (0.000%), [2048, 8192]
+diff max: 0.25, atol: 0.02, rtol_abs: 1.7553247744217515e-10
+diff locations:
+tensor([[ 471, 7378]], device='cuda:0')
+--------------------------------------------------------------
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/test/nvidia/test_tp_mlp_innov.py", line 263, in <module>
+[rank0]:     assert_allclose(out_triton, out_golden, atol=ATOL, rtol=RTOL)
+[rank0]:   File "/root/Triton-distributed/python/triton_dist/test/utils.py", line 90, in assert_allclose
+[rank0]:     raise RuntimeError
+[rank0]: RuntimeError
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f1aa1d643d0> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f1aa15e6410> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f1aa06062d0> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f1aa15e4890> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f1aa1d48790> freed implicitly.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 666, in _exitfunc
+[rank0]:     f()
+[rank0]:   File "/root/miniconda3/lib/python3.12/weakref.py", line 590, in __call__
+[rank0]:     return info.func(*info.args, **(info.kwargs or {}))
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/cuda/core/experimental/_memory.py", line 57, in close
+[rank0]:     self.mr.deallocate(self.ptr, self.size, stream)
+[rank0]:   File "/root/miniconda3/lib/python3.12/site-packages/nvshmem/core/nvshmem_types.py", line 149, in deallocate
+[rank0]:     raise NvshmemError(f'Buffer {self._mem_references[ptr]["buffer"]} freed implicitly.')
+[rank0]: nvshmem.core.nvshmem_types.NvshmemError: Buffer <cuda.core.experimental._memory.Buffer object at 0x7f1b48053ed0> freed implicitly.
+[rank0]:[W830 19:39:44.874541525 ProcessGroupNCCL.cpp:1476] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W0830 19:39:46.146000 18255 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 18322 closing signal SIGTERM
+W0830 19:39:46.147000 18255 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 18323 closing signal SIGTERM
+W0830 19:39:46.148000 18255 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 18324 closing signal SIGTERM
+W0830 19:39:46.149000 18255 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 18325 closing signal SIGTERM
+W0830 19:39:46.150000 18255 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 18326 closing signal SIGTERM
+W0830 19:39:46.151000 18255 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 18327 closing signal SIGTERM
+W0830 19:39:46.152000 18255 site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 18328 closing signal SIGTERM
+E0830 19:39:47.848000 18255 site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 18321) of binary: /root/miniconda3/bin/python3.12
+Traceback (most recent call last):
+  File "/root/miniconda3/bin/torchrun", line 7, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/miniconda3/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+python/triton_dist/test/nvidia/test_tp_mlp_innov.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-08-30_19:39:46
+  host      : cs-d085f-deb6f-server
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 18321)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

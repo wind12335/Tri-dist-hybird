@@ -86,3 +86,25 @@ tmp*
 
 .cursor
 *.csv
+
+# === Paper workspace (only submission/ is tracked) ===
+paper/archive/
+paper/working-logs/
+paper/reviews/
+paper/figures/
+
+# === Personal / never push ===
+_personal/
+
+# === Legacy archived code ===
+archive/
+
+# === Caches & checkpoints ===
+triton_cache/
+.ipynb_checkpoints/
+__pycache__/
+
+# === Misc build residue ===
+*.stdout
+missfont.log
+texput.log

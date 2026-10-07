@@ -1,0 +1,27 @@
+test shape: M 28672, N 14336, K 4096
+tile-ready config: enabled=False, tile_rows_per_chunk=0, num_tile_chunks=0
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+✅ all close!
+Rank 0 latency (ms): base_triton total=4.80, new_triton total=4.79, torch total=nan, new_speedup nan, new_vs_base 1.00, first_ready_ts=nan, first_consumer_ts=nan, last_completion_ts=nan, consumer_wait_ms=nan
+Rank 1 latency (ms): base_triton total=4.81, new_triton total=4.81, torch total=nan, new_speedup nan, new_vs_base 1.00, first_ready_ts=nan, first_consumer_ts=nan, last_completion_ts=nan, consumer_wait_ms=nan
+Rank 2 latency (ms): base_triton total=4.81, new_triton total=4.78, torch total=nan, new_speedup nan, new_vs_base 1.01, first_ready_ts=nan, first_consumer_ts=nan, last_completion_ts=nan, consumer_wait_ms=nan
+Rank 3 latency (ms): base_triton total=4.80, new_triton total=4.82, torch total=nan, new_speedup nan, new_vs_base 1.00, first_ready_ts=nan, first_consumer_ts=nan, last_completion_ts=nan, consumer_wait_ms=nan
+
+W0812 18:36:09.229000 41784 site-packages/torch/distributed/run.py:766] 
+W0812 18:36:09.229000 41784 site-packages/torch/distributed/run.py:766] *****************************************
+W0812 18:36:09.229000 41784 site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0812 18:36:09.229000 41784 site-packages/torch/distributed/run.py:766] *****************************************
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cuda module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.driver module instead.
+<frozen importlib._bootstrap_external>:1301: FutureWarning: The cuda.cudart module is deprecated and will be removed in a future release, please switch to use the cuda.bindings.runtime module instead.

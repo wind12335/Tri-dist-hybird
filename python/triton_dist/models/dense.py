@@ -100,6 +100,9 @@ class DenseLLMLayer:
         elif mode == 'triton_dist_gemm_ar_new':
             self.attn.fwd = partial(self.attn.dist_triton_select_gemm_ar_fwd, impl="new")
             self.mlp.fwd = partial(self.mlp.dist_triton_select_gemm_ar_fwd, impl="new")
+        elif mode == 'triton_dist_gemm_ar_v23':
+            self.attn.fwd = partial(self.attn.dist_triton_select_gemm_ar_fwd, impl="v23", autotune=False)
+            self.mlp.fwd = partial(self.mlp.dist_triton_select_gemm_ar_fwd, impl="v23", autotune=False)
         elif mode == 'triton_dist':
             self.attn.fwd = self.attn.dist_triton_fwd
             self.mlp.fwd = self.mlp.dist_triton_fwd
@@ -231,9 +234,14 @@ class DenseLLM:
                                       max_M: int = 4096,
                                       ag_impl: str = "old",
                                       rs_impl: str = "old",
+                                      *,
+                                      attn_kwargs: dict | None = None,
+                                      mlp_kwargs: dict | None = None,
                                       **kwargs):
         if PLATFORM != 'nvidia':
             raise NotImplementedError("New AG/RS ablation contexts are currently implemented only for NVIDIA.")
+        effective_attn_kwargs = {**kwargs, **(attn_kwargs or {})}
+        effective_mlp_kwargs = {**kwargs, **(mlp_kwargs or {})}
         self.ag_intranode_stream = torch.cuda.Stream(priority=-1)
         self.ag_internode_stream = torch.cuda.Stream()
 
@@ -252,14 +260,14 @@ class DenseLLM:
             self.layers[0].attn._init_new_ag_ctx(max_M=max_M,
                                                  ag_intranode_stream=self.ag_intranode_stream,
                                                  ag_internode_stream=self.ag_internode_stream,
-                                                 **kwargs)
+                                                 **effective_attn_kwargs)
             self.layers[0].mlp._init_new_ag_ctx(max_M=max_M,
                                                 ag_intranode_stream=self.ag_intranode_stream,
                                                 ag_internode_stream=self.ag_internode_stream,
-                                                **kwargs)
+                                                **effective_mlp_kwargs)
         if use_new_rs:
-            self.layers[0].attn._init_new_rs_ctx(max_M=max_M, **kwargs)
-            self.layers[0].mlp._init_new_rs_ctx(max_M=max_M, **kwargs)
+            self.layers[0].attn._init_new_rs_ctx(max_M=max_M, **effective_attn_kwargs)
+            self.layers[0].mlp._init_new_rs_ctx(max_M=max_M, **effective_mlp_kwargs)
 
         for layer in self.layers[1:]:
             layer.attn.ag_ctx = self.layers[0].attn.ag_ctx
@@ -274,21 +282,36 @@ class DenseLLM:
 
         self.use_ar = False
 
-    def init_triton_dist_gemm_ar_ablation_ctx(self, max_M: int = 4096, impl: str = "old", **kwargs):
+    def init_triton_dist_gemm_ar_ablation_ctx(
+        self,
+        max_M: int = 4096,
+        impl: str = "old",
+        *,
+        attn_kwargs: dict | None = None,
+        mlp_kwargs: dict | None = None,
+        **kwargs,
+    ):
+        effective_attn_kwargs = {**kwargs, **(attn_kwargs or {})}
+        effective_mlp_kwargs = {**kwargs, **(mlp_kwargs or {})}
         if impl == "old":
             self.layers[0].attn._init_gemm_ar_ctx(max_M=max_M, dtype=self.dtype)
             self.layers[0].mlp._init_gemm_ar_ctx(max_M=max_M, dtype=self.dtype)
         elif impl == "new":
-            self.layers[0].attn._init_new_gemm_ar_ctx(max_M=max_M, dtype=self.dtype, **kwargs)
-            self.layers[0].mlp._init_new_gemm_ar_ctx(max_M=max_M, dtype=self.dtype, **kwargs)
+            self.layers[0].attn._init_new_gemm_ar_ctx(max_M=max_M, dtype=self.dtype, **effective_attn_kwargs)
+            self.layers[0].mlp._init_new_gemm_ar_ctx(max_M=max_M, dtype=self.dtype, **effective_mlp_kwargs)
+        elif impl == "v23":
+            self.layers[0].attn._init_new_gemm_ar_v23_ctx(max_M=max_M, dtype=self.dtype, **effective_attn_kwargs)
+            self.layers[0].mlp._init_new_gemm_ar_v23_ctx(max_M=max_M, dtype=self.dtype, **effective_mlp_kwargs)
         else:
             raise ValueError(f"Unsupported GEMM-AR impl: {impl}")
 
         for layer in self.layers[1:]:
             layer.attn.gemm_ar_ctx = self.layers[0].attn.gemm_ar_ctx
             layer.attn.new_gemm_ar_ctx = self.layers[0].attn.new_gemm_ar_ctx
+            layer.attn.new_gemm_ar_v23_ctx = self.layers[0].attn.new_gemm_ar_v23_ctx
             layer.mlp.gemm_ar_ctx = self.layers[0].mlp.gemm_ar_ctx
             layer.mlp.new_gemm_ar_ctx = self.layers[0].mlp.new_gemm_ar_ctx
+            layer.mlp.new_gemm_ar_v23_ctx = self.layers[0].mlp.new_gemm_ar_v23_ctx
         self.use_ar = True
 
     def finalize(self):
@@ -296,12 +319,21 @@ class DenseLLM:
         self.layers[0].mlp.finalize()
 
     @torch.inference_mode()
-    def inference(self, input_ids: torch.LongTensor, position_ids: torch.LongTensor, kv_cache: KV_Cache,
-                  wo_lm_head=False):
+    def inference(
+        self,
+        input_ids: torch.LongTensor,
+        position_ids: torch.LongTensor,
+        kv_cache: KV_Cache,
+        wo_lm_head=False,
+        num_layers: int | None = None,
+    ):
 
         bsz, seq_len = input_ids.size()
         hidden_states = F.embedding(input_ids, self.embed_tokens)
-        for idx in range(self.num_layers):
+        layers_to_run = self.num_layers if num_layers is None else num_layers
+        if not 1 <= layers_to_run <= self.num_layers:
+            raise ValueError(f"num_layers must be in [1, {self.num_layers}], got {layers_to_run}")
+        for idx in range(layers_to_run):
             hidden_states = self.layers[idx].fwd(
                 hidden_states=hidden_states,
                 position_ids=position_ids,

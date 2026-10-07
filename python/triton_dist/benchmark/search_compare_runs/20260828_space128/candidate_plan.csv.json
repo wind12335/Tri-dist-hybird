@@ -1,0 +1,33 @@
+{
+  "candidate_count": 128,
+  "candidate_fields": [
+    "chunk_rows",
+    "active_chunk_window",
+    "stage_slots",
+    "steady_sms",
+    "tail_sms",
+    "comm_lanes",
+    "n_bands",
+    "frontier_chunks"
+  ],
+  "candidate_plan_csv": "benchmark/search_compare_runs/20260828_space128/candidate_plan.csv",
+  "candidate_plan_sha256": "ac1a43387dfaaae1fb65b2f591a037df9a7b1a80022be9b721e465e639a18475",
+  "generated_at_utc": "2026-08-28T10:15:37Z",
+  "schema_version": 1,
+  "search_list_overrides": {
+    "active_chunk_window": "4",
+    "chunk_rows": "512",
+    "comm_lanes": "1,2",
+    "frontier_chunks": "1,2",
+    "n_bands": "1,2",
+    "stage_slots": "2,4",
+    "steady_sms": "4,6",
+    "tail_sms": "12,16,20,24"
+  },
+  "shape": {
+    "K": 8192,
+    "M": 8192,
+    "N": 29568,
+    "nproc_per_node": 4
+  }
+}
